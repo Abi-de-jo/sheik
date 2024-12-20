@@ -156,12 +156,13 @@ function Home() {
               <div
                 key={property.id}
                 className="flex flex-col bg-gray-50 border rounded-md shadow cursor-pointer relative"
-                onClick={() => navigate(`/card/${property.id}`, { state: { card: property } })}
                 >
                 <img
                   src={property.images?.[0] || "https://via.placeholder.com/300x200?text=No+Image"}
                   alt="Property"
                   className="w-full h-48 object-cover rounded-t-md"
+                                  onClick={() => navigate(`/card/${property.id}`, { state: { card: property } })}
+
                 />
                 <div className="p-4">
                   <h3 className="text-lg font-semibold">{property.title || "Untitled Property"}</h3>
