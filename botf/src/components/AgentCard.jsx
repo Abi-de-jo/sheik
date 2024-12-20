@@ -60,6 +60,15 @@ const AgentCard = () => {
       console.error("Error updating property:", error);
       alert("Failed to mark property as rented. Please try again.");
     }
+
+    try {
+      await axios.post(`${API_BASE_URL}/residency/rented/${editedCard.id}`,);
+      setIsEditing(false);
+      alert("Property updated successfully!");
+    } catch (error) {
+      console.error("Error updating property:", error);
+      alert("Failed to update property. Please try again.");
+    }
   
     console.log(rentDetails);
   };
