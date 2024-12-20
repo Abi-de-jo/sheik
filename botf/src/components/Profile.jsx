@@ -9,6 +9,8 @@ import { getAllUsers } from "../utils/api";
 const Profile = () => {
   // const teleNumber = "999"; 
   // const role = "agent";  
+   const [matchedResidencies, setMatchedResidencies] = useState([]); // State for matched residencies
+
    const teleNumber = localStorage.getItem("teleNumber")
   const role = localStorage.getItem("role")
     const navigate = useNavigate();
@@ -19,11 +21,33 @@ const Profile = () => {
   const [lastName, setLastName] = useState("");
   const userId = localStorage.getItem("userId");
   const [showUpdateForm, setShowUpdateForm] = useState(false); // Toggle form visibility
-  const API_BASE_URL = "https://nothing-server.vercel.app/api";
+  const API_BASE_URL = "https://sheik-back.vercel.app/api";
 
   const toggleUpdateForm = () => {
     setShowUpdateForm((prev) => !prev);
   };
+
+  const Remove = async (residencyId) => {
+    const teleNumber = localStorage.getItem("teleNumber")
+    try {
+      const response = await axios.put(
+        `https://sheik-back.vercel.app/api/user/removeInterest/${residencyId}`,
+        {
+          data: { teleNumber },
+        }
+      );
+      console.log("Interest removed:", response.data);
+  
+      // Optional: Add logic to refresh the list or update UI after removal
+      alert("Interest removed successfully!");
+      return response.data;
+    } catch (error) {
+      console.error("Error removing interest:", error.response?.data || error.message);
+      alert("Failed to remove interest. Please try again.");
+      throw error;
+    }
+  };
+  
 
     
   useEffect(() => {
@@ -98,8 +122,33 @@ const Profile = () => {
 
   // Handle status filtering
   const handleStatusClick = (status) => {
-    setFilterStatus(status);
-  };
+  setFilterStatus(status);
+
+  if (status === "") {
+    // History logic
+    const fetchResidencies = async () => {
+      try {
+        const users = await getAllUsers(); // Fetch all users
+        const matchedUser = users.find((user) => user.teleNumber === teleNumber);
+
+        if (matchedUser?.interested?.length > 0) {
+          const matchedResidencies = data.filter((property) =>
+            matchedUser.interested.includes(property.id)
+          );
+          setMatchedResidencies(matchedResidencies); // Update state
+        } else {
+          setMatchedResidencies([]); // Clear state if no matches
+        }
+      } catch (error) {
+        console.error("Error fetching matched residencies:", error);
+      }
+    };
+
+    fetchResidencies();
+  }
+};
+
+ 
 
   // Handle email form submission
   const handleLoginSubmit =async (e) => {
@@ -290,15 +339,15 @@ console.log(err)
   Creation
 </button>
 <button
-  onClick={() => handleStatusClick("")} // Show all for history
-  className={`px-4 py-2 rounded shadow ${
-    filterStatus === ""
-      ? "bg-red-500 text-white"
-      : "bg-gray-200 text-gray-700"
-  } hover:bg-red-400 transition`}
->
-  History
-</button>
+          onClick={() => handleStatusClick("")} // Show history
+          className={`px-4 py-2 rounded shadow ${
+            filterStatus === ""
+              ? "bg-red-500 text-white"
+              : "bg-gray-200 text-gray-700"
+          } hover:bg-red-400 transition`}
+        >
+          History
+        </button>
 </div>
      )
     }
@@ -306,20 +355,79 @@ console.log(err)
       {/* Properties Section */}
       <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
       <h2 className="text-xl font-bold text-gray-700 mb-4 border-b pb-2">
-        {role === "user" && filterStatus === "draft"
-          ? "Creation"
-          : role === "user"
-          ? "History"
-          : `${filterStatus} Properties`}
+         {role === "user" && filterStatus === "draft"
+      ? "Creation"
+      : role === "user" && filterStatus === ""
+      ? "History"
+      : `${filterStatus} Properties`}
       </h2>
 
       {isLoading ? (
         <p className="text-gray-600 text-center">Loading properties...</p>
       ) : error ? (
         <p className="text-red-500 text-center">Error fetching properties.</p>
-      ) : filteredProperties.length > 0 ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-          {filteredProperties.map((property) => (
+      ) :
+       
+       
+  filterStatus === "" && matchedResidencies?.length > 0 ? (
+
+ <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+    {matchedResidencies.map((property) => (
+      <div
+        key={property.id}
+        className="flex flex-col sm:flex-row p-4 bg-gray-50 border rounded-lg shadow hover:shadow-lg cursor-pointer transition-shadow duration-200"
+        onClick={() => handleCardClick(property)}
+      >
+        <div className="w-full sm:w-1/2 flex-shrink-0">
+          <img
+            src={property.images[0] || "https://via.placeholder.com/150"}
+            alt={property.title || "Untitled"}
+            className="w-full h-32 object-cover rounded"
+          />
+          <div className="mt-2 sm:mt-4">
+            <p className="text-sm font-medium">Price: {property.price || "N/A"}</p>
+            <p className="text-sm">Type: {property.type || "N/A"}</p>
+            <p className="text-sm">Area: {property.area || "N/A"} sqft</p>
+          </div>
+        </div>
+        <div className="w-full sm:w-1/2 flex flex-col justify-between px-4 mt-2 sm:mt-0">
+          <h3 className="text-lg font-semibold mb-2">
+            {property.title || "Untitled"}
+          </h3>
+          <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+            {property.description || "No description available."}
+          </p>
+          <div className="flex gap-2 mt-auto">
+            <button
+              className="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded hover:bg-blue-600 transition-colors"
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent parent onClick event
+                handleCardClick(property);
+              }}
+            >
+              View Details
+            </button>
+            <button
+  className="px-4 py-2 bg-red-500 text-white text-sm font-medium rounded hover:bg-red-600 transition-colors"
+  onClick={(e) => {
+    e.stopPropagation(); // Prevent parent onClick event
+    Remove(property.id); // Call the Remove function with the property ID
+  }}
+>
+  Remove
+</button>
+
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  ) :    filteredProperties.length > 0 ? (
+       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+
+       
+       {filteredProperties.map((property) => (
             <div
               key={property.id}
               className="flex flex-col sm:flex-row p-4 bg-gray-50 border rounded-lg shadow hover:shadow-lg cursor-pointer transition-shadow duration-200"
