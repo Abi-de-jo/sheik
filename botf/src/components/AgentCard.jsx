@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const API_BASE_URL = "https://nothing-client.vercel.app/api";
+const API_BASE_URL = "https://sheik-back.vercel.app/api";
 
 const AgentCard = () => {
   const location = useLocation();
