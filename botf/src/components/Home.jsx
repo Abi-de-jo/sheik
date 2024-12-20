@@ -11,7 +11,7 @@ import { LoadScript } from "@react-google-maps/api";
 function Home() {
   const { data, isLoading, error } = useProperties(); // Fetch properties using the hook
   const [isMapView, setIsMapView] = useState(false); // Toggle between List and Map view
-  const [favorites, setFavorites] = useState([]); // Track favorite properties
+  const [favorites, setFavorites] = useState([]); // Track favorite propertie
   const navigate = useNavigate();
   const [userdetails, setUserDetails] = useState({});
 
