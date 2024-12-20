@@ -225,58 +225,105 @@ function Search() {
           <p className="text-red-500 text-center">Error fetching properties.</p>
         ) : filteredProperties.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProperties.map((property) => (
-              <div
-                key={property.id}
-                onClick={() => handleCardClick(property)} // Attach click handler
-                className="flex flex-col bg-gradient-to-r from-blue-50 to-gray-100 border border-gray-200 rounded-lg shadow-lg cursor-pointer relative "
-              >
-                {/* Image */}
+          {filteredProperties.map((property) => (
+            <div
+              key={property.id}
+              onClick={() => handleCardClick(property)} // Attach click handler
+              className="flex flex-col bg-white shadow-md rounded-lg overflow-hidden relative cursor-pointer"
+            >
+              {/* Image Section */}
+              <div className="relative">
                 <img
                   src={
                     property.images?.[0] ||
                     "https://via.placeholder.com/300x200?text=No+Image"
                   }
                   alt="Property"
-                  className="w-full h-48 object-cover rounded-t-lg"
+                  className="w-full h-40 object-cover"
                 />
-
-                {/* Details */}
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold text-gray-800 truncate">
-                    {property.title || "Untitled Property"}
-                  </h3>
-                  <p className="text-sm text-gray-600 mt-2">
-                    <span className="font-medium">Price:</span> {property.price || "N/A"}
-                  </p>
-                  <p className="text-sm text-gray-600 mt-1">
-                    <span className="font-medium">Type:</span> {property.type || "N/A"}
-                  </p>
-                  <p className="text-sm text-gray-600 mt-1">
-                    <span className="font-medium">City:</span> {property.city || "N/A"}
-                  </p>
-                  <p className="text-sm text-gray-600 mt-1">
-                    <span className="font-medium">Address:</span> {property.address || "N/A"}
-                  </p>
-                </div>
-
-                {/* Favorite Icon */}
-                <div
-                  className="absolute top-4 right-4 cursor-pointer "
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent triggering card click
-                    toggleFavorite(property.id);
-                  }}
-                >
-                  {favorites.includes(property.id) ? (
-                    <AiFillHeart color="red" size={30} className="animate-pulse" />
-                  ) : (
-                    <BiHeart color="gray" size={30} />
+        
+                {/* Dynamic Labels */}
+                <div className="absolute top-2 left-2 space-y-1">
+                  {property.heating?.[0] && (
+                    <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-md shadow">
+                      {property.heating[0]}
+                    </span>
+                  )}
+                  {property.additional?.[0] && (
+                    <span className="bg-yellow-500 text-white text-xs px-2 py-1 rounded-md shadow">
+                      {property.additional[0]}
+                    </span>
                   )}
                 </div>
               </div>
-            ))}
-          </div>
+        
+              {/* Property Details */}
+              <div className="p-3">
+                {/* Profile Icon */}
+                <div className="flex items-center mb-2">
+                  <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5.121 17.804A4 4 0 015 15m5 5a4 4 0 004-4m0 4a4 4 0 004-4m-4 4a4 4 0 01-4-4m0 0a4 4 0 01-4-4m0 0a4 4 0 004-4m0 0a4 4 0 004-4m0 4a4 4 0 004 4"
+                      />
+                    </svg>
+                  </div>
+                  <span className="ml-2 text-xs text-gray-600">{property.owner || "Owner"}</span>
+                </div>
+        
+                <h3 className="text-sm font-semibold text-gray-800 truncate">
+                  {property.title || "Untitled Property"}
+                </h3>
+                <p className="text-xs text-gray-600 mt-1 truncate">
+                  {property.address || "No Address Available"}
+                </p>
+                <p className="text-sm text-gray-800 font-bold mt-1">{property.price || "N/A"} USD</p>
+                <p className="text-xs text-gray-600 mt-1">
+                  {property.type || "N/A"} • {property.city || "N/A"}
+                </p>
+              </div>
+        
+              {/* Write Button */}
+              <div className="px-3 pb-3">
+                <button
+                  className="w-full px-3 py-2 bg-blue-500 text-white text-sm font-medium rounded shadow hover:bg-blue-600 transition"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering the card click
+                     window.open("https://t.me/David_Tibelashvili", "_blank");
+                  }}
+                >
+                  Write
+                </button>
+              </div>
+        
+              {/* Favorite Icon */}
+              <div
+                className="absolute top-4 right-4 cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent triggering card click
+                  toggleFavorite(property.id);
+                }}
+              >
+                {favorites.includes(property.id) ? (
+                  <AiFillHeart color="red" size={20} className="animate-pulse" />
+                ) : (
+                  <BiHeart color="gray" size={20} />
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        
         ) : (
           <p className="text-gray-500 text-center">No properties found matching your search.</p>
         )}
