@@ -170,8 +170,15 @@ function Home() {
                 <div>
                 <button
     className="px-6 py-2 bg-gradient-to-r ml-5 mb-4 from-blue-500 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200"
-    onClick={() => Write(property)} // Pass the property details to the Write function
-  >
+    onClick={() => {
+      // Pass the property details to the Write function
+      Write(property);
+
+      // Redirect to Telegram channel
+      window.open('https://t.me/David_Tibelashvili', '_blank');
+    }}
+  
+                  >
     Write
   </button>
                   </div>
