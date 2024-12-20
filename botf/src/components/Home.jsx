@@ -150,54 +150,102 @@ function Home() {
         {isMapView ? (
                  <Map />  
          ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-            {data?.map((property) => (
-              <div
-                key={property.id}
-                className="flex flex-col bg-gray-50 border rounded-md shadow cursor-pointer relative"
-                >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-5">
+          {data?.map((property) => (
+            <div
+              key={property.id}
+              className="flex flex-col bg-white shadow-md rounded-lg overflow-hidden"
+            >
+              {/* Image Section */}
+              <div className="relative">
                 <img
                   src={property.images?.[0] || "https://via.placeholder.com/300x200?text=No+Image"}
                   alt="Property"
-                  className="w-full h-48 object-cover rounded-t-md"
-                                  onClick={() => navigate(`/card/${property.id}`, { state: { card: property } })}
-
+                  className="w-full h-32 object-cover"
+                  onClick={() => navigate(`/card/${property.id}`, { state: { card: property } })}
                 />
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold">{property.title || "Untitled Property"}</h3>
-                  <p>Price: {property.price || "N/A"}</p>
+        
+                {/* Dynamic Labels */}
+                <div className="absolute top-2 left-2 space-y-1">
+                  {property.heating?.[0] && (
+                    <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-md shadow">
+                      {property.heating[0]}
+                    </span>
+                  )}
+                  {property.additional?.[0] && (
+                    <span className="bg-yellow-500 text-white text-xs px-2 py-1 rounded-md shadow">
+                      {property.additional[0]}
+                    </span>
+                  )}
                 </div>
-                <div>
-                <button
-    className="px-6 py-2 bg-gradient-to-r ml-5 mb-4 from-blue-500 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-200"
-    onClick={() => {
-      // Pass the property details to the Write function
-      Write(property);
-
-      // Redirect to Telegram channel
-      window.open('https://t.me/David_Tibelashvili', '_blank');
-    }}
-  
-                  >
-    Write
-  </button>
+              </div>
+        
+              {/* Content Section */}
+              <div className="p-3">
+                {/* Default Profile Icon */}
+                <div className="flex items-center mb-2">
+                  <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5.121 17.804A4 4 0 015 15m5 5a4 4 0 004-4m0 4a4 4 0 004-4m-4 4a4 4 0 01-4-4m0 0a4 4 0 01-4-4m0 0a4 4 0 004-4m0 0a4 4 0 004-4m0 4a4 4 0 004 4"
+                      />
+                    </svg>
                   </div>
+                  <span className="ml-2 text-xs text-gray-600">{property.owner || "Owner"}</span>
+                </div>
+        
+                {/* Property Details */}
+                <h3 className="text-sm font-semibold text-gray-800">{property.title || "Untitled Property"}</h3>
+                <p className="text-xs text-gray-600 mt-1 truncate">
+                  {property.address || "No Address Available"}
+                </p>
+                <p className="text-sm text-gray-800 font-bold mt-1">{property.price || "N/A"} USD</p>
+                <p className="text-xs text-gray-600 mt-1">
+                  {property.term || "N/A"} rental • {property.area || "N/A"} m²
+                </p>
+              </div>
+        
+              {/* Actions Section */}
+              <div className="flex items-center justify-between px-3 pb-3">
+                {/* Write Button */}
+                <button
+                  className="px-3 py-1 bg-blue-500 text-white text-xs font-medium rounded shadow hover:bg-blue-600 transition"
+                  onClick={() => {
+                    Write(property);
+                    window.open("https://t.me/David_Tibelashvili", "_blank");
+                  }}
+                >
+                  Write
+                </button>
+        
+                {/* Favorites */}
                 <div
-                  className="absolute bottom-4 right-4 cursor-pointer"
+                  className="cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
                     toggleFavorite(property.id);
                   }}
                 >
                   {favorites?.includes(property.id) ? (
-                    <AiFillHeart color="red" size={30} />
+                    <AiFillHeart color="red" size={20} />
                   ) : (
-                    <BiHeart color="gray" size={30} />
+                    <BiHeart color="gray" size={20} />
                   )}
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
+        
         )}
       </div>
     </div>
