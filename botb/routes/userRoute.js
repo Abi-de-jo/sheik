@@ -15,7 +15,7 @@ router.post("/get", getuser);
 router.put("/updateUser", updateUser);
 router.put("/updateAgent", updateAgent);
 router.post("/addInterest/:id", interest);
-router.delete("/removeInterest/:id", removeInterest);
+router.put("/removeInterest/:id", removeInterest);
 router.post("/rentedbyagent/:id", rentedbyagent);
 
 
