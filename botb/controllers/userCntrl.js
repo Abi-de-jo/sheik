@@ -71,7 +71,7 @@ export const likes = asyncHandler(async (req, res) => {
 
   try {
     const alreadyLiked = await prisma.user.findUnique({
-      where: { email: email },
+      where: { teleNumber: email },
       select: { favoriteResidency: true },
     });
 
@@ -84,7 +84,7 @@ export const likes = asyncHandler(async (req, res) => {
     }
 
     await prisma.user.update({
-      where: { email: email },
+      where: { teleNumber: email },
       data: {
         favoriteResidency: { push: id },
       },
@@ -104,7 +104,7 @@ export const dislikes = asyncHandler(async (req, res) => {
 
   try {
     const user = await prisma.user.findUnique({
-      where: { email: email },
+      where: { teleNumber: email },
       select: { favoriteResidency: true },
     });
 
@@ -122,7 +122,7 @@ export const dislikes = asyncHandler(async (req, res) => {
     );
 
     await prisma.user.update({
-      where: { email: email },
+      where: { teleNumber: email },
       data: { favoriteResidency: updatedFavorites },
     });
 
