@@ -19,7 +19,7 @@ import AgentDraftDetails from "./components/AgentDraft";
 import PropertyDetails from "./components/PropertyDetails";
 import DashboardView from "./components/DashboardView";
 import AdminPub from "./components/AdminPub";
-import PropertyMap from "./components/PropertyMap";
+import PropertyMap from "./components/PropertyMap.jsx";
 
 import "./cloudinaryLoader.js"
 import { LoadScript } from "@react-google-maps/api";
