@@ -304,36 +304,53 @@ export const updateResidency = asyncHandler(async (req, res) => {
   console.log(req.body);
 
   try {
-    const residency = await prisma.residency.update({
+
+   const parsedData = {
+      ...data,
+      price: data.price ? parseInt(data.price, 10) : null, // Convert price to int
+      discount: data.discount ? parseInt(data.discount, 10) : null, // Convert discount to int
+      deposit: data.deposit ? parseInt(data.deposit, 10) : null, // Convert deposit to int
+      commission: data.commission ? parseInt(data.commission, 10) : null, // Convert commission to int
+      rooms: data.rooms ? parseInt(data.rooms, 10) : null, // Convert rooms to int
+      floor: data.floor ? parseInt(data.floor, 10) : null, // Convert floor to int
+      totalFloors: data.totalFloors ? parseInt(data.totalFloors, 10) : null, // Convert totalFloors to int
+      area: data.area ? parseFloat(data.area) : null, // Convert area to float
+      parking: data.parking ? parseInt(data.parking, 10) : null, // Convert parking to int
+    };
+    
+   const residency = await prisma.residency.update({
       where: { id: id },
       data: {
-        title: data.title,
-address: data.address,
-        addressURL: data.addressURL,
-        googleaddressurl: data.googleaddressurl,
-        price: data.price,
-        dealType: data.dealType,
-        rooms: data.rooms,
-        floor: data.floor,
-        totalFloors: data.totalFloors,
-        termDuration: data.termDuration,
-        city: data.city,
-        district: data.district,
-        propertyType: data.propertyType,
-        residencyType: data.residencyType,
-        bathrooms: data.bathrooms,
-        description: data.description,
-            discount: data.discount,
-        area: data.area,
-        parking: data.parking,
-
-
-
-
-
-        
-       
-         },
+        title: parsedData.title,
+        address: parsedData.address,
+        addressURL: parsedData.addressURL,
+        googleaddressurl: parsedData.googleaddressurl,
+        price: parsedData.price,
+        dealType: parsedData.dealType,
+        rooms: parsedData.rooms,
+        floor: parsedData.floor,
+        totalFloors: parsedData.totalFloors,
+        termDuration: parsedData.termDuration,
+        city: parsedData.city,
+        district: parsedData.district || [], // Default to empty array
+        propertyType: parsedData.propertyType,
+        residencyType: parsedData.residencyType,
+        bathrooms: parsedData.bathrooms,
+        description: parsedData.description,
+        discount: parsedData.discount,
+        area: parsedData.area,
+        parking: parsedData.parking,
+        currency: parsedData.currency,
+        position: parsedData.position,
+        deposit: parsedData.deposit,
+        commission: parsedData.commission,
+        images: parsedData.images || [], // Default to empty array
+        video: parsedData.video,
+        metro: parsedData.metro || [], // Default to empty array
+        type: parsedData.type,
+        paymentMethod: parsedData.paymentMethod,
+        balcony: parsedData.balcony,
+      },
     });
     res
       .status(200)
