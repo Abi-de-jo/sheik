@@ -451,9 +451,7 @@ console.log(err)
                 <h3 className="text-lg font-semibold mb-2">
                   {property.title || "Untitled"}
                 </h3>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                  {property.description || "No description available."}
-                </p>
+                
                 <button
                   className="mt-auto self-start px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded hover:bg-blue-600 transition-colors"
                   onClick={(e) => {
