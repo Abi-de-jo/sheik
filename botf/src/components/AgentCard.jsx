@@ -13,8 +13,7 @@ const AgentCard = () => {
   const [rentDetails, setRentDetails] = useState({
     username: "",
     telephoneNumber: "",
-    residency: "",
-    codastral: "",
+     codastral: "",
     startDate:"", 
     endDate:""
    }); // Form fields for rent
@@ -174,14 +173,7 @@ const AgentCard = () => {
       className="w-full p-2 border rounded"
       placeholder="Discount"
     />
-    <input
-      type="text"
-      name="dealType"
-      value={editedCard.dealType || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="Deal Type"
-    />
+    
     <input
       type="text"
       name="rooms"
@@ -190,14 +182,7 @@ const AgentCard = () => {
       className="w-full p-2 border rounded"
       placeholder="Rooms"
     />
-    <input
-      type="text"
-      name="size"
-      value={editedCard.size || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="Size"
-    />
+    
     <input
       type="text"
       name="floor"
@@ -282,18 +267,12 @@ const AgentCard = () => {
       <span className="font-semibold">Google Address URL: </span>
       {editedCard.googleaddressurl || "No URL provided"}
     </p>
-    <p className="text-gray-700">
-      <span className="font-semibold">Deal Type: </span>
-      {editedCard.dealType || "Not specified"}
-    </p>
+    
     <p className="text-gray-700">
       <span className="font-semibold">Rooms: </span>
       {editedCard.rooms || "Not specified"}
     </p>
-    <p className="text-gray-700">
-      <span className="font-semibold">Size: </span>
-      {editedCard.size || "Not specified"}
-    </p>
+    
     <p className="text-gray-700">
       <span className="font-semibold">City: </span>
       {editedCard.city || "Not specified"}
@@ -425,14 +404,7 @@ const AgentCard = () => {
               className="w-full p-2 border rounded"
               placeholder="End Period"
             />
-            <input
-              type="text"
-              name="residency"
-              value={rentDetails.residency}
-              onChange={handleRentFormChange}
-              className="w-full p-2 border rounded"
-              placeholder="Residency Name"
-            />
+           
             <input
               type="text"
               name="codastral"
