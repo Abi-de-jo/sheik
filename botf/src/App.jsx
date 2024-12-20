@@ -19,6 +19,7 @@ import AgentDraftDetails from "./components/AgentDraft";
 import PropertyDetails from "./components/PropertyDetails";
 import DashboardView from "./components/DashboardView";
 import AdminPub from "./components/AdminPub";
+import PropertyMap from "./components/PropertyMap";
 
 import "./cloudinaryLoader.js"
 import { LoadScript } from "@react-google-maps/api";
@@ -41,6 +42,7 @@ const App = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/search" element={<Search />} />
             <Route path="/ads" element={<SecondComponent />} />
+            <Route path="/property-details/:id" element={<PropertyMap />} />
 
             {/* Conditional Profile Page */}
             <Route
