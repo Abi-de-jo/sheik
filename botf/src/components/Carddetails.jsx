@@ -157,10 +157,15 @@ const CardDetails = () => {
           <h2 className="text-xl font-bold">{editedCard.title || 'Untitled Property'}</h2>
 
           
-          <p className="text-sm text-gray-600">
-          📍 {editedCard.addressURL ? (
+      📍 {editedCard.addressURL ? (
     <a
-      href={editedCard.addressURL}
+      href={
+        editedCard.addressURL.startsWith("http") // Check if it's a full URL
+          ? editedCard.addressURL
+          : `https://www.google.com/maps?q=${encodeURIComponent(
+              editedCard.addressURL
+            )}` // Construct a Google Maps search URL
+      }
       target="_blank" // Opens in a new tab
       rel="noopener noreferrer" // Security best practice
       className="text-blue-500 hover:underline"
