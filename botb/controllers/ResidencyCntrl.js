@@ -308,7 +308,24 @@ export const updateResidency = asyncHandler(async (req, res) => {
       where: { id: id },
       data: {
         title: data.title,
-
+address: data.address,
+        addressURL: data.addressURL,
+        googleaddressurl: data.googleaddressurl,
+        price: data.price,
+        dealType: data.dealType,
+        rooms: data.rooms,
+        floor: data.floor,
+        totalFloors: data.totalFloors,
+        termDuration: data.termDuration,
+        city: data.city,
+        district: data.district,
+        propertyType: data.propertyType,
+        residencyType: data.residencyType,
+        bathrooms: data.bathrooms,
+        description: data.description,
+            discount: data.discount,
+        area: data.area,
+        parking: data.parking,
 
 
 
