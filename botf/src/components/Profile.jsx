@@ -220,17 +220,17 @@ console.log(err)
         <FaUserCircle className="text-blue-500 w-24 h-24 mx-auto" />
         <p className="mt-4 text-xl font-bold text-gray-700">{firstName}{lastName}</p>
         <p className="text-sm text-gray-500">Welcome back! {role} Here is your dashboard.</p>
-        <button
+       { role ==="agent" && <button
           onClick={toggleUpdateForm}
           className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
         >
           {showUpdateForm ? "Hide Update Form" : "Update"}
-        </button>
+        </button>}
       </div>
 
       {/* Profile Update Section */}
      
-      {showUpdateForm && (
+        {role ==="agent" &&   showUpdateForm  (
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
           <h2 className="text-xl font-bold text-gray-700 mb-4 border-b pb-2">Update Profile</h2>
           <div className="space-y-4">
@@ -248,7 +248,7 @@ console.log(err)
               onChange={(e) => setLastName(e.target.value)}
               className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500"
             />
-            {role === "agent" && (
+            
               <input
                 type="email"
                 placeholder="Email"
@@ -256,7 +256,7 @@ console.log(err)
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500"
               />
-            )}
+            
             <button
               onClick={handleProfileUpdate}
               className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition"
