@@ -33,7 +33,7 @@ const Profile = () => {
       const response = await axios.put(
         `https://sheik-back.vercel.app/api/user/removeInterest/${residencyId}`,
         {
-          data: { teleNumber },
+           teleNumber 
         }
       );
       console.log("Interest removed:", response.data);
