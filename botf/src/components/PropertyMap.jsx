@@ -11,7 +11,7 @@ const PropertyMap = () => {
 
   return (
     <div className="p-4">
-      {/* Back Button */}
+      
       <button
         onClick={() => navigate(-1)} // Navigate back to the previous page
         className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
