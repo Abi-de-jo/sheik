@@ -94,6 +94,17 @@ const AgentCard = () => {
     }
   };
 
+   const handleReupload = async () => {
+    try {
+      await axios.post(`${API_BASE_URL}/residency/drafttores/${editedCard.id}`);
+      alert("Property reuploaded successfully!");
+      navigate(-1);
+    } catch (error) {
+      console.error("Error reuploading property:", error);
+      alert("Failed to reupload property. Please try again.");
+    }
+  };
+
   return (
     <div className="p-6 border border-gray-300 rounded-md shadow-md bg-white space-y-4 mb-5">
       {editedCard.images && editedCard.images.length > 0 ? (
@@ -213,6 +224,26 @@ const AgentCard = () => {
                   onClick={() => setShowRentForm(true)} // Show the rent form
                 >
                   Rent
+                </button>
+              </>
+            )}
+             {editedCard.status === "rented" && (
+              <>
+                <button
+                  className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                  onClick={handleReupload}
+                >
+                  Reupload
+                </button>
+              </>
+            )}
+             {editedCard.status === "archieve" && (
+              <>
+                <button
+                  className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                  onClick={handleReupload}
+                >
+                  Reupload
                 </button>
               </>
             )}
