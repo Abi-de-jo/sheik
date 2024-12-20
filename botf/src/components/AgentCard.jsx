@@ -172,7 +172,7 @@ const AgentCard = () => {
       value={editedCard.discount || ""}
       onChange={handleInputChange}
       className="w-full p-2 border rounded"
-      placeholder="Price"
+      placeholder="Discount"
     />
     <input
       type="text"
