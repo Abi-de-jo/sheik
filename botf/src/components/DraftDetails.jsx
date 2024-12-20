@@ -36,7 +36,7 @@ const DraftDetails = () => {
   const handleSave = async () => {
     try {
       await axios.put(
-        `https://nothing-server.vercel.app/api/residency/update/${editedDraft.id}`,
+        `https://sheik-back.vercel.app/api/residency/update/${editedDraft.id}`,
         editedDraft
       );
       alert("Draft updated successfully!");
@@ -51,7 +51,7 @@ const DraftDetails = () => {
   const handleReject = async () => {
     try {
       await axios.delete(
-        `https://nothing-server.vercel.app/api/residency/delete/${draft.id}`
+        `https://sheik-back.vercel.app/api/residency/delete/${draft.id}`
       );
       alert("Draft rejected successfully!");
       navigate(-1);
