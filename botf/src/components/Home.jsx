@@ -126,8 +126,7 @@ function Home() {
       console.error('Error adding interest:', error.response?.data || error.message);
       throw error;
     }
-  const telegramURL = "https://t.me/David_Tibelashvili";
-    window.open(telegramURL, "_blank");  
+  
 
   };
   if (isLoading) return <p className="text-gray-600 text-center">Loading properties...</p>;
