@@ -108,7 +108,7 @@ const AgentCard = () => {
   };
 
   return (
-    <div className="p-6 border border-gray-300 rounded-md shadow-md bg-white space-y-4 mb-5">
+    <div className="p-6 border border-gray-300 rounded-md shadow-md bg-white space-y-4 mb-11">
       {editedCard.images && editedCard.images.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {editedCard.images.map((image, index) => (
@@ -299,9 +299,16 @@ const AgentCard = () => {
       {editedCard.city || "Not specified"}
     </p>
     <p className="text-yellow-500 font-semibold">
-      <span className="font-semibold">Price: </span>
-      {editedCard.price ? `$${editedCard.price}` : "N/A"}
-    </p>
+    <span className="font-semibold">Price: </span>
+    {editedCard.discount ? (
+      <>
+        <span className="line-through text-gray-500">${editedCard.price}</span>{" "}
+        <span>${editedCard.price - editedCard.discount}</span>
+      </>
+    ) : (
+      editedCard.price ? `$${editedCard.price}` : "N/A"
+    )}
+  </p>
     {editedCard.description && (
       <p className="text-gray-600">
         <span className="font-semibold">Description: </span>
