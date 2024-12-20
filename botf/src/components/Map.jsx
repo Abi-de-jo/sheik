@@ -7,9 +7,10 @@ const Map = () => {
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]); // Store property markers
   const [center, setCenter] = useState({
-    lat: 41.7151, // Latitude for Tbilisi, Georgia
-    lng: 44.8271, // Longitude for Tbilisi, Georgia
+    lat: 41.6751, // Latitude for Tbilisi, Georgia
+    lng: 44.8071, // Longitude for Tbilisi, Georgia
   });
+  const [selectedProperty, setSelectedProperty] = useState(null); // State for selected property details
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -37,9 +38,11 @@ const Map = () => {
             if (response.data.status === "OK") {
               const { lat, lng } = response.data.results[0].geometry.location;
               return {
+                id: property.id, // Add the property ID here
                 lat,
                 lng,
                 addressURL: property.addressURL,
+                property, // Store the full property object for easy access
               };
             } else {
               console.error(`Geocoding failed for ${property.addressURL}:`, response.data.status);
@@ -61,20 +64,58 @@ const Map = () => {
 
     fetchProperties();
   }, []);
+
   const handleMarkerClick = (id) => {
-    console.log(`Marker clicked with ID: ${id}`);
+    // Find the property by ID
+    const clickedProperty = markers.find((marker) => marker.id === id);
+  
+    if (clickedProperty) {
+      setSelectedProperty(clickedProperty.property); // Set the selected property details
+  
+      // Pan to the marker's location
+      map.panTo({ lat: clickedProperty.lat, lng: clickedProperty.lng });
+  
+      // Smooth zoom implementation
+      let currentZoom = map.getZoom(); // Get the current zoom level
+      const targetZoom = 16; // Target zoom level
+      const zoomStep = 0.5; // Step to increase zoom
+      const zoomInterval = 100; // Interval in milliseconds
+  
+      const smoothZoom = () => {
+        if (currentZoom < targetZoom) {
+          currentZoom += zoomStep;
+          map.setZoom(currentZoom);
+          setTimeout(smoothZoom, zoomInterval);
+        }
+      };
+  
+      smoothZoom(); // Start smooth zooming
+    }
   };
+  
+  
 
   const containerStyle = {
     width: "100%",
     height: "100vh",
   };
 
-  const onLoad = useCallback((mapInstance) => {
-    const bounds = new window.google.maps.LatLngBounds(center);
-    mapInstance.fitBounds(bounds);
-    setMap(mapInstance);
-  }, [center]);
+  const onLoad = useCallback(
+    (mapInstance) => {
+      if (markers.length > 0) {
+        const bounds = new window.google.maps.LatLngBounds();
+        markers.forEach((marker) => {
+          bounds.extend(new window.google.maps.LatLng(marker.lat, marker.lng));
+        });
+        mapInstance.fitBounds(bounds); // Automatically adjust the zoom to fit all markers
+      } else {
+        mapInstance.setCenter(center); // Set the default center if no markers are present
+        mapInstance.setZoom(12); // Set a reasonable default zoom level
+      }
+      setMap(mapInstance);
+    },
+    [center, markers]
+  );
 
   const onUnmount = useCallback(() => {
     setMap(null);
@@ -83,23 +124,54 @@ const Map = () => {
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
-    <GoogleMap
-      mapContainerStyle={containerStyle}
-      center={center}
-      zoom={10}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-    >
-      {/* Plot markers on the map */}
-      {markers.map((marker, index) => (
-        <Marker
-          key={index}
-          position={{ lat: marker.lat, lng: marker.lng }}
-          title={marker.addressURL}
-          onClick={() => handleMarkerClick(marker.id)}
-        />
-      ))}
-    </GoogleMap>
+    <div>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={center}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+      >
+        {/* Plot markers on the map */}
+        {markers.map((marker, index) => (
+          <Marker
+            key={index}
+            position={{ lat: marker.lat, lng: marker.lng }}
+            title={marker.addressURL}
+            icon={{
+              url: "https://cdn-icons-png.flaticon.com/128/10307/10307931.png", // Replace with your custom icon URL
+              scaledSize: new window.google.maps.Size(30, 30), // Adjust icon size
+            }}
+            onClick={() => handleMarkerClick(marker.id)} // Use the marker's ID
+          />
+        ))}
+      </GoogleMap>
+
+      {/* Display selected property details */}
+      {selectedProperty && (
+  <div className="absolute top-60 right-24 bg-white p-2 rounded-lg shadow-lg w-[120px] h-auto">
+  <button
+    className="absolute top-1 right-1 w-[20px] h-[20px] bg-red-500 text-white text-xs rounded-full hover:bg-red-600 flex items-center justify-center"
+    onClick={() => setSelectedProperty(null)}
+  >
+    ×
+  </button>
+  <h2 className="text-sm font-bold text-center truncate">
+    {selectedProperty.title || "No Title"}
+  </h2>
+  <p className="text-xs text-gray-700 mt-1 truncate">
+    <span className="font-semibold text-orange-700">Price:</span> ${selectedProperty.price || "N/A"}
+  </p>
+  
+  <img
+    src={selectedProperty.images?.[0] || "https://via.placeholder.com/100"}
+    alt={selectedProperty.title || "Property"}
+    className="w-full h-[50px] object-cover mt-2 rounded"
+  />
+</div>
+
+   
+      )}
+    </div>
   );
 };
 
