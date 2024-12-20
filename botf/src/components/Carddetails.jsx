@@ -157,7 +157,8 @@ const CardDetails = () => {
           <h2 className="text-xl font-bold">{editedCard.title || 'Untitled Property'}</h2>
 
           
-      📍 {editedCard.addressURL ? (
+          <p className="text-sm text-gray-600">
+  📍 {editedCard.addressURL ? (
     <a
       href={
         editedCard.addressURL.startsWith("http") // Check if it's a full URL
