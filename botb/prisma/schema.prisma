@@ -22,7 +22,7 @@ model User {
   teleNumber String @unique // Ensure teleNumber is unique for relations
   email      String?
   residencies Residency[] @relation("UserResidencies")
-  interested  String[]
+interested   String[]
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   favoriteResidency String[]
@@ -74,4 +74,17 @@ model Residency {
   updatedAt      DateTime @updatedAt
 
   @@map("residencies")
+}
+
+model Customer {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  residency String
+  username   String
+  telephoneNumber String
+  codastral   String
+  startDate      String
+  endDate      String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  @@map("customer")
 }
