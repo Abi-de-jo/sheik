@@ -259,7 +259,7 @@ ${selectedDraft.parking === 0 ? "❌ Parking" : ""}
           : ""}  
       
 👤 Contact: [@David_Tibelashvili]
-📞 +995 599 20 67 16 | #{selectedDraft?.email?.split('@')[0] || "user"}
+📞 +995 599 20 67 16 | #${selectedDraft?.email?.split('@')[0] || "user"}
        
 ⭐ [Check all listings](https://t.me/rent_tbilisi_ge/9859) | [Reviews](https://t.me/reviews_rent_tbilisi)
         
