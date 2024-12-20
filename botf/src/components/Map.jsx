@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { getAllProperties } from "../utils/api";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Map = () => {
   const [map, setMap] = useState(null);
@@ -16,6 +17,7 @@ const Map = () => {
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyBgM-qPtgGcDc1VqDzDCDAcjQzuieT7Afo", // Replace with your API key
   });
+  const navigate = useNavigate(); // Use navigate for redirection
 
   // Geocode addresses and prepare markers
   useEffect(() => {
@@ -66,6 +68,7 @@ const Map = () => {
   }, []);
 
   const handleMarkerClick = (id) => {
+   
     // Find the property by ID
     const clickedProperty = markers.find((marker) => marker.id === id);
   
@@ -97,8 +100,16 @@ const Map = () => {
 
   const containerStyle = {
     width: "100%",
-    height: "100vh",
+    height: "100vh", // Full height of the viewport
   };
+
+  const mapOptions = {
+    disableDefaultUI: true, // Disable all default UI controls
+    zoomControl: true, // Enable zoom control
+    fullscreenControl: false, // Disable fullscreen control
+    mapTypeControl: false, // Disable "Map/Satellite" toggle
+  };
+  
 
   const onLoad = useCallback(
     (mapInstance) => {
@@ -125,43 +136,51 @@ const Map = () => {
 
   return (
     <div>
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-      >
-        {/* Plot markers on the map */}
-        {markers.map((marker, index) => (
-          <Marker
-            key={index}
-            position={{ lat: marker.lat, lng: marker.lng }}
-            title={marker.addressURL}
-            icon={{
-              url: "https://cdn-icons-png.flaticon.com/128/10307/10307931.png", // Replace with your custom icon URL
-              scaledSize: new window.google.maps.Size(30, 30), // Adjust icon size
-            }}
-            onClick={() => handleMarkerClick(marker.id)} // Use the marker's ID
-          />
-        ))}
-      </GoogleMap>
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={center}
+      options={mapOptions} // Apply custom options
+      onLoad={onLoad}
+      onUnmount={onUnmount}
+    >
+      {/* Plot markers on the map */}
+      {markers.map((marker, index) => (
+        <Marker
+          key={index}
+          position={{ lat: marker.lat, lng: marker.lng }}
+          title={marker.addressURL}
+          icon={{
+            url: "https://cdn-icons-png.flaticon.com/128/10307/10307931.png", // Replace with your custom icon URL
+            scaledSize: new window.google.maps.Size(30, 30), // Adjust icon size
+          }}
+          onClick={() => handleMarkerClick(marker.id)} // Use the marker's ID
+        />
+      ))}
+    </GoogleMap>
 
-      {/* Display selected property details */}
-      {selectedProperty && (
-  <div className="absolute top-60 right-24 bg-white p-2 rounded-lg shadow-lg w-[120px] h-auto">
-  <button
-    className="absolute top-1 right-1 w-[20px] h-[20px] bg-red-500 text-white text-xs rounded-full hover:bg-red-600 flex items-center justify-center"
-    onClick={() => setSelectedProperty(null)}
-  >
-    ×
-  </button>
-  <h2 className="text-sm font-bold text-center truncate">
-    {selectedProperty.title || "No Title"}
-  </h2>
-  <p className="text-xs text-gray-700 mt-1 truncate">
-    <span className="font-semibold text-orange-700">Price:</span> ${selectedProperty.price || "N/A"}
-  </p>
-  
+    {/* Display selected property details */}
+    {selectedProperty && (
+      <div className="absolute top-60 right-24 bg-white p-2 rounded-lg shadow-lg w-[120px] h-auto">
+        <button
+          className="absolute top-1 right-1 w-[20px] h-[20px] bg-red-500 text-white text-xs rounded-full hover:bg-red-600 flex items-center justify-center"
+          onClick={() => setSelectedProperty(null)}
+        >
+          ×
+        </button>
+        <h2 className="text-sm font-bold text-center truncate">
+          {selectedProperty.title || "No Title"}
+        </h2>
+        <p className="text-xs text-gray-700 mt-1 truncate">
+          <span className="font-semibold text-orange-700">Price:</span> ${selectedProperty.price || "N/A"}
+        </p>
+        <div
+  onClick={() =>
+    navigate(`/property-details/${selectedProperty.id}`, {
+      state: { property: selectedProperty },
+    })
+  }
+  className="cursor-pointer"
+>
   <img
     src={selectedProperty.images?.[0] || "https://via.placeholder.com/100"}
     alt={selectedProperty.title || "Property"}
@@ -169,9 +188,9 @@ const Map = () => {
   />
 </div>
 
-   
-      )}
-    </div>
+      </div>
+    )}
+  </div>
   );
 };
 
