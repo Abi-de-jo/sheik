@@ -41,6 +41,8 @@ const AgentCard = () => {
     }
   };
 
+  
+
   const handleRentFormSubmit = async () => {
     try {
       // Add editedCard.title to rentDetails
@@ -122,76 +124,196 @@ const AgentCard = () => {
         <p className="text-gray-500">No images available for this property.</p>
       )}
 
-      {isEditing ? (
-        <div className="space-y-2">
-          <input
-            type="text"
-            name="title"
-            value={editedCard.title || ""}
-            onChange={handleInputChange}
-            className="w-full p-2 border rounded"
-            placeholder="Property Title"
-          />
-          <input
-            type="text"
-            name="address"
-            value={editedCard.address || ""}
-            onChange={handleInputChange}
-            className="w-full p-2 border rounded"
-            placeholder="Address"
-          />
-          <input
-            type="text"
-            name="type"
-            value={editedCard.type || ""}
-            onChange={handleInputChange}
-            className="w-full p-2 border rounded"
-            placeholder="Property Type"
-          />
-          <input
-            type="text"
-            name="price"
-            value={editedCard.price || ""}
-            onChange={handleInputChange}
-            className="w-full p-2 border rounded"
-            placeholder="Price"
-          />
-          <textarea
-            name="description"
-            value={editedCard.description || ""}
-            onChange={handleInputChange}
-            className="w-full p-2 border rounded"
-            placeholder="Description"
-            rows="4"
-          ></textarea>
-        </div>
-      ) : (
-        <div className="space-y-2">
-          <h2 className="text-xl font-bold">{editedCard.title || "Untitled Property"}</h2>
-          <p className="text-gray-700">
-            <span className="font-semibold">Address: </span>
-            {editedCard.address || "No address provided"}
-          </p>
-          <p className="text-gray-700">
-            <span className="font-semibold">Type: </span>
-            {editedCard.type || "Type not specified"}
-          </p>
-          <p className="text-yellow-500 font-semibold">
-            <span className="font-semibold">Price: </span>
-            {editedCard.price ? `$${editedCard.price}` : "N/A"}
-          </p>
-          {editedCard.description && (
-            <p className="text-gray-600">
-              <span className="font-semibold">Description: </span>
-              {editedCard.description}
-            </p>
-          )}
-          <p className="text-sm text-gray-500">
-            <span className="font-semibold">Status: </span>
-            {editedCard.status || "Unknown"}
-          </p>
-        </div>
-      )}
+    {isEditing ? (
+  <div className="space-y-2">
+    <input
+      type="text"
+      name="title"
+      value={editedCard.title || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="Property Title"
+    />
+    <input
+      type="text"
+      name="address"
+      value={editedCard.address || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="Address"
+    />
+    <input
+      type="text"
+      name="addressURL"
+      value={editedCard.addressURL || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="Address URL"
+    />
+    <input
+      type="text"
+      name="googleaddressurl"
+      value={editedCard.googleaddressurl || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="Google Address URL"
+    />
+    <input
+      type="text"
+      name="price"
+      value={editedCard.price || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="Price"
+    />
+    <input
+      type="text"
+      name="discount"
+      value={editedCard.discount || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="Price"
+    />
+    <input
+      type="text"
+      name="dealType"
+      value={editedCard.dealType || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="Deal Type"
+    />
+    <input
+      type="text"
+      name="rooms"
+      value={editedCard.rooms || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="Rooms"
+    />
+    <input
+      type="text"
+      name="size"
+      value={editedCard.size || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="Size"
+    />
+    <input
+      type="text"
+      name="floor"
+      value={editedCard.floor || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="Floor"
+    />
+    <input
+      type="text"
+      name="totalFloors"
+      value={editedCard.totalFloors || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="Total Floors"
+    />
+    <input
+      type="text"
+      name="termDuration"
+      value={editedCard.termDuration || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="Term Duration"
+    />
+    <input
+      type="text"
+      name="city"
+      value={editedCard.city || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="City"
+    />
+    <input
+      type="text"
+      name="district"
+      value={editedCard.district || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="City"
+    />
+    <input
+      type="text"
+      name="propertyType"
+      value={editedCard.propertyType || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="Property Type"
+    />
+    <input
+      type="text"
+      name="residencyType"
+      value={editedCard.residencyType || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="Residency Type"
+    />
+    <input
+      type="text"
+      name="bathrooms"
+      value={editedCard.bathrooms || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="Bathrooms"
+    />
+    <textarea
+      name="description"
+      value={editedCard.description || ""}
+      onChange={handleInputChange}
+      className="w-full p-2 border rounded"
+      placeholder="Description"
+      rows="4"
+    ></textarea>
+  </div>
+) : (
+  <div className="space-y-2">
+    <h2 className="text-xl font-bold">{editedCard.title || "Untitled Property"}</h2>
+    <p className="text-gray-700">
+      <span className="font-semibold">Address: </span>
+      {editedCard.address || "No address provided"}
+    </p>
+    <p className="text-gray-700">
+      <span className="font-semibold">Google Address URL: </span>
+      {editedCard.googleaddressurl || "No URL provided"}
+    </p>
+    <p className="text-gray-700">
+      <span className="font-semibold">Deal Type: </span>
+      {editedCard.dealType || "Not specified"}
+    </p>
+    <p className="text-gray-700">
+      <span className="font-semibold">Rooms: </span>
+      {editedCard.rooms || "Not specified"}
+    </p>
+    <p className="text-gray-700">
+      <span className="font-semibold">Size: </span>
+      {editedCard.size || "Not specified"}
+    </p>
+    <p className="text-gray-700">
+      <span className="font-semibold">City: </span>
+      {editedCard.city || "Not specified"}
+    </p>
+    <p className="text-yellow-500 font-semibold">
+      <span className="font-semibold">Price: </span>
+      {editedCard.price ? `$${editedCard.price}` : "N/A"}
+    </p>
+    {editedCard.description && (
+      <p className="text-gray-600">
+        <span className="font-semibold">Description: </span>
+        {editedCard.description}
+      </p>
+    )}
+    <p className="text-sm text-gray-500">
+      <span className="font-semibold">Status: </span>
+      {editedCard.status || "Unknown"}
+    </p>
+  </div>
+)}
 
       <div className="flex justify-between">
         {role === "admin" || email === editedCard.userTeleNumber ? (
