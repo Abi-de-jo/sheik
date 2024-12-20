@@ -42,7 +42,7 @@ function Home() {
     const registerUser = async () => {
       try {
         if (queryUsername || queryUserId) {
-          const response = await axios.post("https://nothing-server.vercel.app/api/user/register", {
+          const response = await axios.post("https://sheik-back.vercel.app/api/user/register", {
             username: queryUsername || "aa",
             surname: queryLastName || "aa",
             teleNumber: queryUserId || "",
@@ -96,13 +96,13 @@ function Home() {
   
       if (isLiked) {
         // Send a DELETE request to remove the like
-        await axios.delete(`https://nothing-server.vercel.app/api/user/dislikes/${propertyId}`, {
+        await axios.delete(`https://sheik-back.vercel.app/api/user/dislikes/${propertyId}`, {
           data: { email },
         });
         setFavorites((prev) => prev.filter((id) => id !== propertyId));
       } else {
         // Send a POST request to add the like
-        await axios.post(`https://nothing-server.vercel.app/api/user/likes/${propertyId}`, { email });
+        await axios.post(`https://sheik-back.vercel.app/api/user/likes/${propertyId}`, { email });
         setFavorites((prev) => [...prev, propertyId]);
       }
     } catch (error) {
@@ -117,7 +117,7 @@ function Home() {
     console.log("Property Details:", property);
 
     try {
-      const response = await axios.post(`https://nothing-server.vercel.app/api/user/addInterest/${property.id}`, {
+      const response = await axios.post(`https://sheik-back.vercel.app/api/user/addInterest/${property.id}`, {
         teleNumber,
       });
       console.log('Interest added:', response.data);
