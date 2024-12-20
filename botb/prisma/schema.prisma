@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+ 
+
+model User {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  username   String
+  surname    String
+  teleNumber String @unique // Ensure teleNumber is unique for relations
+  email      String?
+  residencies Residency[] @relation("UserResidencies")
+  interested  String[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  favoriteResidency String[]
+
+  @@map("users")
+}
+
+model Residency {
+ id         String @id @default(auto()) @map("_id") @db.ObjectId
+  images        String[]
+  title         String?
+  video         String?
+  address       String?
+  metro         String[] @default([])
+  district      String[] @default([])
+  propertyType  String?
+  residencyType String?
+  city          String?
+  price         Int?
+  position         String?
+  deposit       Int?
+  discount      Float?
+  commission    Float?
+  rooms         Int?
+  floor         Int?
+  totalFloors   Int?
+  area          Float?
+  type          String?
+  addressURL    String?
+  googleaddressurl String?
+  paymentMethod String?
+  parking       Int?
+  balcony       Boolean?
+  currency      String?
+  bathrooms     Int?
+  amenities     String[] @default([])
+  heating     String[] @default([])
+  termDuration     String?
+  term     String?
+  email    String?
+  selectedAdditional String[] @default([])
+  description   String?
+  status        String?
+
+  userTeleNumber String? // Foreign key for relation
+  user           User?   @relation(fields: [userTeleNumber], references: [teleNumber], name: "UserResidencies")
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("residencies")
+}

@@ -1,0 +1,39 @@
+.navbar {
+  height: 70px; /* Adjust navbar height */
+  padding: 0 20px;
+  background-color: #ffffff;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Add shadow for visibility */
+  z-index: 1000;
+}
+
+.nav-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #777;
+  text-decoration: none;
+}
+
+.nav-item.active {
+  color: #2563eb; /* Highlight active icon */
+}
+
+.nav-item svg {
+  transition: transform 0.2s ease-in-out;
+}
+
+.nav-item:hover svg {
+  transform: scale(1.2); /* Enlarge on hover */
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    height: 60px; /* Larger navbar for small screens */
+    padding: 0 10px;
+   }
+
+  .nav-item svg {
+    width: 36px;
+    height: 36px;
+  }
+}

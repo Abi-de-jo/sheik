@@ -1,0 +1,4 @@
+.Card:last-child {
+    margin-bottom: 50px !important; /* Adjusted to bottom margin to match the description */
+  }
+  
