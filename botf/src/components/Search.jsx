@@ -142,13 +142,13 @@ function Search() {
     try {
       if (isLiked) {
         await axios.delete(
-          `https://add-bot-server.vercel.app/api/user/dislikes/${propertyId}`,
+          `https://sheik-back.vercel.app/api/user/dislikes/${propertyId}`,
           { data: { email } }
         );
         setFavorites((prev) => prev.filter((id) => id !== propertyId)); // Remove from favorites
         console.log(`Property Disliked: ${propertyId}`);
       } else {
-        await axios.post(`https://add-bot-server.vercel.app/api/user/likes/${propertyId}`, {
+        await axios.post(`https://sheik-back.vercel.app/user/likes/${propertyId}`, {
           email,
         });
         setFavorites((prev) => [...prev, propertyId]); // Add to favorites
