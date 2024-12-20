@@ -135,15 +135,55 @@ function Home() {
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       {/* Header Section */}
-      <div className="flex justify-between items-center bg-white p-6 rounded-lg shadow-lg mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Properties</h1>
-        <button
-          onClick={() => setIsMapView(!isMapView)}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+     
+      <div className="flex justify-between items-center mb-4">
+  <h1 className="text-lg font-bold text-gray-800">Properties</h1>
+  <button
+    onClick={() => setIsMapView(!isMapView)}
+    className="flex items-center px-4 py-2 text-sm font-medium border rounded-lg bg-white text-gray-700 border-gray-300 hover:bg-blue-100 transition"
+  >
+    {isMapView ? (
+      <>
+        {/* List View Icon */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
         >
-          {isMapView ? "View List" : "View Map"}
-        </button>
-      </div>
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 6h16M4 10h16M4 14h16M4 18h16"
+          />
+        </svg>
+        List
+      </>
+    ) : (
+      <>
+        {/* Map View Icon */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M5 3l14 9-14 9V3z"
+          />
+        </svg>
+        Map
+      </>
+    )}
+  </button>
+</div>
+
 
       {/* Content Section */}
       <div className="bg-white p-6 rounded-lg shadow-lg">
