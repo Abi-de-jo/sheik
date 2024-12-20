@@ -353,68 +353,66 @@ ${selectedDraft.parking === 0 ? "❌ Parking" : ""}
 
       
       {filteredDrafts.length > 0 ? (
-        <div className="space-y-4">
-          {filteredDrafts.map((draft) => (
-            <div
+     <div className="space-y-4">
+  {filteredDrafts.map((draft) => (
+    <div
+      key={draft.id}
+      className="flex items-center bg-white border border-gray-300 rounded-xl shadow-md p-4"
+    >
+      <div className="w-20 h-20 flex-shrink-0 bg-gray-200 rounded-lg overflow-hidden">
+        <img
+          onClick={() => handleImageClick(draft)} // Navigate with draft details
+          src={draft?.images?.[0] || "https://via.placeholder.com/100x100?text=No+Image"}
+          alt={draft.title || "Draft"}
+          className="w-full h-full object-cover"
+        />
+      </div>
 
-              key={draft.id}
-              className="flex items-center bg-white border border-gray-300 rounded-xl shadow-md p-4"
-            >
-              <div className="w-20 h-20 flex-shrink-0 bg-gray-200 rounded-lg overflow-hidden">
-                <img
-                            onClick={() => handleImageClick(draft)} // Navigate with draft details
+      <div className="flex-1 pl-4">
+        <h2 className="text-lg font-semibold text-gray-800 break-words">
+          {draft.title || "Untitled Draft"}
+        </h2>
+        <p className="text-sm text-gray-600 mt-1">
+          <span className="font-medium">Price:</span> ${draft.price || "N/A"}
+        </p>
+        <p className="text-sm text-gray-600 mt-1">
+          <span className="font-medium">Status:</span> {draft.status}
+        </p>
+        <p className="text-sm text-gray-500 mt-1">
+          <span className="font-medium">Updated At:</span>{" "}
+          {new Date(draft.updatedAt).toLocaleDateString("en-GB")}
+        </p>
+      </div>
 
-                  src={draft?.images?.[0] || "https://via.placeholder.com/100x100?text=No+Image"}
-                  alt={draft.title || "Draft"}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+      <div className="flex flex-col items-center space-y-2">
+        {/* Accept Icon */}
+        {loadingActionId === draft.id ? (
+          <div className="text-blue-500 text-2xl animate-spin">⏳</div>
+        ) : (
+          <FaCheckCircle
+            className={`text-green-500 text-2xl cursor-pointer hover:text-green-600 transition-transform transform hover:scale-110 ${
+              loadingActionId ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={() => !loadingActionId && handleAccept(draft.id)}
+          />
+        )}
 
-              <div className="flex-1 pl-4">
-                <h2 className="text-lg font-semibold text-gray-800 truncate">
-                  {draft.title || "Untitled Draft"}
-                </h2>
-                <p className="text-sm text-gray-600 mt-1">
-                  <span className="font-medium">Price:</span> ${draft.price || "N/A"}
-                </p>
-                <p className="text-sm text-gray-600 mt-1">
-                  <span className="font-medium">Status:</span> {draft.status}
-                </p>
-                <p className="text-sm text-gray-500 mt-1">
-                  <span className="font-medium">Updated At:</span>{" "}
-                  {new Date(draft.updatedAt).toLocaleDateString("en-GB")}
-                </p>
-              </div>
+        {/* Reject Icon */}
+        {loadingActionId === draft.id ? (
+          <div className="text-blue-500 text-2xl animate-spin">⏳</div>
+        ) : (
+          <FaTimesCircle
+            className={`text-red-500 text-2xl cursor-pointer hover:text-red-600 transition-transform transform hover:scale-110 ${
+              loadingActionId ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={() => !loadingActionId && handleReject(draft.id)}
+          />
+        )}
+      </div>
+    </div>
+  ))}
+</div>
 
-              <div className="flex flex-col items-center space-y-2">
-                {/* Accept Icon */}
-                {loadingActionId === draft.id ? (
-                  <div className="text-blue-500 text-2xl animate-spin">⏳</div>
-                ) : (
-                  <FaCheckCircle
-                    className={`text-green-500 text-2xl cursor-pointer hover:text-green-600 transition-transform transform hover:scale-110 ${
-                      loadingActionId ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                    onClick={() => !loadingActionId && handleAccept(draft.id)}
-                  />
-                )}
-
-                {/* Reject Icon */}
-                {loadingActionId === draft.id ? (
-                  <div className="text-blue-500 text-2xl animate-spin">⏳</div>
-                ) : (
-                  <FaTimesCircle
-                    className={`text-red-500 text-2xl cursor-pointer hover:text-red-600 transition-transform transform hover:scale-110 ${
-                      loadingActionId ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                    onClick={() => !loadingActionId && handleReject(draft.id)}
-                  />
-                )}
-              </div>
-
-            </div>
-          ))}
-        </div>
       ) : (
         <p className="text-gray-500 text-center">No drafts available.</p>
       )}
