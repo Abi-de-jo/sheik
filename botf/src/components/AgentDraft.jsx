@@ -39,15 +39,16 @@ function AgentDraftDetails() {
     const fetchDrafts = async () => {
       try {
         const data = await getAllDraftAgent();
-        console.log(data,"Abisheikkkkkkkkkkkkkkkkkkkkkkkkk")
+        console.log(data, "Abisheikkkkkkkkkkkkkkkkkkkkkkkkk");
         setDrafts(data);
+        setFilteredDrafts(data); // Initialize `filteredDrafts` with all drafts
       } catch (err) {
-        setError("Failed to fetch drafts. Please try again later.",err);
+        setError("Failed to fetch drafts. Please try again later.", err);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchDrafts();
   }, []);
 
