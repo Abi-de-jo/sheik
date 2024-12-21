@@ -210,9 +210,8 @@ export const getAllAgentDraftResidencies = asyncHandler(async (req, res) => {
       },
     });
 
-    const otherDrafts = drafts.filter(draft => !draft.email);
-
-    res.json(otherDrafts);
+ 
+    res.json(drafts);
   } catch (err) {
     throw new Error(err.message);
   }
