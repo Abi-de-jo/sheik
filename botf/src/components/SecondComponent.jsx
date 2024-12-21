@@ -38,6 +38,7 @@ const SecondComponent = ({ onSave }) => {
     discount: null,
     area: "",
     type: "",
+    design:"",
     parking: "",
     bathrooms: "",
     amenities: [],
@@ -46,6 +47,8 @@ const SecondComponent = ({ onSave }) => {
     images: [],
     additional: [
       "PetsNotAllowed",
+      "PetsAllowed",
+      "ByAgreement"
       ],
   });
   
@@ -76,7 +79,7 @@ const SecondComponent = ({ onSave }) => {
       console.log(secondFormData.video,"3333333333333333333333333333333333333333")
       if(email){
         const res = await axios.post(
-          "https://nothing-server.vercel.app/api/residency/create",
+          "https://sheik-back.vercel.app/api/residency/create",
           {
             teleNumber,
              secondFormData,
@@ -88,7 +91,7 @@ const SecondComponent = ({ onSave }) => {
       } 
       else{
         const res = await axios.post(
-          "https://nothing-server.vercel.app/api/residency/create",
+          "https://sheik-back.vercel.app/api/residency/create",
           {
             teleNumber,
              secondFormData,
@@ -648,7 +651,7 @@ const SecondComponent = ({ onSave }) => {
             <option value="" disabled>
               Select City
             </option>
-            <option value="Tblisi">Tbilisi</option>
+            <option value="Tbilisi">Tbilisi</option>
             <option value="Batumi">Batumi</option>
             <option value="Kutaisi">Kutaisi</option>
             <option value="Rustavi">Rustavi</option>
@@ -715,6 +718,93 @@ const SecondComponent = ({ onSave }) => {
             <option value="DailyRent">DailyRent</option>
           </select>
         </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Design Options
+          </label>
+          <div className="flex flex-wrap gap-4">
+            {[
+          
+    
+    "White",
+    "Yellow",
+    "Grey",
+    "New Apartment",
+    "Mixed",
+    "Old",
+    "Under Repair",
+    "Retro",
+              
+            ].map((option, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  value={option}
+                  checked={
+                    option === "Others"
+                      ? secondFormData.design.includes("Others")
+                      : secondFormData.design.includes(option)
+                  }
+                  onChange={(e) => {
+                    const isChecked = e.target.checked;
+
+                    if (option === "Others") {
+                      // Handle "Others" checkbox
+                      if (!isChecked) {
+                        setSecondFormData({
+                          ...secondFormData,
+                          design: secondFormData.design.filter(
+                            (m) => m !== "Others"
+                          ),
+                          otherdesign: "",  
+                        });
+                      } else {
+                        setSecondFormData({
+                          ...secondFormData,
+                          design: [...secondFormData.design, "Others"],
+                        });
+                      }
+                    } else {
+                      // Handle standard options
+                      const updateddesign = isChecked
+                        ? [...secondFormData.design, option]
+                        : secondFormData.design.filter((m) => m !== option);
+
+                      setSecondFormData({
+                        ...secondFormData,
+                        design: updateddesign, 
+                      });
+                    }
+                  }}
+                  className="w-4 h-4"
+                />
+                <label className="text-sm">{option}</label>
+              </div>
+            ))}
+          </div>
+
+          {/* Show text input if "Others" is selected */}
+          {secondFormData.design.includes("Others") && (
+            <div className="mt-4">
+              <label className="block text-sm font-medium">
+                Specify Other design
+              </label>
+              <input
+                type="text"
+                value={secondFormData.otherdesign || ""}
+                onChange={(e) =>
+                  setSecondFormData({
+                    ...secondFormData,
+                    otherdesign: e.target.value,
+                  })
+                }
+                className="w-full p-2 border border-gray-300 rounded-md"
+                placeholder="Enter custom design"
+              />
+            </div>
+          )}
+        </div>
         {/* Term */}
         <div>
           <h3 className="text-lg font-semibold">Term</h3>
@@ -738,53 +828,39 @@ const SecondComponent = ({ onSave }) => {
           {secondFormData.term === "Long-term" ? (
             <div className="space-y-5 mt-4">
               {/* Long-term specific fields */}
-              <div className="flex gap-4">
-                <button
-                  className={`flex-1 px-5 rounded-md ${
-                    secondFormData.termDuration === "1 month"
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-200 text-gray-600"
-                  }`}
-                  onClick={() =>
-                    setSecondFormData({
-                      ...secondFormData,
-                      termDuration: "1 month",
-                    })
-                  }
-                >
-                  1 month
-                </button>
-                <button
-                  className={`flex-1 px-4 py-2 rounded-md ${
-                    secondFormData.termDuration === "6 months"
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-200 text-gray-600"
-                  }`}
-                  onClick={() =>
-                    setSecondFormData({
-                      ...secondFormData,
-                      termDuration: "6 months",
-                    })
-                  }
-                >
-                  6 months
-                </button>
-                <button
-                  className={`flex-1 px-4 py-2 rounded-md ${
-                    secondFormData.termDuration === "12 months"
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-200 text-gray-600"
-                  }`}
-                  onClick={() =>
-                    setSecondFormData({
-                      ...secondFormData,
-                      termDuration: "12 months",
-                    })
-                  }
-                >
-                  12 months
-                </button>
-              </div>
+              <div className="flex flex-wrap gap-4">
+  {[
+    "1 day",
+    "1 week",
+    "1 month",
+    "2 months",
+    "3 months",
+    "4 months",
+    "5 months",
+    "6 months",
+    "12 months",
+  ].map((duration) => (
+    <button
+      key={duration}
+      className={`px-4 py-2 rounded-md ${
+        secondFormData.termDuration.includes(duration)
+          ? "bg-blue-600 text-white"
+          : "bg-gray-200 text-gray-600"
+      }`}
+      onClick={() =>
+        setSecondFormData({
+          ...secondFormData,
+          termDuration: secondFormData.termDuration.includes(duration)
+            ? secondFormData.termDuration.filter((item) => item !== duration) // Remove if already selected
+            : [...secondFormData.termDuration, duration], // Add if not selected
+        })
+      }
+    >
+      {duration}
+    </button>
+  ))}
+</div>
+
 
               {/* Commission */}
               {role !=="user"
