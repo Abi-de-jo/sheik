@@ -47,6 +47,65 @@ function Search() {
     }
   };
 
+
+    const Write = async (property) => {
+    const teleNumber = localStorage.getItem("teleNumber")
+    console.log("Property ID:", property.id);
+    console.log("Property Details:", property);
+
+    try {
+
+
+        const propertyDetails = `
+  🏡 *Property Details* 🏡
+
+  📍 *Location:* ${property.address || "N/A"}  
+  💰 *Price:* $${property.price || "N/A"} ${property.currency || "N/A"}
+  
+  🛏️ *Rooms:* ${property.rooms || "N/A"}  
+  🚿 *Bathrooms:* ${property.bathrooms || "N/A"}  
+  📐 *Area:* ${property.area || "N/A"} sq. ft.
+  
+  🏢 *Building Type:* ${property.propertyType || "N/A"}  
+  🏢 *Residency Type:* ${property.residencyType || "N/A"}  
+  🔢 *Floor:* ${property.floor || "N/A"} / ${property.totalFloors || "N/A"}
+
+  📅 *Term Duration:* ${property.termDuration.length > 0 ? property.termDuration.join(', ') : "N/A"}  
+  📜 *Term:* ${property.term || "N/A"}  
+  🚗 *Parking:* ${property.parking || "N/A"}  
+
+  🌆 *City:* ${property.city || "N/A"}  
+  🏙️ *District:* ${property.district.length > 0 ? property.district.join(', ') : "N/A"}  
+  🏠 *Position:* ${property.position || "N/A"}  
+  
+  💳 *Payment Method:* ${property.paymentMethod || "FirstDeposit"}  
+
+  ✨ *Design Features:* ${property.design.length > 0 ? property.design.join(', ') : "N/A"}
+
+   
+  🔗 *More Info:* [Click Here](https://sheik-front.vercel.app/properties/${property.id})
+
+  ✨ *Contact for more details or to schedule a visit!*
+`.trim();
+// Redirect to Telegram with the message
+const encodedMessage = encodeURIComponent(propertyDetails);
+window.open(
+  `https://t.me/David_Tibelashvili?text=${encodedMessage}`,
+  "_blank"
+);
+      
+      const response = await axios.post(`https://sheik-back.vercel.app/api/user/addInterest/${property.id}`, {
+        teleNumber,
+      });
+      console.log('Interest added:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error adding interest:', error.response?.data || error.message);
+      throw error;
+    }
+  
+
+  };
   
   const filteredProperties = data?.filter((property) => {
     const searchValue = searchTerm.toLowerCase();
@@ -300,10 +359,8 @@ function Search() {
               <div className="px-3 pb-3">
                 <button
                   className="w-full px-3 py-2 bg-blue-500 text-white text-sm font-medium rounded shadow hover:bg-blue-600 transition"
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent triggering the card click
-                     window.open("https://t.me/David_Tibelashvili", "_blank");
-                  }}
+              onClick={() => Write(property)}
+
                 >
                   Write
                 </button>
