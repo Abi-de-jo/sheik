@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiFillHeart } from "react-icons/ai";
 import { getAllLikes, getAllProperties } from "../utils/api";
-
+ 
 function Favourite() {
   const [favorites, setFavorites] = useState([]); // Track favorite properties
   const [allProperties, setAllProperties] = useState([]); // Track all properties
