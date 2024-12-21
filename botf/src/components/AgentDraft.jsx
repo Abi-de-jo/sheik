@@ -226,11 +226,11 @@ ${selectedDraft.parking === 0 ? "❌ Parking" : ""}
                 ? "#Allowed"
                 : "#NotAllowed"
             }
-⏰ #${selectedDraft?.termDuration === "1 month"
+⏰ #${selectedDraft?.termDuration[0] === "1 month"
                 ? "1month"
-                : selectedDraft?.termDuration === "6 months"
+                : selectedDraft?.termDuration[0] === "6 months"
                 ? "6month"
-                : selectedDraft?.termDuration === "12 months"
+                : selectedDraft?.termDuration[0] === "12 months"
                 ? "12month"
                 : ""
             }
