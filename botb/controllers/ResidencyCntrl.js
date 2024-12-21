@@ -26,6 +26,7 @@ export const createResidency = asyncHandler(async (req, res) => {
     type,
     parking,
     bathrooms,
+    design,
     paymentMethod,
     googleaddressurl,
     floor,
@@ -68,6 +69,7 @@ export const createResidency = asyncHandler(async (req, res) => {
         paymentMethod,
         currency,
         propertyType,
+        design,
         residencyType,
         heating,
         rooms,
@@ -347,6 +349,7 @@ export const updateResidency = asyncHandler(async (req, res) => {
         images: parsedData.images || [], // Default to empty array
         video: parsedData.video,
         metro: parsedData.metro || [], // Default to empty array
+        design: parsedData.design || [], // Default to empty array
         type: parsedData.type,
         paymentMethod: parsedData.paymentMethod,
         balcony: parsedData.balcony,
