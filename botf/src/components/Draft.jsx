@@ -66,7 +66,7 @@ function Draft() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 p-4 mb-11">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Drafts</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Owners Draft</h1>
 
       {/* Filter Section */}
       <div className="bg-white p-4 rounded-lg shadow-lg mb-6">
