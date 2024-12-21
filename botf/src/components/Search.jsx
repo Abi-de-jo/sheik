@@ -26,19 +26,23 @@ function Search() {
   const filterPriceRange = (propertyPrice, selectedRange) => {
     const price = parseInt(propertyPrice, 10);
     switch (selectedRange) {
-      case "0-300":
-        return price >= 0 && price <= 300;
-      case "300-500":
-        return price > 300 && price <= 500;
-      case "500-700":
-        return price > 500 && price <= 700;
-      case "700-900":
-        return price > 700 && price <= 900;
-      case "900-1200":
-        return price > 900 && price <= 1200;
-      case "1200+":
-        return price > 1200;
-      default:
+      case "0-1200":
+        return price >= 0 && price <= 1200;
+      case "1500-1700":
+        return price > 1200 && price <= 1700;
+      case "1700-1900":
+        return price > 1700 && price <= 1900;
+      case "1900-2100":
+        return price > 1900 && price <= 2100;
+      case "2100-2500":
+        return price > 2100 && price <= 2500;
+      case "2500-3000":
+        return price > 2500 && price <= 3000;
+      case "3000-4000":
+        return price > 3000 && price <= 4000;
+      case "4000-5000":
+        return price > 4000 && price <= 5000;
+          default:
         return true;
     }
   };
@@ -360,12 +364,14 @@ function Search() {
         className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
       >
         <option value="">Select Price Range</option>
-        <option value="0-300">0 - 300 USD</option>
-        <option value="300-500">300 - 500 USD</option>
-        <option value="500-700">500 - 700 USD</option>
-        <option value="700-900">700 - 900 USD</option>
-        <option value="900-1200">900 - 1200 USD</option>
-        <option value="1200+">1200 USD and above</option>
+        <option value="0-1200">0 - 1200</option>
+        <option value="1500-1700">1500-1700</option>
+        <option value="1700-1900">1700-1900</option>
+        <option value="1900-2100">1900-2100</option>
+        <option value="2100-2500">2100-2500</option>
+        <option value="2500-3000">2500-3000</option>
+        <option value="3000-4000">3000-4000</option>
+        <option value="4000-5000">4000-5000</option>
       </select>
     </div>
   </div>
