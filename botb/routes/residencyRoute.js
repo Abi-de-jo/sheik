@@ -2,6 +2,8 @@ import express from "express";
 import {  createResidency, getAllResidency, getResidency, deleteResidency, getAllArchievedResidency, updateResidency, publishResidency, getAllRentedResidency, getAllAgentDraftResidencies, getAllOwnerDraftResidencies, archieveResidency, rentedResidency, getAll, drafttores,  } from "../controllers/ResidencyCntrl.js";
 const router = express.Router();
 
+router.get("/allagentdrafts", getAllAgentDraftResidencies);
+router.get("/allownerdrafts", getAllOwnerDraftResidencies);
 
 router.post("/create", createResidency);
 router.put("/update/:id", updateResidency);
@@ -11,8 +13,6 @@ router.post("/allagentarchievedrafts", getAllArchievedResidency);
 router.post("/allagentrenteddrafts", getAllRentedResidency);
 router.post("/allagentpublishdrafts", getAllAgentDraftResidencies);
 
-router.get("/allagentdrafts", getAllAgentDraftResidencies);
-router.get("/allownerdrafts", getAllOwnerDraftResidencies);
 router.post("/publish/:id", publishResidency);
 router.post("/drafttores/:id", drafttores);
 router.post("/archieve/:id", archieveResidency);
