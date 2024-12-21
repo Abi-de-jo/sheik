@@ -61,7 +61,7 @@ model Residency {
   bathrooms     Int?
   amenities     String[] @default([])
   heating     String[] @default([])
-  termDuration     String?
+  termDuration   String[] @default([])
   term     String?
   email    String?
   selectedAdditional String[] @default([])
