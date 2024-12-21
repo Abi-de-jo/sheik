@@ -184,7 +184,9 @@ export const getAllArchievedResidency = asyncHandler(async (req, res) => {
     throw new Error(err.message);
   }
 });
-export const getAllAgentDraftResidencies = asyncHandler(async (req, res) => {
+ 
+
+ const getFilteredDraftResidencies = asyncHandler(async (req, res, hasEmail) => {
   try {
     const drafts = await prisma.residency.findMany({
       where: { status: "draft" },
@@ -193,28 +195,22 @@ export const getAllAgentDraftResidencies = asyncHandler(async (req, res) => {
       },
     });
 
-    const geomapDrafts = drafts.filter(draft => draft.email);
+    const filteredDrafts = drafts.filter(draft => (hasEmail ? draft.email : !draft.email));
 
-    res.json( geomapDrafts);
+    res.json(filteredDrafts);
   } catch (err) {
-    throw new Error(err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
- export const getAllOwnerDraftResidencies = asyncHandler(async (req, res) => {
-  try {
-    const drafts = await prisma.residency.findMany({
-      where: { status: "draft" },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+// Controller for agent draft residencies
+export const getAllAgentDraftResidencies = asyncHandler(async (req, res) => {
+  return getFilteredDraftResidencies(req, res, true); // Filter by presence of email
+});
 
- 
-    res.json(drafts);
-  } catch (err) {
-    throw new Error(err.message);
-  }
+// Controller for owner draft residencies
+export const getAllOwnerDraftResidencies = asyncHandler(async (req, res) => {
+  return getFilteredDraftResidencies(req, res, false); // Filter by absence of email
 });
 
 export const publishResidency = asyncHandler(async (req, res) => {
