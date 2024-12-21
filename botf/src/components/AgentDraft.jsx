@@ -310,7 +310,7 @@ ${selectedDraft.parking === 0 ? "❌ Parking" : ""}
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 p-4 mb-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Drafts</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Agents Draft</h1>
 
       <div className="bg-white p-4 rounded-lg shadow-lg mb-6">
         <h2 className="text-xl font-semibold text-gray-700 mb-4">Filter Drafts</h2>
