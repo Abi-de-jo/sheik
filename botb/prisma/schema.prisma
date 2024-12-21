@@ -43,6 +43,7 @@ model Residency {
   city          String?
   price         Int?
   position         String?
+  design        String[] @default([])
   deposit       Int?
   discount      Float?
   commission    Float?
