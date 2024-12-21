@@ -292,7 +292,7 @@ console.log(err)
 
       {/* Filter Buttons for Agents */}
       {role === "agent" ? (
-        <div className="flex justify-center space-x-4 mb-4">
+        <div className="flex justify-center flex-wrap space-x-4 mb-4">
           <button
             onClick={() => handleStatusClick("published")}
             className={`px-4 py-2 rounded shadow ${
@@ -303,6 +303,18 @@ console.log(err)
           >
             Published
           </button>
+
+          <button
+            onClick={() => handleStatusClick("draft")}
+            className={`px-4 py-2 rounded shadow ${
+              filterStatus === "draft"
+                ? "bg-yellow-500 text-white"
+                : "bg-gray-200 text-gray-700"
+            } hover:bg-yellow-400 transition`}
+          >
+            Requested
+          </button>
+
           <button
             onClick={() => handleStatusClick("rented")}
             className={`px-4 py-2 rounded shadow ${
@@ -315,7 +327,7 @@ console.log(err)
           </button>
           <button
             onClick={() => handleStatusClick("archieve")}
-            className={`px-4 py-2 rounded shadow ${
+            className={`px-4 py-2 mt-3 rounded shadow ${
               filterStatus === "archieve"
                 ? "bg-red-500 text-white"
                 : "bg-gray-200 text-gray-700"
