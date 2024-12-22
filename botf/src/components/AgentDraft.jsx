@@ -215,7 +215,6 @@ console.log("bbbbbbbbbbbbbbbbb")
 Apartment for #${selectedDraft?.type}✨ #${selectedDraft?.residencyType}
         
 🏠 ${selectedDraft.area} Sq.m | #${selectedDraft?.floor}floor | #${selectedDraft?.bathrooms}Bath
-        
 ${amenitiesFormatted}
 ${selectedDraft?.parking > 0 ? "✅ Parking" : "❌ Parking"}
 
@@ -226,9 +225,8 @@ ${selectedDraft?.parking > 0 ? "✅ Parking" : "❌ Parking"}
     : "#NotAllowed"
 }
 ⏰ ${selectedDraft?.termDuration
-    ?.map((duration) => `#${duration.replace(" ", " ")}`)
-    .join("")
-}
+    ?.map((duration) => `#${duration.replace(" ", "")}`)
+    .join(" ")}
 💳 #${selectedDraft?.paymentMethod}   
 💰 ${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"} | Deposit ${selectedDraft.deposit}${selectedDraft.currency == "USD" ? "$" : "₾"}
   0% Commission
