@@ -162,20 +162,21 @@ const CardDetails = () => {
           {/* Price with Discount */}
           <div className="text-lg font-semibold">
             <span className="text-gray-800">Price: </span>
-            {editedCard.discount ? (
-              <>
-                <span className="text-gray-500 line-through mr-2">{editedCard.price} $</span>
-                <span className="text-yellow-500 font-bold">
-                  {(
-                    editedCard.price - (editedCard.price * editedCard.discount) / 100
-                  ).toFixed(2)}{" "}
-                  $
-                </span>
-                <span className="text-green-500 ml-2 text-sm">({editedCard.discount}% off)</span>
-              </>
-            ) : (
-              <span className="text-yellow-500 font-bold">{editedCard.price || "N/A"} $</span>
-            )}
+            <p className="text-sm text-gray-800 font-bold mt-1">
+  {editedCard.discount ? (
+    <>
+      <span className="line-through text-gray-500">
+        {editedCard.price} {editedCard.currency}
+      </span>{" "}
+      <span>
+        {(editedCard.price - editedCard.discount).toFixed()} {editedCard.currency}
+      </span>
+    </>
+  ) : (
+    `${editedCard.price || "N/A"} ${editedCard.currency}`
+  )}
+</p>
+
           </div>
 
           {/* Address */}
@@ -218,7 +219,7 @@ const CardDetails = () => {
             </p>
           </div>
 
-          {/* Property Details */}
+          {/* editedCard Details */}
           <div className="grid grid-cols-2 gap-4 text-sm border-t pt-4">
             <p>
               <span className="font-medium text-gray-700">Property:</span>{" "}
