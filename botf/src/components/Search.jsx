@@ -433,6 +433,7 @@ window.open(
     </div>
   </div>
 
+  <hr className="mt-5" />
 
 
             {/* Category */}
@@ -455,6 +456,8 @@ window.open(
               </div>
             </div>
 
+            <hr className="mt-5" />
+
             {/* Number of Rooms */}
             <div className="mb-3">
   <label className="block text-sm font-medium text-gray-700 mb-1">Bedrooms</label>
@@ -474,41 +477,48 @@ window.open(
 </div>
 
 
+<hr className="mb-5" />
 
             {/* Heating */}
             <div className="mb-3">
+
   <h3 className="text-sm font-medium text-gray-700 mb-2">Rental Period</h3>
+ 
   <div className="grid grid-cols-2 gap-2">
-    {[
-      "1Day",
-      "1Month",
-      "2Month",
-      "3Month",
-      "4Month",
-      "5Month",
-      "6Month",
-      "12Month",
-    ].map((option) => (
-      <label key={option} className="flex items-center justify-between text-xs">
-        <span className="text-gray-700">
-          {option.replace(/(\d+)([A-Za-z]+)/, "$1 $2")} {/* Adds space */}
-        </span>
-        <input
-          type="checkbox"
-          checked={filters.termDuration?.includes(option)}
-          onChange={() =>
-            setFilters((prev) => ({
-              ...prev,
-              termDuration: prev.termDuration?.includes(option)
-                ? prev.termDuration.filter((item) => item !== option)
-                : [...(prev.termDuration || []), option],
-            }))
-          }
-          className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-        />
-      </label>
-    ))}
-  </div>
+  {[
+    "1Day",
+    "1Month",
+    "2Month",
+    "3Month",
+    "4Month",
+    "5Month",
+    "6Month",
+    "12Month",
+  ].map((option) => (
+    <label key={option} className="flex items-center text-xs gap-2">
+      <input
+        type="checkbox"
+        checked={filters.termDuration?.includes(option)}
+        onChange={() =>
+          setFilters((prev) => ({
+            ...prev,
+            termDuration: prev.termDuration?.includes(option)
+              ? prev.termDuration.filter((item) => item !== option)
+              : [...(prev.termDuration || []), option],
+          }))
+        }
+        className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+      />
+      <span className="text-gray-700">
+        {option.replace(/(\d+)([A-Za-z]+)/, "$1 $2")} {/* Adds space */}
+      </span>
+    </label>
+  ))}
+</div>
+
+<hr className="mt-5" />
+
+
 </div>
 
 
@@ -516,60 +526,70 @@ window.open(
 <div className="mb-4">
   <h3 className="text-sm font-medium text-gray-700 mb-2">Residency Type</h3>
   <div className="grid grid-cols-2 gap-2">
-    {[
-      { value: "New", label: "New Residency" },
-      { value: "Old", label: "Old Residency" },
-      { value: "Mixed", label: "Mixed Residency" },
-      { value: "historical", label: "Historical Residency" },
-    ].map((option) => (
-      <label key={option.value} className="flex items-center justify-between text-sm">
-        <span className="text-gray-700">{option.label}</span>
-        <input
-          type="radio"
-          name="residencyType"
-          value={option.value}
-          checked={filters.residencyType === option.value}
-          onChange={() => handleFilterChange("residencyType", option.value)}
-          className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-        />
-      </label>
-    ))}
-  </div>
+  {[
+    { value: "New", label: "New Residency" },
+    { value: "Old", label: "Old Residency" },
+    { value: "Mixed", label: "Mixed Residency" },
+    { value: "historical", label: "Historical Residency" },
+  ].map((option) => (
+    <label key={option.value} className="flex items-center text-sm gap-2">
+      <input
+        type="radio"
+        name="residencyType"
+        value={option.value}
+        checked={filters.residencyType === option.value}
+        onChange={() => handleFilterChange("residencyType", option.value)}
+        className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+      />
+      <span className="text-gray-700">{option.label}</span>
+    </label>
+  ))}
 </div>
 
-<div className="mb-4">
+
+
+</div>
+
+<hr className="mt-5" />
+
+
+<div className="mb-4 mt-2">
   <h3 className="text-sm font-medium text-gray-700 mb-2">Design Style</h3>
   <div className="grid grid-cols-2 gap-2">
-    {[
-      "White",
-      "Grey",
-      "Yellow",
-      "New Apartment",
-      "Mixed",
-      "Old",
-      "Retro",
-      "Under Repair",
-    ].map((style) => (
-      <label key={style} className="flex items-center justify-between text-sm">
-        <span className="text-gray-700">{style}</span>
-        <input
-          type="checkbox"
-          value={style}
-          checked={filters.designStyle?.includes(style)}
-          onChange={() =>
-            setFilters((prev) => ({
-              ...prev,
-              designStyle: prev.designStyle?.includes(style)
-                ? prev.designStyle.filter((item) => item !== style)
-                : [...(prev.designStyle || []), style],
-            }))
-          }
-          className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-        />
-      </label>
-    ))}
-  </div>
+  {[
+    "White",
+    "Grey",
+    "Yellow",
+    "New Apartment",
+    "Mixed",
+    "Old",
+    "Retro",
+    "Under Repair",
+  ].map((style) => (
+    <label key={style} className="flex items-center text-sm gap-2">
+      <input
+        type="checkbox"
+        value={style}
+        checked={filters.designStyle?.includes(style)}
+        onChange={() =>
+          setFilters((prev) => ({
+            ...prev,
+            designStyle: prev.designStyle?.includes(style)
+              ? prev.designStyle.filter((item) => item !== style)
+              : [...(prev.designStyle || []), style],
+          }))
+        }
+        className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+      />
+      <span className="text-gray-700">{style}</span>
+    </label>
+  ))}
 </div>
+
+</div>
+
+<hr className="mt-5" />
+
 
 <div className="mb-4">
   <h3 className="text-sm font-medium text-gray-700 mb-2">Pets</h3>
@@ -579,66 +599,65 @@ window.open(
       { value: "NotAllowed", label: "Not Allowed" },
       { value: "ByAgreement", label: "By Agreement" },
     ].map((option) => (
-      <label key={option.value} className="flex items-center justify-between text-sm">
-        <span className="text-gray-700">{option.label}</span>
+      <label key={option.value} className="flex items-center text-sm gap-2">
         <input
-          type="checkbox"
+          type="radio"
+          name="pets"
           value={option.value}
-          checked={filters.selectedAdditional?.includes(option.value)}
-          onChange={() =>
-            setFilters((prev) => ({
-              ...prev,
-              selectedAdditional: prev.selectedAdditional?.includes(option.value)
-                ? prev.selectedAdditional.filter((item) => item !== option.value)
-                : [...(prev.selectedAdditional || []), option.value],
-            }))
-          }
+          checked={filters.pets === option.value}
+          onChange={() => handleFilterChange("pets", option.value)}
           className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
         />
+        <span className="text-gray-700">{option.label}</span>
       </label>
     ))}
   </div>
 </div>
 
+<hr className="mt-5" />
+
             {/* Amenities */}
             <div className="mb-4">
   <h3 className="text-sm font-medium text-gray-700 mb-2">Amenities</h3>
   <div className="grid grid-cols-2 gap-2">
-    {[
-      "Bath",
-      "Shower",
-      "Balcony",
-      "Terrace",
-      "Courtyard",
-      "ParkingPlace",
-      "Conditioner",
-      "Dishwasher",
-      "Oven",
-      "Stove",
-      "CentralHeating",
-      "Fireplace",
-    ].map((option) => (
-      <label key={option} className="flex items-center text-sm justify-between">
-        <span className="text-gray-700">
-          {option.replace(/([A-Z])/g, " $1").trim()} {/* Makes labels clean */}
-        </span>
-        <input
-          type="checkbox"
-          checked={filters.amenities.includes(option)}
-          onChange={() =>
-            setFilters((prev) => ({
-              ...prev,
-              amenities: prev.amenities.includes(option)
-                ? prev.amenities.filter((item) => item !== option)
-                : [...prev.amenities, option],
-            }))
-          }
-          className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-        />
-      </label>
-    ))}
-  </div>
+  {[
+    "Bath",
+    "Shower",
+    "Balcony",
+     "Courtyard",
+    "ParkingPlace",
+    "Conditioner",
+    "Dishwasher",
+    "Oven",
+    "Stove",
+    "CentralHeating",
+    "Fireplace",
+  ].map((option) => (
+    <label key={option} className="flex items-center text-sm gap-2">
+      <input
+        type="checkbox"
+        checked={filters.amenities.includes(option)}
+        onChange={() =>
+          setFilters((prev) => ({
+            ...prev,
+            amenities: prev.amenities.includes(option)
+              ? prev.amenities.filter((item) => item !== option)
+              : [...prev.amenities, option],
+          }))
+        }
+        className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+      />
+      <span className="text-gray-700">
+        {option.replace(/([A-Z])/g, " $1").trim()} {/* Makes labels clean */}
+      </span>
+    </label>
+  ))}
 </div>
+
+</div>
+<hr className="mt-5" />
+
+
 
 
             {/* Buttons */}
