@@ -196,12 +196,11 @@ console.log("bbbbbbbbbbbbbbbbb")
         "TV",
         "WiFi",
         "Elevator",
-        "WashingMachine",
         "Oven",
-        "ParkingPlace",
         "Dishwasher",
         "Microwave",
         "Balcony",
+        "WashingMachine"
       ];
       
       const formatAmenitiesInTwoColumns = (selectedAmenities) => {
