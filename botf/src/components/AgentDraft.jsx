@@ -77,7 +77,7 @@ console.log("bbbbbbbbbbbbbbbbb")
 
       // Google Sheets Integration
       const googleSheetUrl =
-        "https://script.google.com/macros/s/AKfycbx5n3QIcwrRlGxEhJgLC_uf4z82S7sI8vHgivKri6FHYG24aySoNXASWjNLQVaga7Zf/exec";
+        "https://script.google.com/macros/s/AKfycbwCx5dbd8snOncpbpYJMlNIMa8tzG8WsFq5vKsboeJfWfjVD7c6WaNz4SBOLHy7MHWd/exec";
 
       const formData = new FormData();
       Object.entries({
