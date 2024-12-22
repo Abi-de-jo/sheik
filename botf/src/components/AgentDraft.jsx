@@ -108,6 +108,9 @@ console.log("bbbbbbbbbbbbbbbbb")
       // Telegram Integration
       const TELEGRAM_BOT_TOKEN = "7712916176:AAF15UqOplv1hTdJVxILWoUOEefEKjGJOso";
       const TELEGRAM_CHAT_ID = "-4545005015";
+      const SALE_CHAT_ID = "-4664195143";  
+
+  
 
       const uploadMediaToTelegram = async (media, chatId, botToken, message) => {
         try {
@@ -289,8 +292,10 @@ ${selectedDraft?.parking > 0 ? "✅ Parking" : "❌ Parking"}
 
 
 
-      await uploadMediaToTelegram(media, TELEGRAM_CHAT_ID, TELEGRAM_BOT_TOKEN, message);
+        const chatId = selectedDraft.type === "rent" ? TELEGRAM_CHAT_ID : SALE_CHAT_ID;
 
+        await uploadMediaToTelegram(media, chatId, TELEGRAM_BOT_TOKEN, message);
+        
       alert("Details published to Telegram successfully!");
 
       window.location.reload();
