@@ -205,7 +205,14 @@ console.log("bbbbbbbbbbbbbbbbb")
       ];
       
       const formatAmenitiesInTwoColumns = (selectedAmenities) => {
-        const formattedAmenities = allAmenities.map((amenity) =>
+        // Sort amenities: selected first (✅), then non-selected (❌)
+        const sortedAmenities = allAmenities.sort((a, b) => {
+          const aSelected = selectedAmenities.includes(a);
+          const bSelected = selectedAmenities.includes(b);
+          return bSelected - aSelected; // Put selected amenities first
+        });
+      
+        const formattedAmenities = sortedAmenities.map((amenity) =>
           selectedAmenities.includes(amenity)
             ? `✅ #${amenity.replace(/\s+/g, "")}`
             : `❌ ${amenity.replace(/\s+/g, "")}`
@@ -224,6 +231,7 @@ console.log("bbbbbbbbbbbbbbbbb")
       const amenitiesFormatted = formatAmenitiesInTwoColumns(
         selectedDraft.amenities || []
       );
+      
 
       const message = `
       #${selectedDraft?.city} #${selectedDraft?.district} 🏢#${selectedDraft?.metro}
