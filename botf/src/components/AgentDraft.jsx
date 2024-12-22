@@ -258,10 +258,15 @@ ${selectedDraft?.parking > 0 ? "✅ Parking" : "❌ Parking"}
     ?.map((duration) => `#${duration.replace(" ", "")}`)
     .join(" ")}
 💳 #${selectedDraft?.paymentMethod}   
-💰 ${selectedDraft.discount
-    ? `~${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"}~ ${(selectedDraft.price - selectedDraft.discount).toFixed(2)}${selectedDraft.currency == "USD" ? "$" : "₾"}`
+💰 ${
+  selectedDraft.discount
+    ? `<span style="text-decoration: line-through; color: black;">${selectedDraft.price}${
+        selectedDraft.currency == "USD" ? "$" : "₾"
+      }</span> ${(selectedDraft.price - selectedDraft.discount).toFixed()}${
+        selectedDraft.currency == "USD" ? "$" : "₾"
+      }`
     : `${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"}`
-} | Deposit ${selectedDraft.deposit}${selectedDraft.currency == "USD" ? "$" : "₾"}  
+} + Deposit ${selectedDraft.deposit}${selectedDraft.currency == "USD" ? "$" : "₾"}
 0% Commission
   ${selectedDraft.price >= 0 && selectedDraft.price <= 300
           ? "#Price0to300"
