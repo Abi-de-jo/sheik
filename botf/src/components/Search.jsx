@@ -14,6 +14,7 @@ function Search() {
     price: "",
     city: "",
     category: "",
+    district: [],
     amenities: [],
     rooms: "",
     heating: [], // Term duration as replacement for heating
@@ -26,10 +27,20 @@ function Search() {
   const filterPriceRange = (propertyPrice, selectedRange) => {
     const price = parseInt(propertyPrice, 10);
     switch (selectedRange) {
-      case "0-1200":
-        return price >= 0 && price <= 1200;
+      case "0-300":
+        return price >= 0 && price <= 300;
+      case "300-500":
+        return price > 300 && price <= 500;
+      case "500-700":
+        return price > 500 && price <= 700;
+      case "700-900":
+        return price > 700 && price <= 900;
+      case "900-1200":
+        return price > 900 && price <= 1200; 
+      case "1200-1500":
+        return price >= 1200&& price <= 1500;
       case "1500-1700":
-        return price > 1200 && price <= 1700;
+        return price > 1500 && price <= 1700;
       case "1700-1900":
         return price > 1700 && price <= 1900;
       case "1900-2100":
@@ -42,9 +53,10 @@ function Search() {
         return price > 3000 && price <= 4000;
       case "4000-5000":
         return price > 4000 && price <= 5000;
-          default:
+      default:
         return true;
     }
+    
   };
 
 
@@ -116,6 +128,13 @@ window.open(
   
     // City Filter
     const matchesCity = !filters.city || property.city === filters.city;
+    const matchesDistrict =
+    !Array.isArray(filters.district) || // Ensure district is an array
+    filters.district.length === 0 || // If no district is selected, include all
+    filters.district.some((selectedDistrict) =>
+      property.district.includes(selectedDistrict)
+    );
+  
   
     // Category Filter
     const matchesCategory = !filters.category || property.type === filters.category;
@@ -148,6 +167,7 @@ window.open(
       matchesSearch &&
       matchesPrice &&
       matchesCity &&
+      matchesDistrict &&
       matchesCategory &&
       matchesRooms &&
       matchesAmenities &&
@@ -167,6 +187,8 @@ window.open(
       price: "",
       city: "",
       category: "",
+          district: [],
+
       amenities: [],
       rooms: "",
       heating: [],
@@ -362,7 +384,7 @@ window.open(
               onClick={() => Write(property)}
 
                 >
-                  Contact
+                  Write
                 </button>
               </div>
         
@@ -406,10 +428,82 @@ window.open(
                 className="w-full p-2 border rounded mt-1"
               >
                 <option value="">Select City</option>
-                <option value="Tblisi">Tbilisi</option>
+                <option value="Tbilisi">Tbilisi</option>
                 <option value="Batumi">Batumi</option>
               </select>
             </div>
+
+            <div className="mb-3">
+  <label className="block text-sm font-medium text-gray-700">District</label>
+  <select
+  value={filters.district[0] || ""} // Take the first selected district for single-select
+  onChange={(e) => handleFilterChange("district", [e.target.value])} // Wrap value in an array
+  className="w-full p-2 border rounded mt-1"
+>
+  <option value="">Select District</option>
+  {[
+    "Abanotubani",
+    "Afrika",
+    "Avchala",
+    "Avlabari",
+    "Bagebi",
+    "Chugureti",
+    "DidiDighomi",
+    "Didgori",
+    "Didube",
+    "Didube-Chughureti",
+    "Dighmi 1-9",
+    "Dighmis Chala",
+    "Dighmis Massive",
+    "Digomi 1-9",
+    "Digomi Massive",
+    "Elia",
+    "Gldani",
+    "Gldani-Nadzaladevi",
+    "Iveri Settlement",
+    "Isani",
+    "Krtsanisi",
+    "Koshigora",
+    "KusTba",
+    "Lisi",
+    "Lisi Adjacent Area",
+    "Lisi Lake",
+    "Marjanishvili",
+    "Mtatsminda",
+    "Mukhatgverdi",
+    "Mukhattskaro",
+    "Nutsubidze Plateau",
+    "Nutsubidze Plato",
+    "Okrokana",
+    "Old Tbilisi",
+    "Ortachala",
+    "Saburtalo",
+    "Samgori",
+    "Sof. Digomi",
+    "Sololaki",
+    "State University",
+    "Svaneti Quarter",
+    "Tsavkisi Valley",
+    "Temqa",
+    "Tkhinvali",
+    "Tskhneti",
+    "Vake",
+    "Vake-Saburtalo",
+    "Vasizubani",
+    "Varketili",
+    "Vashlijvari",
+    "Vera",
+    "Vezisi",
+  ].map((district) => (
+    <option key={district} value={district}>
+      {district}
+    </option>
+  ))}
+</select>
+
+
+</div>
+
 
             {/* Price Range */}
             <div className="mb-1">
@@ -421,14 +515,19 @@ window.open(
         className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
       >
         <option value="">Select Price Range</option>
-        <option value="0-1200">0 - 1200</option>
-        <option value="1500-1700">1500-1700</option>
-        <option value="1700-1900">1700-1900</option>
-        <option value="1900-2100">1900-2100</option>
-        <option value="2100-2500">2100-2500</option>
-        <option value="2500-3000">2500-3000</option>
-        <option value="3000-4000">3000-4000</option>
-        <option value="4000-5000">4000-5000</option>
+  <option value="0-300">0 - 300 USD</option>
+  <option value="300-500">300 - 500 USD</option>
+  <option value="500-700">500 - 700 USD</option>
+  <option value="700-900">700 - 900 USD</option>
+  <option value="900-1200">900 - 1200 USD</option>
+   <option value="1200-1500">1200 - 1500USD</option>
+  <option value="1500-1700">1500 - 1700 USD</option>
+  <option value="1700-1900">1700 - 1900 USD</option>
+  <option value="1900-2100">1900 - 2100 USD</option>
+  <option value="2100-2500">2100 - 2500 USD</option>
+  <option value="2500-3000">2500 - 3000 USD</option>
+  <option value="3000-4000">3000 - 4000 USD</option>
+  <option value="4000-5000">4000 - 5000 USD</option>
       </select>
     </div>
   </div>
