@@ -292,7 +292,7 @@ ${selectedDraft?.parking > 0 ? "✅ Parking" : "❌ Parking"}
 
 
 
-        const chatId = selectedDraft.type === "rent" ? TELEGRAM_CHAT_ID : SALE_CHAT_ID;
+        const chatId = selectedDraft.type === "Rent" ? TELEGRAM_CHAT_ID : SALE_CHAT_ID;
 
         await uploadMediaToTelegram(media, chatId, TELEGRAM_BOT_TOKEN, message);
         
