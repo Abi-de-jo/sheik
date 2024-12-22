@@ -312,14 +312,23 @@ window.open(
                   {property.address || "No Address Available"}
                 </p>
                 <p className="text-sm text-gray-800 font-bold mt-1">
+  
+                <p className="text-sm text-gray-800 font-bold mt-1">
   {property.discount ? (
     <>
-      <span className="line-through text-gray-500">{property.price} {property.currency}</span>{" "}
-      <span>{property.discount} {property.currency}</span>
+      <span className="line-through text-gray-500">
+        {property.price} {property.currency}
+      </span>{" "}
+      <span>
+        {(property.price - property.discount).toFixed()} {property.currency}
+      </span>
     </>
   ) : (
     `${property.price || "N/A"} ${property.currency}`
   )}
+</p>
+
+
 </p>
                 <p className="text-xs text-gray-600 mt-1">
                 {property.type || "N/A"} • {property.bathrooms || "N/A"} Bath • {property.area || "N/A"} Sq.mt
