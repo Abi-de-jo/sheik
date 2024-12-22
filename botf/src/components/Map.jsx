@@ -160,44 +160,46 @@ const Map = () => {
 
     {/* Display selected property details */}
     {selectedProperty && (
-     <div className="absolute top-60 right-24 bg-white p-3 rounded-lg shadow-lg w-[160px] h-auto">
-     <button
-       className="absolute top-1 right-1 w-[24px] h-[24px] bg-red-500 text-white text-xs rounded-full hover:bg-red-600 flex items-center justify-center"
-       onClick={() => setSelectedProperty(null)}
-     >
-       ×
-     </button>
-     <h2 className="text-sm font-bold text-center truncate">
-       {selectedProperty.title || "No Title"}
-     </h2>
-     <p className="text-xs text-gray-700 mt-2 truncate">
-       <span className="font-semibold text-orange-700">Price:</span> ${selectedProperty.price || "N/A"}
-     </p>
-     <p className="text-xs text-gray-700 mt-1 truncate">
-       <span className="font-semibold text-orange-700">Area:</span> {selectedProperty.area || "N/A"} Sq.mt
-     </p>
-     <p className="text-xs text-gray-700 mt-1 truncate">
-       <span className="font-semibold text-orange-700">Bed:</span> {selectedProperty.rooms  || "N/A"}
-        <span className="font-semibold text-orange-700">  Type:</span> {selectedProperty.propertyType || "N/A"}
+    
 
-     </p>
-     
-     <div
-       onClick={() =>
-         navigate(`/property-details/${selectedProperty.id}`, {
-           state: { property: selectedProperty },
-         })
-       }
-       className="cursor-pointer"
-     >
-       <img
-         src={selectedProperty.images?.[0] || "https://via.placeholder.com/160"}
-         alt={selectedProperty.title || "Property"}
-         className="w-full h-[80px] object-cover mt-3 rounded"
-       />
-     </div>
-   </div>
-   
+
+    <div className="absolute top-60 right-24 bg-white p-3 rounded-lg shadow-lg w-[160px] h-auto">
+    {/* Image Section */}
+    <div
+      onClick={() =>
+        navigate(`/property-details/${selectedProperty.id}`, {
+          state: { property: selectedProperty },
+        })
+      }
+      className="cursor-pointer"
+    >
+      <img
+        src={selectedProperty.images?.[0] || "https://via.placeholder.com/160"}
+        alt={selectedProperty.title || "Property"}
+        className="w-full h-[80px] object-cover rounded"
+      />
+    </div>
+  
+    {/* Content Section */}
+    <h2 className="text-sm font-bold text-center truncate mt-3">
+      {selectedProperty.title || "No Title"}
+    </h2>
+    <p className="text-xs text-black  py-1 rounded-full inline-block font-bold truncate">
+  {selectedProperty.rooms || "N/A"} bed | {selectedProperty.area || "N/A"} sq.m | ${selectedProperty.price || "N/A"}
+</p>
+
+  
+    {/* Close Button */}
+    <button
+      className="absolute top-1 right-1 w-[24px] h-[24px] bg-red-500 text-white text-xs rounded-full hover:bg-red-600 flex items-center justify-center"
+      onClick={() => setSelectedProperty(null)}
+    >
+      ×
+    </button>
+  </div>
+  
+
+
     )}
   </div>
   );
