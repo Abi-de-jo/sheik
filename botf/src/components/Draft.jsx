@@ -121,6 +121,12 @@ function Draft() {
                   <span className="font-medium">Price:</span> ${draft.price || "N/A"}
                 </p>
                 <p className="text-sm text-gray-600 mt-1">
+                  <span className="font-medium">Name:</span> {draft.name || "N/A"}
+                </p>
+                <p className="text-sm text-gray-600 mt-1">
+                  <span className="font-medium">Phone no:</span> {draft.phone || "N/A"}
+                </p>
+                <p className="text-sm text-gray-600 mt-1">
                   <span className="font-medium">Status:</span> {draft.status}
                 </p>
                 <p className="text-sm text-gray-500 mt-1">
