@@ -217,23 +217,20 @@ Apartment for #${selectedDraft?.type}✨ #${selectedDraft?.residencyType}
 🏠 ${selectedDraft.area} Sq.m | #${selectedDraft?.floor}floor | #${selectedDraft?.bathrooms}Bath
         
 ${amenitiesFormatted}
-${selectedDraft?.parking >= 1 ? "✅ Parking" : ""} 
-      
-${selectedDraft.parking === 0 ? "❌ Parking" : ""}
-        
-🐕 Pets: ${
-      selectedDraft.additional === "PetsRestriction"
-                ? "#Allowed"
-                : "#NotAllowed"
-            }
-⏰ #${selectedDraft?.termDuration[0] === "1 month"
-                ? "1month"
-                : selectedDraft?.termDuration[0] === "6 months"
-                ? "6month"
-                : selectedDraft?.termDuration[0] === "12 months"
-                ? "12month"
-                : ""
-            }
+${selectedDraft?.parking > 0 ? "✅ Parking" : "❌ Parking"}
+
+🐕 Pets: ${selectedDraft.additional === "PetsAllowed"
+    ? "#Allowed"
+    : selectedDraft.additional === "ByAgreement"
+    ? "#ByAgreement"
+    : "#NotAllowed"
+}
+
+⏰ ${selectedDraft?.termDuration
+    ?.map((duration) => `#${duration.replace(" ", "")}`)
+    .join("")
+}
+
 💳 #${selectedDraft?.paymentMethod}   
 💰 ${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"} | Deposit ${selectedDraft.deposit}${selectedDraft.currency == "USD" ? "$" : "₾"}
   0% Commission
