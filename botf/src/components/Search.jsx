@@ -362,7 +362,7 @@ window.open(
               onClick={() => Write(property)}
 
                 >
-                  Write
+                  Contact
                 </button>
               </div>
         
