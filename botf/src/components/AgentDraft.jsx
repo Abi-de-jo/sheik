@@ -225,12 +225,10 @@ ${selectedDraft?.parking > 0 ? "✅ Parking" : "❌ Parking"}
     ? "#ByAgreement"
     : "#NotAllowed"
 }
-
 ⏰ ${selectedDraft?.termDuration
-    ?.map((duration) => `#${duration.replace(" ", "")}`)
+    ?.map((duration) => `#${duration.replace(" ", " ")}`)
     .join("")
 }
-
 💳 #${selectedDraft?.paymentMethod}   
 💰 ${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"} | Deposit ${selectedDraft.deposit}${selectedDraft.currency == "USD" ? "$" : "₾"}
   0% Commission
