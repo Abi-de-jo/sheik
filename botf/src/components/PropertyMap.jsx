@@ -205,7 +205,7 @@ window.open(
               className="px-3 py-2 bg-blue-500 text-white text-sm font-medium rounded shadow hover:bg-blue-600 transition"
               onClick={() => Write(property)}
             >
-              Write
+              Contact
             </button>
           </div>
         </div>
@@ -215,3 +215,4 @@ window.open(
 };
 
 export default PropertyMap;
+
