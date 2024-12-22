@@ -247,9 +247,10 @@ Apartment for #${selectedDraft?.type}✨ #${selectedDraft?.residencyType}
 ${amenitiesFormatted}
 ${selectedDraft?.parking > 0 ? "✅ Parking" : "❌ Parking"}
 
-🐕 Pets: ${selectedDraft.selectedAdditional === "PetsAllowed"
+🐕 Pets: ${
+  selectedDraft.selectedAdditional?.includes("PetsAllowed")
     ? "#Allowed"
-    : selectedDraft.selectedAdditional === "ByAgreement"
+    : selectedDraft.selectedAdditional?.includes("ByAgreement")
     ? "#ByAgreement"
     : "#NotAllowed"
 }
@@ -257,8 +258,11 @@ ${selectedDraft?.parking > 0 ? "✅ Parking" : "❌ Parking"}
     ?.map((duration) => `#${duration.replace(" ", "")}`)
     .join(" ")}
 💳 #${selectedDraft?.paymentMethod}   
-💰 ${selectedDraft.discount ? `<span class="line-through text-gray-500">${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"}</span> ${(selectedDraft.price - selectedDraft.discount).toFixed()}${ selectedDraft.currency == "USD" ? "$" : "₾"}`: `${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"}`} + Deposit ${selectedDraft.deposit}${selectedDraft.currency == "USD" ? "$" : "₾"}
-  0% Commission
+💰 ${selectedDraft.discount
+    ? `~${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"}~ ${(selectedDraft.price - selectedDraft.discount).toFixed(2)}${selectedDraft.currency == "USD" ? "$" : "₾"}`
+    : `${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"}`
+} | Deposit ${selectedDraft.deposit}${selectedDraft.currency == "USD" ? "$" : "₾"}  
+0% Commission
   ${selectedDraft.price >= 0 && selectedDraft.price <= 300
           ? "#Price0to300"
           : selectedDraft.price > 300 && selectedDraft.price <= 500
