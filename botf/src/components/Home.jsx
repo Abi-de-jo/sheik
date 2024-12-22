@@ -311,7 +311,16 @@ window.open(
                 <p className="text-xs text-gray-600 mt-1 truncate">
                   {property.address || "No Address Available"}
                 </p>
-                <p className="text-sm text-gray-800 font-bold mt-1">{property.price || "N/A"} {property.currency}</p>
+                <p className="text-sm text-gray-800 font-bold mt-1">
+  {property.discount ? (
+    <>
+      <span className="line-through text-gray-500">{property.price} {property.currency}</span>{" "}
+      <span>{property.discount} {property.currency}</span>
+    </>
+  ) : (
+    `${property.price || "N/A"} ${property.currency}`
+  )}
+</p>
                 <p className="text-xs text-gray-600 mt-1">
                 {property.type || "N/A"} • {property.bathrooms || "N/A"} Bath • {property.area || "N/A"} Sq.mt
                 </p>
@@ -333,7 +342,7 @@ window.open(
 
   {/* View Button */}
   <button
-    className="px-4 py-1 bg-blue-500 mr-28 text-white text-xs font-medium rounded shadow hover:bg-blue-600 transition"
+    className="px-4 py-1 bg-blue-500 mr-32 text-white text-xs font-medium rounded shadow hover:bg-blue-600 transition"
     onClick={() => navigate(`/card/${property.id}`, { state: { card: property } })}
   >
     View
