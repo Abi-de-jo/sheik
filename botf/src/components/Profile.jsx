@@ -156,7 +156,7 @@ const Profile = () => {
     if (email) {
       try{
  
-        await axios.put("https://nothing-server.vercel.app/api/user/updateuser",{
+        await axios.put("https://sheik-back.vercel.app/api/user/updateuser",{
            email,
            userId
            
