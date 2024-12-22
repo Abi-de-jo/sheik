@@ -77,7 +77,7 @@ console.log("bbbbbbbbbbbbbbbbb")
 
       // Google Sheets Integration
       const googleSheetUrl =
-        "https://script.google.com/macros/s/AKfycbyhiG-_vCAKwGfxdMW4xWmeYgHvVOq6HOvQi3WWh3tLhDnIurDxTKWJCvcmkWYdCMrD/exec";
+        "https://script.google.com/macros/s/AKfycbzCeqJunrPzhTNtPcIGmvZtM1rkSwQQcmEZiH4Olg2iFhY3hrFBtuvG56Lz2HlOr2M/exec";
 
       const formData = new FormData();
       Object.entries({
@@ -243,12 +243,13 @@ console.log("bbbbbbbbbbbbbbbbb")
 Apartment for #${selectedDraft?.type}✨ #${selectedDraft?.residencyType}
         
 🏠 ${selectedDraft.area} Sq.m | #${selectedDraft?.floor}floor | #${selectedDraft?.bathrooms}Bath
+
 ${amenitiesFormatted}
 ${selectedDraft?.parking > 0 ? "✅ Parking" : "❌ Parking"}
 
-🐕 Pets: ${selectedDraft.additional === "PetsAllowed"
+🐕 Pets: ${selectedDraft.selectedAdditional === "PetsAllowed"
     ? "#Allowed"
-    : selectedDraft.additional === "ByAgreement"
+    : selectedDraft.selectedAdditional === "ByAgreement"
     ? "#ByAgreement"
     : "#NotAllowed"
 }
@@ -256,7 +257,7 @@ ${selectedDraft?.parking > 0 ? "✅ Parking" : "❌ Parking"}
     ?.map((duration) => `#${duration.replace(" ", "")}`)
     .join(" ")}
 💳 #${selectedDraft?.paymentMethod}   
-💰 ${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"} | Deposit ${selectedDraft.deposit}${selectedDraft.currency == "USD" ? "$" : "₾"}
+💰 ${selectedDraft.discount ? `<span class="line-through text-gray-500">${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"}</span> ${(selectedDraft.price - selectedDraft.discount).toFixed()}${ selectedDraft.currency == "USD" ? "$" : "₾"}`: `${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"}`} + Deposit ${selectedDraft.deposit}${selectedDraft.currency == "USD" ? "$" : "₾"}
   0% Commission
   ${selectedDraft.price >= 0 && selectedDraft.price <= 300
           ? "#Price0to300"
