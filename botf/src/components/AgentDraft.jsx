@@ -77,7 +77,7 @@ console.log("bbbbbbbbbbbbbbbbb")
 
       // Google Sheets Integration
       const googleSheetUrl =
-        "https://script.google.com/macros/s/AKfycbwCx5dbd8snOncpbpYJMlNIMa8tzG8WsFq5vKsboeJfWfjVD7c6WaNz4SBOLHy7MHWd/exec";
+        "https://script.google.com/macros/s/AKfycbyhiG-_vCAKwGfxdMW4xWmeYgHvVOq6HOvQi3WWh3tLhDnIurDxTKWJCvcmkWYdCMrD/exec";
 
       const formData = new FormData();
       Object.entries({
@@ -190,19 +190,37 @@ console.log("bbbbbbbbbbbbbbbbb")
         ...(selectedDraft.video ? [{ type: "video", url: selectedDraft.video }] : []),
       ];
 
-      const formatAmenitiesInTwoColumns = (amenities) => {
+      const allAmenities = [
+        "Stove",
+        "Conditioner",
+        "TV",
+        "WiFi",
+        "Elevator",
+        "WashingMachine",
+        "Oven",
+        "ParkingPlace",
+        "Dishwasher",
+        "Microwave",
+        "Balcony",
+      ];
+      
+      const formatAmenitiesInTwoColumns = (selectedAmenities) => {
+        const formattedAmenities = allAmenities.map((amenity) =>
+          selectedAmenities.includes(amenity)
+            ? `✅ #${amenity.replace(/\s+/g, "")}`
+            : `❌ ${amenity.replace(/\s+/g, "")}`
+        );
+      
         const chunkedAmenities = [];
-        for (let i = 0; i < amenities.length; i += 2) {
-          chunkedAmenities.push(amenities.slice(i, i + 2));
+        for (let i = 0; i < formattedAmenities.length; i += 2) {
+          chunkedAmenities.push(formattedAmenities.slice(i, i + 2));
         }
-
+      
         return chunkedAmenities
-          .map((row) =>
-            row.map((amenity) => `✅#${amenity.replace(/\s+/g, "")}`).join("  ")
-          )
+          .map((row) => row.join("  "))
           .join("\n");
       };
-
+      
       const amenitiesFormatted = formatAmenitiesInTwoColumns(
         selectedDraft.amenities || []
       );
