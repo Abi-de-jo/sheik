@@ -61,13 +61,14 @@ model Residency {
   bathrooms     Int?
   amenities     String[] @default([])
   heating     String[] @default([])
-  termDuration   String[] @default([])
+  termDuration String[] @default([])
+  name           String?
+  phone          String?
   term     String?
   email    String?
   selectedAdditional String[] @default([])
   description   String?
   status        String?
-
   userTeleNumber String? // Foreign key for relation
   user           User?   @relation(fields: [userTeleNumber], references: [teleNumber], name: "UserResidencies")
 
