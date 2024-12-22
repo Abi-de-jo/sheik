@@ -342,7 +342,7 @@ window.open(
 
   {/* View Button */}
   <button
-    className="px-4 py-1 bg-blue-500 mr-32 text-white text-xs font-medium rounded shadow hover:bg-blue-600 transition"
+    className="px-4 py-1 bg-blue-500 mr-20 text-white text-xs font-medium rounded shadow hover:bg-blue-600 transition"
     onClick={() => navigate(`/card/${property.id}`, { state: { card: property } })}
   >
     View
