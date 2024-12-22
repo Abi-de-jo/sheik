@@ -46,8 +46,8 @@ const CardDetails = () => {
       }
     }
   };
- 
-  
+
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -153,104 +153,204 @@ const CardDetails = () => {
           />
         </div>
       ) : (
-        <>
-          <h2 className="text-xl font-bold">{editedCard.title || 'Untitled Property'}</h2>
 
-          
-          <p className="text-sm text-gray-600">
-  📍 {editedCard.addressURL ? (
-    <a
-      href={
-        editedCard.addressURL.startsWith("http") // Check if it's a full URL
-          ? editedCard.addressURL
-          : `https://www.google.com/maps?q=${encodeURIComponent(
-              editedCard.addressURL
-            )}` // Construct a Google Maps search URL
-      }
-      target="_blank" // Opens in a new tab
-      rel="noopener noreferrer" // Security best practice
-      className="text-blue-500 hover:underline"
-    >
-      {editedCard.address || "Click here for location"}
-    </a>
-  ) : (
-    editedCard.address || "Location not provided"
-  )}
-</p>
 
-          <p className="text-sm text-blue-500">{editedCard?.type}</p>
-          <p className="text-sm text-blue-500">{editedCard?.term} {editedCard?.termDuration}</p>
-          <p className="text-lg font-semibold">
-  Price:{" "}
-  {editedCard.discount ? (
-    <>
-      <span className="text-gray-500 line-through mr-2">
-        {editedCard.price} $
-      </span>
-      <span className="text-yellow-500">
-        {(
-          editedCard.price -
-          (editedCard.price * editedCard.discount) / 100
-        ).toFixed(2)}{" "}
-        $
-      </span>
-      <span className="text-green-500 ml-2">
-        ({editedCard.discount}% off)
-      </span>
-    </>
-  ) : (
-    <span className="text-yellow-500">{editedCard.price || "N/A"} $</span>
-  )}
-</p>
-        </>
+        <div className="p-6 mb-6 rounded-lg shadow-lg  space-y-6 bg-white">
+          {/* Title */}
+          <h2 className="text-2xl -mt-8  font-bold text-gray-800 border-b pb-2">{editedCard.title || "Untitled Property"}</h2>
+
+          {/* Price with Discount */}
+          <div className="text-lg font-semibold">
+            <span className="text-gray-800">Price: </span>
+            {editedCard.discount ? (
+              <>
+                <span className="text-gray-500 line-through mr-2">{editedCard.price} $</span>
+                <span className="text-yellow-500 font-bold">
+                  {(
+                    editedCard.price - (editedCard.price * editedCard.discount) / 100
+                  ).toFixed(2)}{" "}
+                  $
+                </span>
+                <span className="text-green-500 ml-2 text-sm">({editedCard.discount}% off)</span>
+              </>
+            ) : (
+              <span className="text-yellow-500 font-bold">{editedCard.price || "N/A"} $</span>
+            )}
+          </div>
+
+          {/* Address */}
+          <div className="text-sm">
+            <span className="font-medium text-gray-700"></span>
+            <p className="text-sm text-gray-600">
+              📍 {editedCard.addressURL ? (
+                <a
+                  href={
+                    editedCard.addressURL.startsWith("http") // Check if it's a full URL
+                      ? editedCard.addressURL
+                      : `https://www.google.com/maps?q=${encodeURIComponent(
+                        editedCard.addressURL
+                      )}` // Construct a Google Maps search URL
+                  }
+                  target="_blank" // Opens in a new tab
+                  rel="noopener noreferrer" // Security best practice
+                  className="text-blue-500 hover:underline"
+                >
+                  {editedCard.address || "Click here for location"}
+                </a>
+              ) : (
+                editedCard.address || "Location not provided"
+              )}
+            </p>
+          </div>
+
+          {/* City, Metro, and District */}
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <p>
+              <span className="font-medium text-gray-700">City:</span> {editedCard.city || "N/A"}
+            </p>
+            <p>
+              <span className="font-medium text-gray-700">Metro:</span>{" "}
+              {editedCard.metro?.length > 0 ? editedCard.metro.join(", ") : "N/A"}
+            </p>
+            <p className="col-span-2">
+              <span className="font-medium text-gray-700">District:</span>{" "}
+              {editedCard.district?.length > 0 ? editedCard.district.join(", ") : "N/A"}
+            </p>
+          </div>
+
+          {/* Property Details */}
+          <div className="grid grid-cols-2 gap-4 text-sm border-t pt-4">
+            <p>
+              <span className="font-medium text-gray-700">Property:</span>{" "}
+              {editedCard.propertyType || "N/A"}
+            </p>
+            <p>
+              <span className="font-medium text-gray-700">Residency:</span>{" "}
+              {editedCard.residencyType || "N/A"}
+            </p>
+            <p>
+              <span className="font-medium text-gray-700">Size:</span> {editedCard.area || "N/A"} sq. mt
+            </p>
+            <p>
+              <span className="font-medium text-gray-700">Room:</span> {editedCard.rooms || "N/A"}
+            </p>
+            <p>
+              <span className="font-medium text-gray-700">Bathroom:</span>{" "}
+              {editedCard.bathrooms || "N/A"}
+            </p>
+            <p>
+              <span className="font-medium text-gray-700">Floor:</span>{" "}
+              {editedCard.floor || "N/A"} / {editedCard.totalFloors || "N/A"}
+            </p>
+            <p>
+              <span className="font-medium text-gray-700">Parking:</span> {editedCard.parking || "N/A"}
+            </p>
+            
+            <p className="">
+              <span className="font-medium text-gray-700">Design:</span>{" "}
+              {editedCard.design?.length > 0 ? editedCard.design.join(", ") : "N/A"}
+            </p>
+          </div>
+
+          {/* Term and Payment Details */}
+          <div className="grid grid-cols-2 gap-4 text-sm border-t pt-4">
+            <p>
+              <span className="font-medium text-gray-700">Term:</span> {editedCard.term || "N/A"}
+            </p>
+            <p>
+              <span className="font-medium text-gray-700">Duration:</span>{" "}
+              {editedCard.termDuration?.length > 0 ? editedCard.termDuration.join(",") : "N/A"}
+            </p>
+            <p>
+              <span className="font-medium text-gray-700">Payment:</span>{" "}
+              {editedCard.paymentMethod || "N/A"}
+            </p>
+            <p>
+              <span className="font-medium text-gray-700">Deposit:</span> {editedCard.deposit || "N/A"} {editedCard.currency}
+            </p>
+            <p>
+              <span className="font-medium text-gray-700">Commission:</span>{" "}
+              {editedCard.commission || "N/A"}%
+            </p>
+          </div>
+
+          {/* Video */}
+          {editedCard.video && (
+            <div className="border-t pt-4">
+              <p className="text-sm">
+                <a
+                  href={editedCard.video}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:underline"
+                >
+                  Watch Video
+                </a>
+              </p>
+            </div>
+          )}
+
+          {/* Additional Sections */}
+          <div className="border-t pt-4 space-y-4">
+            {/* Amenities */}
+            <div>
+              <h3 className="font-semibold text-gray-700">Amenities</h3>
+              <ul className="list-disc ml-6">
+                {editedCard.amenities && editedCard.amenities.length > 0 ? (
+                  editedCard.amenities.map((item, index) => (
+                    <li key={index} className="text-sm text-gray-600">{item}</li>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500">No amenities listed</p>
+                )}
+              </ul>
+            </div>
+
+            {/* Heating */}
+            <div>
+              <h3 className="font-semibold text-gray-700">Heating</h3>
+              <ul className="list-disc ml-6">
+                {editedCard.heating && editedCard.heating.length > 0 ? (
+                  editedCard.heating.map((item, index) => (
+                    <li key={index} className="text-sm text-gray-600">{item}</li>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500">No heating information</p>
+                )}
+              </ul>
+            </div>
+
+            {/* Additional Information */}
+            <div>
+              <h3 className="font-semibold text-gray-700">Additional Information</h3>
+              <ul className="list-disc ml-6">
+                {editedCard.selectedAdditional && editedCard.selectedAdditional.length > 0 ? (
+                  editedCard.selectedAdditional.map((item, index) => (
+                    <li key={index} className="text-sm text-gray-600">{item}</li>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500">No additional information</p>
+                )}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
       )}
 
       {/* Amenities */}
-      <div>
-        <h3 className="font-semibold">Amenities</h3>
-        <ul className="list-disc ml-6">
-          {editedCard.amenities && editedCard.amenities.length > 0 ? (
-            editedCard.amenities.map((item, index) => (
-              <li key={index} className="text-sm">{item}</li>
-            ))
-          ) : (
-            <p className="text-sm text-gray-500">No amenities listed</p>
-          )}
-        </ul>
-      </div>
 
-      {/* Heating */}
-      <div>
-        <h3 className="font-semibold">Heating</h3>
-        <ul className="list-disc ml-6">
-          {editedCard.heating && editedCard.heating.length > 0 ? (
-            editedCard.heating.map((item, index) => (
-              <li key={index} className="text-sm">{item}</li>
-            ))
-          ) : (
-            <p className="text-sm text-gray-500">No heating information</p>
-          )}
-        </ul>
-      </div>
-      <div>
-        <h3 className="font-semibold">Additional Information</h3>
-        <ul className="list-disc ml-6">
-          {editedCard.selectedAdditional && editedCard.selectedAdditional.length > 0 ? (
-            editedCard.selectedAdditional.map((item, index) => (
-              <li key={index} className="text-sm">{item}</li>
-            ))
-          ) : (
-            <p className="text-sm text-gray-500">No additional information</p>
-          )}
-        </ul>
-      </div>
 
       {/* Buttons */}
       <div className="p-4 flex items-center justify-between">
-        
-        
-        
-        {role ==="admin" || email==editedCard.email ? (
+
+
+
+        {role === "admin" || email == editedCard.email ? (
           <div className="flex items-center space-x-4">
             {isEditing ? (
               <button
@@ -273,7 +373,7 @@ const CardDetails = () => {
             >
               Delete
             </button>
-           
+
           </div>
         ) : (
           <p className="text-gray-500">You cannot edit or delete this property.</p>
