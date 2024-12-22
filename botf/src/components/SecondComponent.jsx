@@ -1093,8 +1093,7 @@ const SecondComponent = ({ onSave }) => {
         
           <div className="grid grid-cols-1 gap-4">
   {[
-   "AirConditioner",
-    "Oven",
+     "Oven",
     "Microwave",
     "VacuumCleaner",
     "Balcony",
@@ -1106,7 +1105,9 @@ const SecondComponent = ({ onSave }) => {
     "PlayStation",
     "Projector",
     "Elevator",
-    "Heating"
+    "Heating",
+ 
+ 
    
   ].map((option) => (
     <div
