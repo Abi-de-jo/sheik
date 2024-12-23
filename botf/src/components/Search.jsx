@@ -24,6 +24,25 @@ function Search() {
   });
   
 
+
+  const getTimeDifference = (updatedAt, discount) => {
+    const now = new Date();
+    const updatedTime = new Date(updatedAt);
+    const diffInMs = now - updatedTime;
+    const diffInSeconds = Math.floor(diffInMs / 1000);
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInMinutes / 60);
+  
+    if (diffInHours < 24) {
+      return "New"; // Show "New" if updated within the last 24 hours
+    } else if (discount) {
+      return "Discounted"; // Replace "New" with "Discounted" if older than 24 hours and has a discount
+    } else if (diffInHours >= 24) {
+      const diffInDays = Math.floor(diffInHours / 24);
+      return diffInDays === 1 ? "1 day ago" : `${diffInDays} days ago`;
+    }
+  };
+
   const filterPriceRange = (propertyPrice, selectedRange) => {
     const price = parseInt(propertyPrice, 10);
     switch (selectedRange) {
@@ -329,16 +348,17 @@ window.open(
         
                 {/* Dynamic Labels */}
                 <div className="absolute top-2 left-2 space-y-1">
-                  {property.heating?.[0] && (
-                    <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-md shadow">
-                      {property.heating[0]}
-                    </span>
-                  )}
-                  {property.additional?.[0] && (
-                    <span className="bg-yellow-500 text-white text-xs px-2 py-1 rounded-md shadow">
-                      {property.additional[0]}
-                    </span>
-                  )}
+                 <span
+    className={`${
+      getTimeDifference(property.updatedAt, property.discount) === "New"
+        ? "bg-green-500"
+        : getTimeDifference(property.updatedAt, property.discount) === "Discounted"
+        ? "bg-red-500"
+        : "bg-blue-500"
+    } text-white text-xs font-medium px-2 py-1 text-center rounded`}
+  >
+    {getTimeDifference(property.updatedAt, property.discount)}
+  </span>
                 </div>
               </div>
         
@@ -346,23 +366,11 @@ window.open(
               <div className="p-3">
                 {/* Profile Icon */}
                 <div className="flex items-center mb-2">
-                  <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5.121 17.804A4 4 0 015 15m5 5a4 4 0 004-4m0 4a4 4 0 004-4m-4 4a4 4 0 01-4-4m0 0a4 4 0 01-4-4m0 0a4 4 0 004-4m0 0a4 4 0 004-4m0 4a4 4 0 004 4"
-                      />
-                    </svg>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-gray-600">
+                  <img src="./david.jpg" alt="" className="rounded-full" />
+
                   </div>
-                  <span className="ml-2 text-xs text-gray-600">{property.owner || "Owner"}</span>
+                  <span className="ml-2 text-xs text-gray-600">{property.owner || "David_Tibelashvili"}</span>
                 </div>
         
                 <h3 className="text-sm font-semibold text-gray-800 truncate">
@@ -379,13 +387,23 @@ window.open(
         
               {/* Write Button */}
               <div className="px-3 pb-3">
-                <button
-                  className="w-full px-3 py-2 bg-blue-500 text-white text-sm font-medium rounded shadow hover:bg-blue-600 transition"
-              onClick={() => Write(property)}
+              <button
+    className="px-4 py-1 bg-blue-500 text-white text-xs font-medium rounded shadow hover:bg-blue-600 transition"
+    onClick={() => {
+      Write(property);
+      window.open("https://t.me/David_Tibelashvili", "_blank");
+    }}
+  >
+    Contact
+  </button>
 
-                >
-                  Write
-                </button>
+  {/* View Button */}
+  <button
+    className="px-4 py-1 bg-blue-500 ml-5 text-white text-xs font-medium rounded shadow hover:bg-blue-600 transition"
+    onClick={() => navigate(`/card/${property.id}`, { state: { card: property } })}
+  >
+    View
+  </button>
               </div>
         
               {/* Favorite Icon */}
