@@ -3,7 +3,7 @@ import { getAllDraftAgent } from "../utils/api";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa"; // Import icons
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+ 
 function AgentDraftDetails() {
   const [drafts, setDrafts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -56,6 +56,9 @@ function AgentDraftDetails() {
   const navigate = useNavigate();
 
 console.log("bbbbbbbbbbbbbbbbb")
+
+
+
   const handleAccept = async (id) => {
     setLoadingActionId(id); // Set loading for this draft
 
@@ -111,7 +114,10 @@ console.log("bbbbbbbbbbbbbbbbb")
       const TELEGRAM_CHAT_ID = "-4545005015";
       const SALE_CHAT_ID = "-4664195143";  
 
-  
+      const ADMIN_NOTIFICATION_CHAT_ID = selectedDraft.userTeleNumber;
+
+ 
+     
 
       const uploadMediaToTelegram = async (media, chatId, botToken, message) => {
         try {
@@ -303,8 +309,50 @@ ${selectedDraft.price >= 0 && selectedDraft.price <= 300
 📸 [Instagram](https://www.instagram.com/rent_in_tbilisi?igsh=MWU5aWVxa3Fxd2dlbw==) 🌐 [FB](https://www.facebook.com/share/j6jBfExKXjgNVpVQ/) 🎥 [YouTube](https://www.youtube.com/@RENTINTBILISI)
         `;
         
+        const propertyDetails = `
+       *YOUR PROPERTY ACCEPTED BY ADMIN* 
 
+       
+        🏡 *Property Details* 🏡
+        
+        📍 *Location:* ${selectedDraft.address || "N/A"}  
+        💰 *Price:* $${selectedDraft.price || "N/A"} ${selectedDraft.currency || "N/A"}
+        
+        🛏️ *Rooms:* ${selectedDraft.rooms || "N/A"}  
+        🚿 *Bathrooms:* ${selectedDraft.bathrooms || "N/A"}  
+        📐 *Area:* ${selectedDraft.area || "N/A"} sq. ft.
+        
+        🏢 *Building Type:* ${selectedDraft.propertyType || "N/A"}  
+        🏢 *Residency Type:* ${selectedDraft.residencyType || "N/A"}  
+        🔢 *Floor:* ${selectedDraft.floor || "N/A"} / ${selectedDraft.totalFloors || "N/A"}
+        
+        📅 *Term Duration:* ${selectedDraft.termDuration?.length > 0 ? selectedDraft.termDuration.join(', ') : "N/A"}  
+        📜 *Term:* ${selectedDraft.term || "N/A"}  
+        🚗 *Parking:* ${selectedDraft.parking || "N/A"}  
+        
+        🌆 *City:* ${selectedDraft.city || "N/A"}  
+        🏙️ *District:* ${selectedDraft.district?.length > 0 ? selectedDraft.district.join(', ') : "N/A"}  
+        🏠 *Position:* ${selectedDraft.position || "N/A"}  
+        
+        💳 *Payment Method:* ${selectedDraft.paymentMethod || "FirstDeposit"}  
+        
+        ✨ *Design Features:* ${selectedDraft.design?.length > 0 ? selectedDraft.design.join(', ') : "N/A"}
+        
+        🔗 *More Info:* [Click Here](https://sheik-front.vercel.app/properties/${selectedDraft.id})
+        
+        ✨ *Contact for more details or to schedule a visit!*
+        `.trim();
 
+         await axios.post(
+          `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+          {
+            chat_id: ADMIN_NOTIFICATION_CHAT_ID,
+    text: propertyDetails,
+    parse_mode: "Markdown", // Enables formatting for bold, italic, etc.
+
+           }
+        );
+        
 
 
         const chatId = selectedDraft.type === "Rent" ? TELEGRAM_CHAT_ID : SALE_CHAT_ID;
