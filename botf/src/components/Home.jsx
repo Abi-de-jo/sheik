@@ -23,7 +23,7 @@ function Home() {
     if (diffInHours < 24) {
       return "New"; // Show "New" if updated within the last 24 hours
     } else if (discount) {
-      return "Discounted"; // Replace "New" with "Discounted" if older than 24 hours and has a discount
+      return "Discounted"; 
     } else if (diffInHours >= 24) {
       const diffInDays = Math.floor(diffInHours / 24);
       return diffInDays === 1 ? "1 day ago" : `${diffInDays} days ago`;
@@ -137,8 +137,35 @@ function Home() {
   
   const Write = async (property) => {
     const teleNumber = localStorage.getItem("teleNumber")
+    const username = localStorage.getItem("firstName")
+    // const username = "Abisheik"
     console.log("Property ID:", property.id);
     console.log("Property Details:", property);
+
+    const TELEGRAM_BOT_TOKEN = "7712916176:AAF15UqOplv1hTdJVxILWoUOEefEKjGJOso";
+    const userChatId = property.userTeleNumber; // Assuming this exists
+
+    const notificationMessage = `
+    🏡 *Property Contacted* 🏡
+    
+    📌 *Title:* ${property.title || "Untitled"}
+    🏷️ *Type:* ${property.type || "N/A"}
+    💰 *Price:* ${property.price ? `$${property.price}` : "N/A"} ${property.currency || "N/A"}
+    📍 *Address:* ${property.address || "No Address Provided"}
+    🔗 *Address URL:* ${property.addressURL || "No URL Provided"}
+    
+    ✨ Your property has been contacted by a ${username}!
+    `.trim();
+    
+    await axios.post(
+      `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+      {
+        chat_id: userChatId,
+        text: notificationMessage,
+      }
+    );
+
+    console.log("Notification sent to property owner:", userChatId);
 
     try {
 
@@ -184,6 +211,7 @@ window.open(
       const response = await axios.post(`https://sheik-back.vercel.app/api/user/addInterest/${property.id}`, {
         teleNumber,
       });
+     
       console.log('Interest added:', response.data);
       return response.data;
     } catch (error) {
@@ -254,6 +282,7 @@ window.open(
         {isMapView ? (
                  <Map />  
          ) : (
+          
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-5">
           {data?.map((property) => (
             <div
