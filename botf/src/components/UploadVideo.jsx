@@ -4,7 +4,6 @@ import { MdClose } from "react-icons/md";
 import PropTypes from "prop-types";
 import { loadCloudinaryScript } from "../cloudinaryLoader";
 
-
 const UploadVideo = ({ onVideoUpdate }) => {
   const [videoURLs, setVideoURLs] = useState([]); // Store uploaded video URLs
   const widgetRef = useRef(null); // Cloudinary widget reference
@@ -18,19 +17,22 @@ const UploadVideo = ({ onVideoUpdate }) => {
           widgetRef.current = cloudinary.createUploadWidget(
             {
               cloudName: "dbandd0k7",
-              uploadPreset: "zf9wfsfi",  
-              resourceType: "video", // Allow videos only
-              multiple: false, // Allow multiple video uploads
-              maxFileSize: 50000000, // 30MB per file
+              uploadPreset: "zf9wfsfi", // Video upload preset
+              resourceType: "video", // Ensure only videos are allowed
+              multiple: false, // Allow only one video at a time
+              maxFileSize: 30000000, // 30MB per file
               allowedFormats: ["mp4", "mov", "avi"], // Allowed video formats
             },
             (err, result) => {
-              if (result.event === "success") {
+              if (result.event === "success" && result.info.resource_type === "video") {
+                console.log("Video uploaded successfully:", result.info.secure_url);
                 setVideoURLs((prev) => {
                   const updatedVideos = [...prev, result.info.secure_url];
-                  onVideoUpdate(updatedVideos); // Notify parent
+                  onVideoUpdate(updatedVideos); // Notify parent only for videos
                   return updatedVideos;
                 });
+              } else if (err) {
+                console.error("Error uploading video:", err);
               }
             }
           );
