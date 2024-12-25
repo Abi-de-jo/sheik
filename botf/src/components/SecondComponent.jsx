@@ -1105,7 +1105,9 @@ const SecondComponent = ({ onSave }) => {
     "PlayStation",
     "Projector",
     "Elevator",
-    "Heating"
+    "Heating",
+ 
+ 
    
   ].map((option) => (
     <div
