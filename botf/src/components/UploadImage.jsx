@@ -16,12 +16,14 @@ const UploadImage = ({ onImageUpdate }) => {
         if (!widgetRef.current) {
           widgetRef.current = cloudinary.createUploadWidget(
             {
-              cloudName: "dbandd0k7",
-              uploadPreset: "zf9wfsfi", // Image upload preset
-              resourceType: "image", // Explicitly allow only images
-              multiple: true, // Allow multiple image uploads
-              maxFileSize: 10000000, // 10MB per file
-              allowedFormats: ["jpg", "png", "jpeg"], // Allowed image formats
+             cloudName: "dbandd0k7",
+    uploadPreset: "zf9wfsfi",
+    resourceType: "image", // or "video" for video uploads
+    multiple: true,
+    maxFileSize: 10000000,
+    allowedFormats: ["jpg", "png", "jpeg"],
+    fetchFormat: "auto", // Ensures the content is fully delivered
+    quality: "auto", // Optimizes the image for complete delivery
             },
             (err, result) => {
               if (result.event === "success") {
