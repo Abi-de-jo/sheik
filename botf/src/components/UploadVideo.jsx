@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
- import PropTypes from "prop-types";
+import { MdClose } from "react-icons/md";
+import PropTypes from "prop-types";
 import { loadCloudinaryScript } from "../cloudinaryLoader";
 
 const UploadVideo = ({ onVideoUpdate }) => {
@@ -16,7 +17,7 @@ const UploadVideo = ({ onVideoUpdate }) => {
           widgetRef.current = cloudinary.createUploadWidget(
             {
               cloudName: "dbandd0k7",
-              uploadPreset: "zf9wfsfi", // Ensure this preset is for videos
+              uploadPreset: "xmmcvp1e", // Video upload preset
               resourceType: "video", // Explicitly allow only videos
               multiple: false, // Allow a single video upload
               maxFileSize: 30000000, // 30MB per file
@@ -24,21 +25,15 @@ const UploadVideo = ({ onVideoUpdate }) => {
             },
             (err, result) => {
               if (result.event === "success") {
-                console.log("Uploaded file:", result.info);
-                console.log("Resource type:", result.info.resource_type);
-
-                if (result.info.resource_type === "video") {
-                  setVideoURLs([result.info.secure_url]); // Allow only a single video
-                  onVideoUpdate([result.info.secure_url]); // Notify parent
-                } else {
-                  console.error("Uploaded file is not a video.");
-                }
+                console.log("Uploaded video:", result.info);
+                setVideoURLs([result.info.secure_url]); // Replace the video URL
+                onVideoUpdate([result.info.secure_url]); // Notify parent
               }
             }
           );
         }
       } catch (error) {
-        console.error("Cloudinary widget initialization failed:", error);
+        console.error("Cloudinary widget failed to load for videos:", error);
       }
     };
 
@@ -49,11 +44,12 @@ const UploadVideo = ({ onVideoUpdate }) => {
 
   const deleteVideo = () => {
     setVideoURLs([]);
-    onVideoUpdate([]);
+    onVideoUpdate([]); // Clear video in parent component
   };
 
   return (
     <div className="flex flex-col items-center">
+      {/* Upload Button */}
       <button
         onClick={openWidget}
         className="p-4 border-2 border-dashed border-blue-500 rounded-lg cursor-pointer hover:border-blue-600 transition"
@@ -62,6 +58,7 @@ const UploadVideo = ({ onVideoUpdate }) => {
         <span className="text-sm text-gray-600">Click to upload videos</span>
       </button>
 
+      {/* Display Uploaded Videos */}
       {videoURLs.length > 0 && (
         <div className="mt-4">
           <video
@@ -80,11 +77,6 @@ const UploadVideo = ({ onVideoUpdate }) => {
     </div>
   );
 };
-
-UploadVideo.propTypes = {
-  onVideoUpdate: PropTypes.func.isRequired,
-};
-
 
 UploadVideo.propTypes = {
   onVideoUpdate: PropTypes.func.isRequired,
