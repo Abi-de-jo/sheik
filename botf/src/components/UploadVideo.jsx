@@ -12,35 +12,41 @@ const UploadVideo = ({ onVideoUpdate }) => {
     const initializeWidget = async () => {
       try {
         const cloudinary = await loadCloudinaryScript();
-
+    
         if (!widgetRef.current) {
           widgetRef.current = cloudinary.createUploadWidget(
             {
               cloudName: "dbandd0k7",
-              uploadPreset: "zf9wfsfi", // Video upload preset
-              resourceType: "video", // Ensure only videos are allowed
-              multiple: false, // Allow only one video at a time
-              maxFileSize: 30000000, // 30MB per file
+              uploadPreset: "zf9wfsfi", // Ensure this preset is configured for videos
+              resourceType: "video",    // Explicitly set to video
+              multiple: false,          // Single video upload
+              maxFileSize: 50000000,    // 30MB
               allowedFormats: ["mp4", "mov", "avi"], // Allowed video formats
             },
             (err, result) => {
-              if (result.event === "success" && result.info.resource_type === "video") {
-                console.log("Video uploaded successfully:", result.info.secure_url);
-                setVideoURLs((prev) => {
-                  const updatedVideos = [...prev, result.info.secure_url];
-                  onVideoUpdate(updatedVideos); // Notify parent only for videos
-                  return updatedVideos;
-                });
+              if (result.event === "success") {
+                console.log("Uploaded file resource type:", result.info.resource_type); // Log resource type
+                if (result.info.resource_type === "video") {
+                  console.log("Video uploaded successfully:", result.info.secure_url);
+                  setVideoURLs((prev) => {
+                    const updatedVideos = [...prev, result.info.secure_url];
+                    onVideoUpdate(updatedVideos); // Notify parent
+                    return updatedVideos;
+                  });
+                } else {
+                  console.error("Uploaded file is not a video:", result.info);
+                }
               } else if (err) {
-                console.error("Error uploading video:", err);
+                console.error("Error during upload:", err);
               }
             }
           );
         }
       } catch (error) {
-        console.error("Cloudinary widget failed to load:", error);
+        console.error("Cloudinary widget initialization failed:", error);
       }
     };
+    
 
     initializeWidget();
   }, [onVideoUpdate]);
