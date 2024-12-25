@@ -155,20 +155,19 @@ const SecondComponent = ({ onSave }) => {
     }}
   
    
-    const handleImageUpdate = (imageURLs) => {
-    // Update images in the secondFormData
-    setSecondFormData((prev) => ({
-      ...prev,
-      images: imageURLs,
-    }));
-  };
+const handleImageUpdate = (imageURLs) => {
+  setSecondFormData((prev) => ({
+    ...prev,
+    images: imageURLs, // Add image URLs to the state
+  }));
+};
 
-  const handleVideoUpload = (uploadedVideos) => {
-    setSecondFormData((prev) => ({
-      ...prev,
-      video: uploadedVideos,  
-    }));
-  };
+const handleVideoUpload = (uploadedVideos) => {
+  setSecondFormData((prev) => ({
+    ...prev,
+    video: uploadedVideos.length > 0 ? uploadedVideos[0] : "", // Handle single video URL
+  }));
+};
   
   
 
