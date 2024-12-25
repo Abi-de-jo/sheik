@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 import { loadCloudinaryScript } from "../cloudinaryLoader";
 
 const UploadImage = ({ onImageUpdate }) => {
-  const [imageURLs, setImageURLs] = useState([]); // Store uploaded image URLs
-  const widgetRef = useRef(null); // Cloudinary widget reference
+  const [imageURLs, setImageURLs] = useState([]);
+  const widgetRef = useRef(null);
 
   useEffect(() => {
     const initializeWidget = async () => {
@@ -16,21 +16,18 @@ const UploadImage = ({ onImageUpdate }) => {
         if (!widgetRef.current) {
           widgetRef.current = cloudinary.createUploadWidget(
             {
-             cloudName: "dbandd0k7",
-    uploadPreset: "zf9wfsfi",
-    resourceType: "image", // or "video" for video uploads
-    multiple: true,
-    maxFileSize: 10000000,
-    allowedFormats: ["jpg", "png", "jpeg"],
-    fetchFormat: "auto", // Ensures the content is fully delivered
-    quality: "auto", // Optimizes the image for complete delivery
+              cloudName: "dbandd0k7",
+              uploadPreset: "zf9wfsfi",
+              resourceType: "image", // Images only
+              multiple: true,
+              maxFileSize: 10000000,
+              allowedFormats: ["jpg", "png", "jpeg"],
             },
             (err, result) => {
               if (result.event === "success") {
-                console.log("Uploaded image:", result.info);
                 setImageURLs((prev) => {
                   const updatedImages = [...prev, result.info.secure_url];
-                  onImageUpdate(updatedImages); // Notify parent
+                  onImageUpdate(updatedImages);
                   return updatedImages;
                 });
               }
@@ -50,30 +47,21 @@ const UploadImage = ({ onImageUpdate }) => {
   const deleteImage = (index) => {
     const updatedImages = imageURLs.filter((_, i) => i !== index);
     setImageURLs(updatedImages);
-    onImageUpdate(updatedImages); // Notify parent
+    onImageUpdate(updatedImages);
   };
 
   return (
     <div className="flex flex-col items-center">
-      {/* Upload Button */}
-      <button
-        onClick={openWidget}
-        className="p-4 border-2 border-dashed border-blue-500 rounded-lg cursor-pointer hover:border-blue-600 transition"
-      >
-        <AiOutlineCloudUpload size={40} className="text-blue-600" />
-        <span className="text-sm text-gray-600">Click to upload images</span>
+      <button onClick={openWidget} className="p-4 border-2 border-dashed rounded-lg">
+        <AiOutlineCloudUpload size={40} />
+        Click to upload images
       </button>
 
-      {/* Display Uploaded Images */}
       {imageURLs.length > 0 && (
         <div className="grid grid-cols-4 gap-4 mt-4">
           {imageURLs.map((url, index) => (
             <div key={index} className="relative">
-              <img
-                src={url}
-                alt={`Uploaded ${index}`}
-                className="w-full h-32 object-cover rounded-lg"
-              />
+              <img src={url} alt="Uploaded" className="w-full h-32 object-cover rounded-lg" />
               <button
                 onClick={() => deleteImage(index)}
                 className="absolute top-0 right-0 bg-red-600 text-white rounded-full p-1"
