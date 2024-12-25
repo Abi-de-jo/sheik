@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-import { MdClose } from "react-icons/md";
-import PropTypes from "prop-types";
+ import PropTypes from "prop-types";
 import { loadCloudinaryScript } from "../cloudinaryLoader";
 
 const UploadVideo = ({ onVideoUpdate }) => {
@@ -12,32 +11,28 @@ const UploadVideo = ({ onVideoUpdate }) => {
     const initializeWidget = async () => {
       try {
         const cloudinary = await loadCloudinaryScript();
-    
+
         if (!widgetRef.current) {
           widgetRef.current = cloudinary.createUploadWidget(
             {
               cloudName: "dbandd0k7",
-              uploadPreset: "zf9wfsfi", // Ensure this preset is configured for videos
-              resourceType: "video",    // Explicitly set to video
-              multiple: false,          // Single video upload
-              maxFileSize: 50000000,    // 30MB
+              uploadPreset: "zf9wfsfi", // Ensure this preset is for videos
+              resourceType: "video", // Explicitly allow only videos
+              multiple: false, // Allow a single video upload
+              maxFileSize: 30000000, // 30MB per file
               allowedFormats: ["mp4", "mov", "avi"], // Allowed video formats
             },
             (err, result) => {
               if (result.event === "success") {
-                console.log("Uploaded file resource type:", result.info.resource_type); // Log resource type
+                console.log("Uploaded file:", result.info);
+                console.log("Resource type:", result.info.resource_type);
+
                 if (result.info.resource_type === "video") {
-                  console.log("Video uploaded successfully:", result.info.secure_url);
-                  setVideoURLs((prev) => {
-                    const updatedVideos = [...prev, result.info.secure_url];
-                    onVideoUpdate(updatedVideos); // Notify parent
-                    return updatedVideos;
-                  });
+                  setVideoURLs([result.info.secure_url]); // Allow only a single video
+                  onVideoUpdate([result.info.secure_url]); // Notify parent
                 } else {
-                  console.error("Uploaded file is not a video:", result.info);
+                  console.error("Uploaded file is not a video.");
                 }
-              } else if (err) {
-                console.error("Error during upload:", err);
               }
             }
           );
@@ -46,24 +41,19 @@ const UploadVideo = ({ onVideoUpdate }) => {
         console.error("Cloudinary widget initialization failed:", error);
       }
     };
-    
 
     initializeWidget();
   }, [onVideoUpdate]);
 
-  // Open the upload widget
   const openWidget = () => widgetRef.current && widgetRef.current.open();
 
-  // Delete a video
-  const deleteVideo = (index) => {
-    const updatedVideos = videoURLs.filter((_, i) => i !== index);
-    setVideoURLs(updatedVideos);
-    onVideoUpdate(updatedVideos); // Notify parent
+  const deleteVideo = () => {
+    setVideoURLs([]);
+    onVideoUpdate([]);
   };
 
   return (
     <div className="flex flex-col items-center">
-      {/* Upload Button */}
       <button
         onClick={openWidget}
         className="p-4 border-2 border-dashed border-blue-500 rounded-lg cursor-pointer hover:border-blue-600 transition"
@@ -72,30 +62,29 @@ const UploadVideo = ({ onVideoUpdate }) => {
         <span className="text-sm text-gray-600">Click to upload videos</span>
       </button>
 
-      {/* Display Uploaded Videos */}
       {videoURLs.length > 0 && (
-        <div className="grid grid-cols-4 gap-4 mt-4">
-          {videoURLs.map((url, index) => (
-            <div key={index} className="relative group">
-              <video
-                src={url}
-                controls
-                className="w-full h-32 object-cover rounded-lg"
-              />
-              {/* Delete Button */}
-              <button
-                onClick={() => deleteVideo(index)}
-                className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
-              >
-                <MdClose size={16} />
-              </button>
-            </div>
-          ))}
+        <div className="mt-4">
+          <video
+            src={videoURLs[0]}
+            controls
+            className="w-full h-32 object-cover rounded-lg"
+          />
+          <button
+            onClick={deleteVideo}
+            className="mt-2 px-4 py-2 bg-red-600 text-white rounded-lg"
+          >
+            Remove Video
+          </button>
         </div>
       )}
     </div>
   );
 };
+
+UploadVideo.propTypes = {
+  onVideoUpdate: PropTypes.func.isRequired,
+};
+
 
 UploadVideo.propTypes = {
   onVideoUpdate: PropTypes.func.isRequired,
