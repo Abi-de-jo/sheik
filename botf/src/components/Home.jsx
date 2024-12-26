@@ -284,7 +284,10 @@ window.open(
          ) : (
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-5">
-          {data?.map((property) => (
+          {data?
+            .slice()
+            .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+            .map((property) => (
             <div
               key={property.id}
               className="flex flex-col bg-white shadow-md rounded-lg overflow-hidden"
