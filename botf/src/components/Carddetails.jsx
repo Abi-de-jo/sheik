@@ -383,13 +383,13 @@ const CardDetails = () => {
             )}
             <button
               className="px-4 py-2 bg-yellow-500 text-white rounded-md shadow hover:bg-yellow-600"
-              onClick={handleDelete}
+              onClick={handleUpdate}
             >
               Update
             </button>
             <button
               className="px-4 py-2 bg-red-500 text-white rounded-md shadow hover:bg-red-600"
-              onClick={handleUpdate}
+              onClick={handleDelete}
             >
               Delete
             </button>
