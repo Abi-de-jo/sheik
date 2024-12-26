@@ -284,8 +284,7 @@ window.open(
          ) : (
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-5">
-          {data?
-            .slice()
+          {data?.slice()
             .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
             .map((property) => (
             <div
