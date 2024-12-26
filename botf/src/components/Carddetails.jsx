@@ -47,6 +47,19 @@ const CardDetails = () => {
     }
   };
 
+  const handleUpdate = async () => {
+    try {
+      // Perform the update API call
+      await axios.put(`${API_BASE_URL}/residency/update/${editedCard.id}`, editedCard);
+      alert("Property updated successfully!");
+      setIsEditing(false); // Exit editing mode if needed
+      navigate(-1); // Navigate back or reload the page
+    } catch (error) {
+      console.error("Error updating property:", error);
+      alert("Failed to update property. Please try again.");
+    }
+  };
+
 
 
   const handleInputChange = (e) => {
@@ -369,8 +382,14 @@ const CardDetails = () => {
               </button>
             )}
             <button
-              className="px-4 py-2 bg-red-500 text-white rounded-md shadow hover:bg-red-600"
+              className="px-4 py-2 bg-yellow-500 text-white rounded-md shadow hover:bg-yellow-600"
               onClick={handleDelete}
+            >
+              Update
+            </button>
+            <button
+              className="px-4 py-2 bg-red-500 text-white rounded-md shadow hover:bg-red-600"
+              onClick={handleUpdate}
             >
               Delete
             </button>
