@@ -304,7 +304,7 @@ const AgentCard = () => {
       <div className="flex justify-between">
         {role === "admin" || email === editedCard.userTeleNumber ? (
           <div>
-            {editedCard.status === "published" && (
+{(editedCard.status === "published" || editedCard.status === "draft") && (
               <>
                 {isEditing ? (
                   <button
