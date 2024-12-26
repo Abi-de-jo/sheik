@@ -329,7 +329,10 @@ window.open(
           <p className="text-red-500 text-center">Error fetching properties.</p>
         ) : filteredProperties.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProperties.map((property) => (
+          {filteredProperties
+            .slice()
+            .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+            .map((property) => (
             <div
               key={property.id}
               onClick={() => handleCardClick(property)} // Attach click handler
