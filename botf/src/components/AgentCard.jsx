@@ -74,7 +74,19 @@ const AgentCard = () => {
     console.log(rentDetails);
   };
   
-
+  const handleUpdate = async () => {
+    try {
+      // Perform the update API call
+      await axios.put(`${API_BASE_URL}/residency/update/${editedCard.id}`, editedCard);
+      alert("Property updated successfully!");
+      setIsEditing(false); // Exit editing mode if needed
+      navigate(-1); // Navigate back or reload the page
+    } catch (error) {
+      console.error("Error updating property:", error);
+      alert("Failed to update property. Please try again.");
+    }
+  };
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditedCard({ ...editedCard, [name]: value });
@@ -108,6 +120,12 @@ const AgentCard = () => {
 
   return (
     <div className="p-6 border border-gray-300 rounded-md shadow-md bg-white space-y-4 mb-11">
+      <button
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+          onClick={handleBack}
+        >
+          Back
+        </button>
       {editedCard.images && editedCard.images.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {editedCard.images.map((image, index) => (
@@ -359,12 +377,13 @@ const AgentCard = () => {
         ) : (
           <p className="text-gray-500">You cannot edit or delete this property.</p>
         )}
-        <button
-          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
-          onClick={handleBack}
-        >
-          Back
-        </button>
+         <button
+            className="px-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 ml-4"
+            onClick={handleUpdate}
+          >
+            Update
+          </button>
+        
       </div>
 
       {/* Rent Form */}
