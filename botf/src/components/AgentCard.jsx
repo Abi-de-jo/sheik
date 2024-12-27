@@ -319,72 +319,58 @@ const AgentCard = () => {
   </div>
 )}
 
-      <div className="flex justify-between">
-        {role === "admin" || email === editedCard.userTeleNumber ? (
-          <div>
-{(editedCard.status === "published" || editedCard.status === "draft") && (
-              <>
-                {isEditing ? (
-                  <button
-                    className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-                    onClick={handleSave}
-                  >
-                    Save
-                  </button>
-                ) : (
-                  <button
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                    onClick={handleEdit}
-                  >
-                    Edit
-                  </button>
-                )}
-                <button
-                  className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ml-4"
-                  onClick={handleArchive}
-                >
-                  Archive
-                </button>
-                <button
-                  className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 ml-4"
-                  onClick={() => setShowRentForm(true)} // Show the rent form
-                >
-                  Rent
-                </button>
-              </>
-            )}
-             {editedCard.status === "rented" && (
-              <>
-                <button
-                  className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-                  onClick={handleReupload}
-                >
-                  Reupload
-                </button>
-              </>
-            )}
-             {editedCard.status === "archieve" && (
-              <>
-                <button
-                  className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-                  onClick={handleReupload}
-                >
-                  Reupload
-                </button>
-              </>
-            )}
-          </div>
-        ) : (
-          <p className="text-gray-500">You cannot edit or delete this property.</p>
-        )}
-         <button
-            className="px-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 ml-4"
+  <div className="flex  items-center gap-2 justify-center">
+  {role === "admin" || email === editedCard.userTeleNumber ? (
+    <>
+      {(editedCard.status === "published" || editedCard.status === "draft") && (
+        <>
+          {/* Edit/Save Button */}
+          {isEditing ? (
+            <button
+              className="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+              onClick={handleSaveEdit}
+            >
+              Save
+            </button>
+          ) : (
+            <button
+              className="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              onClick={handleEdit}
+            >
+              Edit
+            </button>
+          )}
+
+          {/* Update Button */}
+          <button
+            className="px-3 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600"
             onClick={handleUpdate}
           >
             Update
           </button>
-        
-      </div>
+
+          {/* Archive Button */}
+          <button
+            className="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+            onClick={handleArchive}
+          >
+            Archive
+          </button>
+
+          {/* Rent Button */}
+          <button
+            className="px-3 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+            onClick={() => setShowRentForm(true)}
+          >
+            Rent
+          </button>
+        </>
+      )}
+    </>
+  ) : (
+    <p className="text-gray-500">You cannot edit or delete this property.</p>
+  )}
+</div>
 
       {/* Rent Form */}
       {showRentForm && (
