@@ -21,6 +21,7 @@ const AgentCard = () => {
 
   const role = localStorage.getItem("role");
  const email = localStorage.getItem("teleNumber")
+//  const email ="7219063798";
   const handleBack = () => {
     navigate(-1);
   };
@@ -40,7 +41,18 @@ const AgentCard = () => {
     }
   };
 
-  
+    const handleUpdate = async () => {
+    try {
+      // Perform the update API call
+      await axios.put(`${API_BASE_URL}/residency/update/${editedCard.id}`, editedCard);
+      alert("Property updated successfully!");
+      setIsEditing(false); // Exit editing mode if needed
+      navigate(-1); // Navigate back or reload the page
+    } catch (error) {
+      console.error("Error updating property:", error);
+      alert("Failed to update property. Please try again.");
+    }
+  };
 
   const handleRentFormSubmit = async () => {
     try {
@@ -108,6 +120,12 @@ const AgentCard = () => {
 
   return (
     <div className="p-6 border border-gray-300 rounded-md shadow-md bg-white space-y-4 mb-11">
+      <button
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+          onClick={handleBack}
+        >
+          Back
+        </button>
       {editedCard.images && editedCard.images.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {editedCard.images.map((image, index) => (
@@ -301,38 +319,46 @@ const AgentCard = () => {
   </div>
 )}
 
-      <div className="flex justify-between">
+      <div className="flex items-center -ml-5 justify-center">
         {role === "admin" || email === editedCard.userTeleNumber ? (
           <div>
             {editedCard.status === "published" && (
               <>
                 {isEditing ? (
                   <button
-                    className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                    className="px-2 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
                     onClick={handleSave}
                   >
                     Save
                   </button>
                 ) : (
                   <button
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                    className="px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                     onClick={handleEdit}
                   >
                     Edit
                   </button>
                 )}
                 <button
-                  className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ml-4"
+                  className="px-2 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ml-4"
                   onClick={handleArchive}
                 >
                   Archive
                 </button>
                 <button
-                  className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 ml-4"
+                  className="px-3 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 ml-4"
                   onClick={() => setShowRentForm(true)} // Show the rent form
                 >
                   Rent
                 </button>
+                <button
+            className="px-2 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 ml-4"
+            onClick={handleUpdate}
+          >
+            Update
+          </button>
+               
+                
               </>
             )}
              {editedCard.status === "rented" && (
@@ -359,12 +385,8 @@ const AgentCard = () => {
         ) : (
           <p className="text-gray-500">You cannot edit or delete this property.</p>
         )}
-        <button
-          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
-          onClick={handleBack}
-        >
-          Back
-        </button>
+        
+          
       </div>
 
       {/* Rent Form */}
