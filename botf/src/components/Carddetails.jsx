@@ -84,6 +84,12 @@ const CardDetails = () => {
   return (
     <div className="p-6 border border-gray-300 rounded-md shadow-md bg-white space-y-4 mb-5">
       {/* Image Carousel */}
+       <button
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow hover:bg-gray-400"
+          onClick={handleBack}
+        >
+          Back
+        </button>
       <div className="relative w-full h-64 bg-gray-200 rounded-md overflow-hidden">
         {editedCard.images && editedCard.images.length > 0 ? (
           <div className="flex overflow-x-auto snap-x space-x-2">
@@ -402,12 +408,7 @@ const CardDetails = () => {
 
 
 
-        <button
-          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow hover:bg-gray-400"
-          onClick={handleBack}
-        >
-          Back
-        </button>
+       
       </div>
     </div>
   );
