@@ -210,36 +210,49 @@ console.log("bbbbbbbbbbbbbbbbb")
         "Dishwasher",
         "Microwave",
         "Balcony",
-        "WashingMachine"
+        "WashingMachine",
       ];
       
-      const formatAmenitiesInTwoColumns = (selectedAmenities) => {
-        // Sort amenities: selected first (✅), then non-selected (❌)
-        const sortedAmenities = allAmenities.sort((a, b) => {
-          const aSelected = selectedAmenities.includes(a);
-          const bSelected = selectedAmenities.includes(b);
-          return bSelected - aSelected; // Put selected amenities first
-        });
+      const criticalAmenities = ["Parking", "Dishwasher", "Balcony", "Elevator"];
       
-        const formattedAmenities = sortedAmenities.map((amenity) =>
-          selectedAmenities.includes(amenity)
-            ? `✅ #${amenity.replace(/\s+/g, "")}`
-            : `❌ ${amenity.replace(/\s+/g, "")}`
+      const formatAmenitiesInTwoColumns = (selectedAmenities) => {
+        // Check if none of the critical amenities are selected
+        const isCriticalMissing = criticalAmenities.every(
+          (amenity) => !selectedAmenities.includes(amenity)
         );
       
+        // If none are selected, mark the critical amenities as "wrong"
+        const formattedAmenities = allAmenities.map((amenity) => {
+          if (isCriticalMissing && criticalAmenities.includes(amenity)) {
+            return `✖️ ${amenity}`; // Show "wrong" for missing critical amenities
+          }
+          return selectedAmenities.includes(amenity)
+            ? `✅ ${amenity}` // Mark selected amenities as "correct"
+            : amenity; // No marking for other amenities
+        });
+      
+        // Split into rows of two for two-column formatting
         const chunkedAmenities = [];
         for (let i = 0; i < formattedAmenities.length; i += 2) {
           chunkedAmenities.push(formattedAmenities.slice(i, i + 2));
         }
       
         return chunkedAmenities
-          .map((row) => row.join("  "))
-          .join("\n");
+          .map((row) => row.join("    ")) // Add spacing between columns
+          .join("\n"); // Add newlines between rows
+      };
+      
+      // Example usage
+      const selectedDraft = {
+        amenities: ["WiFi", "Conditioner"], // Example: selected amenities
       };
       
       const amenitiesFormatted = formatAmenitiesInTwoColumns(
         selectedDraft.amenities || []
       );
+      
+      console.log(amenitiesFormatted);
+      
       
 
       const message = `
@@ -252,7 +265,7 @@ Apartment for #${selectedDraft?.type}✨ #${selectedDraft?.residencyType}
 🏠 ${selectedDraft.area} Sq.m | #${selectedDraft?.floor}floor | #${selectedDraft?.bathrooms}Bath
 
 ${amenitiesFormatted}
-${selectedDraft?.parking > 0 ? "✅ Parking" : "❌ Parking"}
+${selectedDraft?.parking > 0 ? "✅ Parking" : "✖️ Parking"}
 
 🐕 Pets: ${
   selectedDraft.selectedAdditional?.includes("PetsAllowed")
