@@ -214,27 +214,39 @@ console.log("bbbbbbbbbbbbbbbbb")
       ];
       
       const formatAmenitiesInTwoColumns = (selectedAmenities) => {
-        // Sort amenities: selected first (✅), then non-selected (❌)
-        const sortedAmenities = allAmenities.sort((a, b) => {
-          const aSelected = selectedAmenities.includes(a);
-          const bSelected = selectedAmenities.includes(b);
-          return bSelected - aSelected; // Put selected amenities first
-        });
-      
-        const formattedAmenities = sortedAmenities.map((amenity) =>
-          selectedAmenities.includes(amenity)
-            ? `✅ #${amenity.replace(/\s+/g, "")}`
-            : `❌ ${amenity.replace(/\s+/g, "")}`
+        // Filter out unselected amenities
+        const unselectedAmenities = allAmenities.filter(
+          (amenity) => !selectedAmenities.includes(amenity)
         );
       
+        // Randomly select 3 unselected amenities to mark as ❌
+        const randomWrongAmenities = unselectedAmenities
+          .sort(() => Math.random() - 0.5) // Shuffle the array
+          .slice(0, 3); // Take the first 3 elements after shuffle
+      
+        // Map over all amenities and assign ✅ or ❌
+        const formattedAmenities = allAmenities.map((amenity) =>
+          selectedAmenities.includes(amenity)
+            ? `✅ #${amenity.replace(/\s+/g, "")}` // Mark selected amenities as ✅
+            : randomWrongAmenities.includes(amenity)
+            ? `❌ ${amenity.replace(/\s+/g, "")}` // Mark random unselected amenities as ❌
+            : null // Ignore others
+        ).filter(Boolean); // Remove null values
+      
+        // Ensure order: ✅ first, then ❌
+        const orderedAmenities = [
+          ...formattedAmenities.filter((item) => item.startsWith("✅")),
+          ...formattedAmenities.filter((item) => item.startsWith("❌")),
+        ];
+      
+        // Chunk into rows of 2 for better formatting
         const chunkedAmenities = [];
-        for (let i = 0; i < formattedAmenities.length; i += 2) {
-          chunkedAmenities.push(formattedAmenities.slice(i, i + 2));
+        for (let i = 0; i < orderedAmenities.length; i += 2) {
+          chunkedAmenities.push(orderedAmenities.slice(i, i + 2));
         }
       
-        return chunkedAmenities
-          .map((row) => row.join("  "))
-          .join("\n");
+        // Join rows into final output
+        return chunkedAmenities.map((row) => row.join("  ")).join("\n");
       };
       
       const amenitiesFormatted = formatAmenitiesInTwoColumns(
@@ -242,7 +254,7 @@ console.log("bbbbbbbbbbbbbbbbb")
       );
       
 
-      const message = `
+      const rentMessage = `
       #${selectedDraft?.city} #${selectedDraft?.district} 🏢#${selectedDraft?.metro}
 📍[${selectedDraft.address}](${selectedDraft.googleaddressurl})
         
@@ -265,6 +277,63 @@ ${selectedDraft?.parking > 0 ? "✅ Parking" : "❌ Parking"}
     ?.map((duration) => `#${duration.replace(" ", "")}`)
     .join(" ")}
 💳 #${selectedDraft?.paymentMethod}   
+💰 ${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"} | Deposit ${selectedDraft.deposit}${selectedDraft.currency == "USD" ? "$" : "₾"}
+  0% Commission
+${selectedDraft.price >= 0 && selectedDraft.price <= 300
+    ? "#Price0to300"
+    : selectedDraft.price > 300 && selectedDraft.price <= 500
+    ? "#Price300to500"
+    : selectedDraft.price > 500 && selectedDraft.price <= 700
+    ? "#Price500to700"
+    : selectedDraft.price > 700 && selectedDraft.price <= 900
+    ? "#Price700to900"
+    : selectedDraft.price > 900 && selectedDraft.price <= 1200
+    ? "#Price900to1200"
+    : selectedDraft.price > 1200 && selectedDraft.price <= 1500
+    ? "#Price1200to1500"
+    : selectedDraft.price > 1500 && selectedDraft.price <= 1700
+    ? "#Price1500to1700"
+    : selectedDraft.price > 1700 && selectedDraft.price <= 1900
+    ? "#Price1700to1900"
+    : selectedDraft.price > 1900 && selectedDraft.price <= 2100
+    ? "#Price1900to2100"
+    : selectedDraft.price > 2100 && selectedDraft.price <= 2500
+    ? "#Price2100to2500"
+    : selectedDraft.price > 2500 && selectedDraft.price <= 3000
+    ? "#Price2500to3000"
+    : selectedDraft.price > 3000 && selectedDraft.price <= 4000
+    ? "#Price3000to4000"
+    : selectedDraft.price > 4000 && selectedDraft.price <= 5000
+    ? "#Price4000to5000"
+    : selectedDraft.price > 5000
+    ? "#PriceAbove5000"
+    : ""}
+  
+      
+👤 Contact: [@David_Tibelashvili]
+📞 +995 599 20 67 16 | ${selectedDraft?.email?.includes('geomap')
+    ? `#${selectedDraft?.email?.split('geomap')[0] || "user"}`
+    : `#${selectedDraft?.email?.split('@')[0] || "user"}`
+}
+       
+⭐ [Check all listings](https://t.me/rent_tbilisi_ge/9859) | [Reviews](https://t.me/reviews_rent_tbilisi)
+        
+📸 [Instagram](https://www.instagram.com/rent_in_tbilisi?igsh=MWU5aWVxa3Fxd2dlbw==) 🌐 [FB](https://www.facebook.com/share/j6jBfExKXjgNVpVQ/) 🎥 [YouTube](https://www.youtube.com/@RENTINTBILISI)
+        `;
+
+
+
+
+      const saleMessage = `
+      #${selectedDraft?.city} 🏢#${selectedDraft?.metro} [${selectedDraft.address}](${selectedDraft.googleaddressurl})
+        
+#${selectedDraft?.title} Apartment for #${selectedDraft?.type}
+✨#${selectedDraft?.residencyType}
+🏠 ${selectedDraft.area} Sq.m | ${selectedDraft?.floor}floor | #${selectedDraft?.heating}
+
+${amenitiesFormatted}
+${selectedDraft?.parking > 0 ? "✅ Parking" : "❌ Parking"}
+
 💰 ${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"} | Deposit ${selectedDraft.deposit}${selectedDraft.currency == "USD" ? "$" : "₾"}
   0% Commission
 ${selectedDraft.price >= 0 && selectedDraft.price <= 300
@@ -356,6 +425,7 @@ ${selectedDraft.price >= 0 && selectedDraft.price <= 300
 
 
         const chatId = selectedDraft.type === "Rent" ? TELEGRAM_CHAT_ID : SALE_CHAT_ID;
+        const message = selectedDraft.type === "Rent" ? rentMessage : saleMessage;
 
         await uploadMediaToTelegram(media, chatId, TELEGRAM_BOT_TOKEN, message);
         
