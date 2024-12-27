@@ -1095,6 +1095,7 @@ const handleVideoUpload = (uploadedVideos) => {
      "Oven",
     "Microwave",
     "VacuumCleaner",
+   "AirConditioner",
     "Balcony",
     "Stove",
     "Dishwasher",
