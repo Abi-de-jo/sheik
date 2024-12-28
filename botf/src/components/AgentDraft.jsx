@@ -201,42 +201,39 @@ console.log("bbbbbbbbbbbbbbbbb")
       ];
 
       const allAmenities = [
-        "Stove",
-        "Conditioner",
-        "TV",
-        "WiFi",
-        "Elevator",
         "Oven",
-        "Dishwasher",
         "Microwave",
+        "VacuumCleaner",
         "Balcony",
-        "WashingMachine"
+        "Stove",
+        "Dishwasher",
+        "SmartTV",
+        "WiFi",
+        "ParkingPlace",
+        "PlayStation",
+        "Projector",
+        "Elevator",
+        "Heating",
       ];
       
+      const importantAmenities = ["Dishwasher", "Elevator", "Balcony"];
+      
       const formatAmenitiesInTwoColumns = (selectedAmenities) => {
-        // Filter out unselected amenities
-        const unselectedAmenities = allAmenities.filter(
-          (amenity) => !selectedAmenities.includes(amenity)
-        );
+        // Map all amenities to their respective status
+        const formattedAmenities = allAmenities.map((amenity) => {
+          if (selectedAmenities.includes(amenity)) {
+            return `✅ #${amenity.replace(/\s+/g, "")}`; // Mark selected amenities as ✅
+          } else if (importantAmenities.includes(amenity)) {
+            return `✖️ ${amenity.replace(/\s+/g, "")}`; // Mark unselected important amenities as ✖️
+          } else {
+            return null; // Ignore other unselected amenities
+          }
+        }).filter(Boolean); // Remove null entries
       
-        // Randomly select 3 unselected amenities to mark as ❌
-        const randomWrongAmenities = unselectedAmenities
-          .sort(() => Math.random() - 0.5) // Shuffle the array
-          .slice(0, 3); // Take the first 3 elements after shuffle
-      
-        // Map over all amenities and assign ✅ or ❌
-        const formattedAmenities = allAmenities.map((amenity) =>
-          selectedAmenities.includes(amenity)
-            ? `✅ #${amenity.replace(/\s+/g, "")}` // Mark selected amenities as ✅
-            : randomWrongAmenities.includes(amenity)
-            ? `❌ ${amenity.replace(/\s+/g, "")}` // Mark random unselected amenities as ❌
-            : null // Ignore others
-        ).filter(Boolean); // Remove null values
-      
-        // Ensure order: ✅ first, then ❌
+        // Ensure order: ✅ first, then ✖️
         const orderedAmenities = [
           ...formattedAmenities.filter((item) => item.startsWith("✅")),
-          ...formattedAmenities.filter((item) => item.startsWith("❌")),
+          ...formattedAmenities.filter((item) => item.startsWith("✖️")),
         ];
       
         // Chunk into rows of 2 for better formatting
@@ -250,7 +247,7 @@ console.log("bbbbbbbbbbbbbbbbb")
       };
       
       const amenitiesFormatted = formatAmenitiesInTwoColumns(
-        selectedDraft.amenities || []
+        selectedDraft?.amenities || []
       );
       
 
@@ -264,7 +261,7 @@ Apartment for #${selectedDraft?.type}✨ #${selectedDraft?.residencyType}
 🏠 ${selectedDraft.area} Sq.m | #${selectedDraft?.floor}floor | #${selectedDraft?.bathrooms}Bath
 
 ${amenitiesFormatted}
-${selectedDraft?.parking > 0 ? "✅ Parking" : "❌ Parking"}
+${selectedDraft?.parking > 0 ? "✅ Parking" : "✖️ Parking"}
 
 🐕 Pets: ${
   selectedDraft.selectedAdditional?.includes("PetsAllowed")
@@ -332,7 +329,7 @@ ${selectedDraft.price >= 0 && selectedDraft.price <= 300
 🏠 ${selectedDraft.area} Sq.m | ${selectedDraft?.floor}floor | #${selectedDraft?.heating}
 
 ${amenitiesFormatted}
-${selectedDraft?.parking > 0 ? "✅ Parking" : "❌ Parking"}
+${selectedDraft?.parking > 0 ? "✅ Parking" : "✖️ Parking"}
 
 💰 ${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"} | Deposit ${selectedDraft.deposit}${selectedDraft.currency == "USD" ? "$" : "₾"}
   0% Commission
@@ -407,7 +404,7 @@ ${selectedDraft.price >= 0 && selectedDraft.price <= 300
         
         ✨ *Design Features:* ${selectedDraft.design?.length > 0 ? selectedDraft.design.join(', ') : "N/A"}
         
-        🔗 *More Info:* [Click Here](https://sheik-front.vercel.app/properties/${selectedDraft.id})
+        🔗 *More Info:* [Click Here](https://sheik-front.vercel.app/card/${selectedDraft.id})
         
         ✨ *Contact for more details or to schedule a visit!*
         `.trim();
