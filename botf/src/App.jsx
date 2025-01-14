@@ -21,6 +21,7 @@ import DashboardView from "./components/DashboardView";
 import AdminPub from "./components/AdminPub";
 import PropertyMap from "./components/PropertyMap.jsx";
 import AgentsAchieve from "./components/AgentsAchieve.jsx";
+import AllOwners from "./components/Allowners.jsx";
 
 import "./cloudinaryLoader.js"
 import { LoadScript } from "@react-google-maps/api";
@@ -66,6 +67,8 @@ const App = () => {
             <Route path="/agent-draft" element={<AgentDraft />} />
             <Route path="/analytics" element={<Dashboard />} />
             <Route path="/agents-list" element={<AllAgents />} />
+                       <Route path="/owners-list" element={<AllOwners />} />
+
             <Route path="/draft-details/:id" element={<AgentDraftDetails />} />
                         <Route path="/dashboard-view" element={<DashboardView  />} />
                         <Route path="/admin-pub" element={<AdminPub />} />
