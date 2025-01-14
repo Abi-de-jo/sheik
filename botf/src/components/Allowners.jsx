@@ -28,8 +28,8 @@ console.log(users)
     fetchowner();
   }, []);
 
-  const handleAgentClick = (email) => {
-    navigate(`/profile/${email}`); // Redirect to the agent's profile
+  const handleownerClick = (email) => {
+    navigate(`/profile/${email}`); // Redirect to the owner's profile
   };
 
   if (loading) {
@@ -45,23 +45,23 @@ console.log(users)
       <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">owner with Geomap</h1>
       {owner.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {owner.map((agent) => (
+          {owner.map((owner) => (
             <div
-              key={agent.id}
-              onClick={() => handleAgentClick(agent.email)} // Click handler for redirection
+              key={owner.id}
+              onClick={() => handleownerClick(owner.email)} // Click handler for redirection
               className="bg-white shadow-lg rounded-lg p-4 border border-gray-200 hover:shadow-xl transition cursor-pointer"
             >
               {/* Extract name from email if not provided */}
               <h2 className="text-xl font-semibold text-gray-800">
                </h2>
               <p className="text-gray-600 mt-2">
-                <span className="font-medium">Email:</span> {agent.email}
+                <span className="font-medium">Name:</span> {owner.username}
               </p>
               <p className="text-gray-600 mt-1">
-                <span className="font-medium">Role:</span> Agent
+                <span className="font-medium">Role:</span> owner
               </p>
               <p className="text-gray-600 mt-1">
-                <span className="font-medium">Telegram no:</span> {agent.teleNumber}
+                <span className="font-medium">Telegram no:</span> {owner.teleNumber}
               </p>
               
             </div>
