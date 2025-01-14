@@ -3,23 +3,70 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 const API_BASE_URL = "https://sheik-back.vercel.app/api"; // Replace with your backend base URL
-
+const CLOUDINARY_UPLOAD_URL = "https://api.cloudinary.com/v1_1/dbandd0k7/image/upload";
+const CLOUDINARY_UPLOAD_PRESET = "zf9wfsfi";
 const CardDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [editedCard, setEditedCard] = useState(location.state?.card || {});
+  const [isUploading, setIsUploading] = useState(false);
 
-  const email = localStorage.getItem("email");
+  const email = "david@gmail.com";
+  // const email = localStorage.getItem("email");
   const role = localStorage.getItem("role");
 
   const handleBack = () => {
     navigate(-1);
   };
 
+
+
+
+
+
   const handleEdit = () => {
     setIsEditing(true);
   };
+
+  const handleImageUpload = async () => {
+    try {
+      setIsUploading(true);
+      const fileInput = document.createElement("input");
+      fileInput.type = "file";
+      fileInput.accept = "image/*";
+      fileInput.click();
+
+      fileInput.onchange = async () => {
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+        const response = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
+        const uploadedImageUrl = response.data.secure_url;
+
+        setEditedCard((prev) => ({
+          ...prev,
+          images: [...(prev.images || []), uploadedImageUrl],
+        }));
+        setIsUploading(false);
+      };
+    } catch (error) {
+      console.error("Image upload failed:", error);
+      alert("Failed to upload image. Please try again.");
+      setIsUploading(false);
+    }
+  };
+
+  const handleImageRemove = (imageUrl) => {
+    setEditedCard((prev) => ({
+      ...prev,
+      images: prev.images.filter((img) => img !== imageUrl),
+    }));
+  };
+
+
 
   const handleSave = async () => {
     try {
@@ -84,32 +131,86 @@ const CardDetails = () => {
   return (
     <div className="p-6 border border-gray-300 rounded-md shadow-md bg-white space-y-4 mb-5">
       {/* Image Carousel */}
-       <button
+      <button
           className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow hover:bg-gray-400"
           onClick={handleBack}
         >
           Back
         </button>
-      <div className="relative w-full h-64 bg-gray-200 rounded-md overflow-hidden">
-        {editedCard.images && editedCard.images.length > 0 ? (
-          <div className="flex overflow-x-auto snap-x space-x-2">
-            {editedCard.images.map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                alt={`Property ${index + 1}`}
-                className="w-full h-64 object-cover snap-center rounded-md"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = 'https://via.placeholder.com/300x300?text=No+Image';
-                }}
-              />
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-400 text-center">No Images Available</p>
-        )}
-      </div>
+    {/* Image Carousel Section */}
+    <div className="relative w-full h-full bg-gray-200 rounded-md overflow-hidden">
+  {editedCard.images && editedCard.images.length > 0 ? (
+    <div className="relative flex overflow-x-scroll snap-x space-x-4 p-4">
+      {editedCard.images.map((image, index) => (
+        <div
+          key={index}
+          className="relative flex-shrink-0 w-64 h-64 snap-center bg-gray-100 rounded-md shadow-md"
+        >
+          <img
+            src={image}
+            alt={`Property ${index + 1}`}
+            className="w-full h-full object-cover rounded"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "https://dummyimage.com/300x300/cccccc/000000&text=No+Image"; // Reliable placeholder
+            }}
+          />
+          {isEditing && (
+            <button
+              className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full"
+              onClick={() => handleImageRemove(image)}
+            >
+              ✕
+            </button>
+          )}
+        </div>
+      ))}
+
+      {/* Upload New Image Button as the Last Card */}
+      {isEditing && (
+        <div
+          className="relative flex-shrink-0 w-64 h-64 snap-center bg-gray-100 rounded-md shadow-md flex items-center justify-center"
+          onClick={handleImageUpload}
+        >
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+            disabled={isUploading}
+          >
+            {isUploading ? "Uploading..." : "Upload New Image"}
+          </button>
+        </div>
+      )}
+    </div>
+  ) : (
+    <p className="text-gray-400 text-center">No Images Available</p>
+  )}
+
+  {/* Submit All Images to Backend */}
+  {isEditing && (
+    <div className="mt-4">
+      <button
+        className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition"
+        onClick={async () => {
+          try {
+            await axios.put(
+              `${API_BASE_URL}/residency/update/${editedCard.id}`,
+              { images: editedCard.images }  
+            );
+            alert("Images updated successfully!");
+            navigate(-1)
+          } catch (error) {
+            console.error("Error updating images:", error);
+            alert("Failed to update images. Please try again.");
+          }
+        }}
+      >
+        Save All Images
+      </button>
+    </div>
+  )}
+</div>
+
+
 
       {/* Property Details */}
       {isEditing ? (
@@ -408,7 +509,7 @@ const CardDetails = () => {
 
 
 
-       
+        
       </div>
     </div>
   );
