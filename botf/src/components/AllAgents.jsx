@@ -12,7 +12,7 @@ function AllAgents() {
     const fetchAgents = async () => {
       try {
         const users = await getAllUsers();
-console.log(users)
+        console.log(users);
         // Filter users who have "geomap" in their email
         const geomapUsers = users.filter((user) => user.email?.includes("geomap"));
 
@@ -28,8 +28,9 @@ console.log(users)
     fetchAgents();
   }, []);
 
-  const handleAgentClick = (email) => {
-    navigate(`/profile/${email}`); // Redirect to the agent's profile
+  const handleAgentClick = (id) => {
+    navigate(`/profile/${id}`);  
+    console.log("hello", id)
   };
 
   if (loading) {
@@ -48,22 +49,30 @@ console.log(users)
           {agents.map((agent) => (
             <div
               key={agent.id}
-              onClick={() => handleAgentClick(agent.email)} // Click handler for redirection
-              className="bg-white shadow-lg rounded-lg p-4 border border-gray-200 hover:shadow-xl transition cursor-pointer"
+              onClick={() => handleAgentClick(agent.id)} // Click handler for redirection
+              className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 hover:shadow-xl transition cursor-pointer"
             >
-              {/* Extract name from email if not provided */}
-              <h2 className="text-xl font-semibold text-gray-800">
-               </h2>
+              <div className="flex items-center mb-4">
+                {/* Extract initials from username */}
+                <div className="bg-blue-500 text-white rounded-full h-10 w-10 flex items-center justify-center text-lg font-semibold mr-4">
+                  {agent.username ? agent.username[0].toUpperCase() : "A"}
+                </div>
+                <h2 className="text-xl font-semibold text-gray-800">
+                  {agent.username || "Unnamed Agent"}
+                </h2>
+              </div>
               <p className="text-gray-600 mt-2">
-                <span className="font-medium">Email:</span> {agent.email}
+                <span className="font-medium">Email:</span> {agent.email || "N/A"}
               </p>
               <p className="text-gray-600 mt-1">
                 <span className="font-medium">Role:</span> Agent
               </p>
               <p className="text-gray-600 mt-1">
-                <span className="font-medium">Telegram no:</span> {agent.teleNumber}
+                <span className="font-medium">Telegram No:</span> {agent.teleNumber || "N/A"}
               </p>
-              
+              <div className="flex justify-end mt-4">
+               
+              </div>
             </div>
           ))}
         </div>
