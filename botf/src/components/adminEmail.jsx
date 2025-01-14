@@ -83,6 +83,15 @@ const AdminEmail = () => {
           >
             All Agents List
           </button>
+
+          <button
+            onClick={() => navigate("/owners-list")}
+            className="bg-purple-500 text-white px-4 py-2 rounded-lg shadow hover:bg-purple-600 transition"
+          >
+            All Owners List
+          </button>
+
+         
             <button
       onClick={() => navigate("/dashboard-view")}
       className="bg-teal-500 text-white px-4 py-2 rounded-lg shadow hover:bg-teal-600 transition"
