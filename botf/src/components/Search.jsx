@@ -5,8 +5,10 @@ import { BiHeart } from "react-icons/bi";
 import { AiFillHeart } from "react-icons/ai";
 import axios from "axios";
 import { getAllLikes } from "../utils/api";
-
+import { useTranslation } from "react-i18next";
 function Search() {
+
+  const {t} = useTranslation("home");
   const [favorites, setFavorites] = useState([]); // Track favorite properties
   const { data, isLoading, error } = useProperties(); // Fetch all properties using the hook
   const [searchTerm, setSearchTerm] = useState(""); // State to track the search term
@@ -34,12 +36,13 @@ function Search() {
     const diffInHours = Math.floor(diffInMinutes / 60);
   
     if (diffInHours < 24) {
-      return "New"; // Show "New" if updated within the last 24 hours
+      return  t("new")
     } else if (discount) {
-      return "Discounted"; // Replace "New" with "Discounted" if older than 24 hours and has a discount
+      return  t("discounted")
     } else if (diffInHours >= 24) {
       const diffInDays = Math.floor(diffInHours / 24);
-      return diffInDays === 1 ? "1 day ago" : `${diffInDays} days ago`;
+      return t("daysAgo", { count: diffInDays });
+
     }
   };
 
@@ -278,14 +281,14 @@ window.open(
     <div className="min-h-screen bg-gradient-to-r from-gray-100 to-blue-50 p-6">
       {/* Search Bar */}
       <div className="bg-white p-6 rounded-lg shadow-xl mb-6">
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">Search Properties</h2>
+        <h2 className="text-3xl font-bold text-gray-800 mb-4"> {t("s")} {t("propertiesTitle")}</h2>
         <div className="relative">
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full p-4 pl-12 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="🔍 Search properties by title, address, city, or type..."
+            placeholder={`${t("🔍place ")}`}
           />
         </div>
       </div>
@@ -294,24 +297,23 @@ window.open(
       
       <div className="bg-white p-6 rounded-lg shadow-xl mb-6">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-gray-700">Filters</h2>
+          <h2 className="text-2xl font-bold text-gray-700">{t("Filter")}</h2>
           <button
             onClick={() => setIsFilterPopupOpen(true)}
             className="bg-gradient-to-r from-blue-500 to-green-400 text-white px-6 py-2 rounded-full shadow-lg"
           >
-            Open Filters
-          </button>
+{t("Openfilter")}          </button>
         </div>
         {/* Display current filter values */}
         
         <div className="mt-4">
-          <p className="text-gray-700 text-sm">Max Price: <span className="font-semibold">{filters.price || 'Not set'}</span></p>
-          <p className="text-gray-700 text-sm">City: <span className="font-semibold">{filters.city || 'Not set'}</span></p>
+          <p className="text-gray-700 text-sm"> {t("Max")}: <span className="font-semibold">{filters.price || 'Not set'}</span></p>
+          <p className="text-gray-700 text-sm"> {t("city")}: <span className="font-semibold">{filters.city || 'Not set'}</span></p>
           <button
             onClick={clearFilters}
             className="mt-4 bg-red-500 text-white px-6 py-2 rounded-full shadow-lg hover:bg-red-600 transition"
           >
-            Clear Filters
+            {t("clear")}
           </button>
         </div>
 
@@ -319,10 +321,8 @@ window.open(
       </div>
 
       {/* Properties Section */}
-      <div className="bg-white p-6 rounded-lg shadow-xl">
-        <h2 className="text-2xl font-bold text-gray-700 mb-6 border-b pb-3 border-gray-200">
-          Properties
-        </h2>
+      <div className="bg-white p-6 rounded-lg shadow-xl mb-11">
+        
         {isLoading ? (
           <p className="text-gray-600 text-center">Loading properties...</p>
         ) : error ? (
@@ -350,11 +350,11 @@ window.open(
         
                 {/* Dynamic Labels */}
                 <div className="absolute top-2 left-2 space-y-1">
-                 <span
+                <span
     className={`${
-      getTimeDifference(property.updatedAt, property.discount) === "New"
+      getTimeDifference(property.updatedAt, property.discount) === t("new")
         ? "bg-green-500"
-        : getTimeDifference(property.updatedAt, property.discount) === "Discounted"
+        : getTimeDifference(property.updatedAt, property.discount) === t("discounted")
         ? "bg-red-500"
         : "bg-blue-500"
     } text-white text-xs font-medium px-2 py-1 text-center rounded`}
@@ -379,12 +379,32 @@ window.open(
                   {property.title || "Untitled Property"}
                 </h3>
                 <p className="text-xs text-gray-600 mt-1 truncate">
-                  {property.address || "No Address Available"}
+                {property.city ? t(property.city.toLowerCase()) : t("noDistrictAvailable")}               
+                
+
                 </p>
-                <p className="text-sm text-gray-800 font-bold mt-1">{property.price || "N/A"} USD</p>
-                <p className="text-xs text-gray-600 mt-1">
-                  {property.type || "N/A"} • {property.city || "N/A"}
-                </p>
+                
+                <p className="text-sm text-gray-800 font-bold mt-1">
+  {property.discount ? (
+    <>
+      <span className="line-through text-gray-500">
+        {property.price} {property.currency}
+      </span>{" "}
+      <span>
+        {(property.price - property.discount).toFixed()} {property.currency}
+      </span>
+    </>
+  ) : (
+    `${property.price || "N/A"} ${property.currency}`
+  )}
+</p>
+<p className="text-xs text-gray-600 mt-1">
+                {t("propertyInfo", {
+  type: t(property.type.toLowerCase()) || "N/A", // Translate the type
+  bathrooms: property.bathrooms || "N/A",
+  area: property.area || "N/A"
+})}
+   </p>
               </div>
         
               {/* Write Button */}
@@ -396,16 +416,16 @@ window.open(
       window.open("https://t.me/David_Tibelashvili", "_blank");
     }}
   >
-    Contact
-  </button>
+        {t("contact")}
+        </button>
 
   {/* View Button */}
   <button
     className="px-4 py-1 bg-blue-500 ml-5 text-white text-xs font-medium rounded shadow hover:bg-blue-600 transition"
     onClick={() => navigate(`/card/${property.id}`, { state: { card: property } })}
   >
-    View
-  </button>
+        {t("view")}
+        </button>
               </div>
         
               {/* Favorite Icon */}
@@ -441,100 +461,100 @@ window.open(
 
             {/* City */}
             <div className="mb-3">
-              <label className="block text-sm font-medium text-gray-700">City</label>
-              <select
-                value={filters.city}
-                onChange={(e) => handleFilterChange("city", e.target.value)}
-                className="w-full p-2 border rounded mt-1"
-              >
-                <option value="">Select City</option>
-                <option value="Tbilisi">Tbilisi</option>
-                <option value="Batumi">Batumi</option>
-              </select>
-            </div>
-
-            <div className="mb-3">
-  <label className="block text-sm font-medium text-gray-700">District</label>
+  <label className="block text-sm font-medium text-gray-700">{t("city")}</label>
   <select
-  value={filters.district[0] || ""} // Take the first selected district for single-select
-  onChange={(e) => handleFilterChange("district", [e.target.value])} // Wrap value in an array
-  className="w-full p-2 border rounded mt-1"
->
-  <option value="">Select District</option>
-  {[
-    "Abanotubani",
-    "Afrika",
-    "Avchala",
-    "Avlabari",
-    "Bagebi",
-    "Chugureti",
-    "DidiDighomi",
-    "Didgori",
-    "Didube",
-    "Didube-Chughureti",
-    "Dighmi 1-9",
-    "Dighmis Chala",
-    "Dighmis Massive",
-    "Digomi 1-9",
-    "Digomi Massive",
-    "Elia",
-    "Gldani",
-    "Gldani-Nadzaladevi",
-    "Iveri Settlement",
-    "Isani",
-    "Krtsanisi",
-    "Koshigora",
-    "KusTba",
-    "Lisi",
-    "Lisi Adjacent Area",
-    "Lisi Lake",
-    "Marjanishvili",
-    "Mtatsminda",
-    "Mukhatgverdi",
-    "Mukhattskaro",
-    "Nutsubidze Plateau",
-    "Nutsubidze Plato",
-    "Okrokana",
-    "Old Tbilisi",
-    "Ortachala",
-    "Saburtalo",
-    "Samgori",
-    "Sof. Digomi",
-    "Sololaki",
-    "State University",
-    "Svaneti Quarter",
-    "Tsavkisi Valley",
-    "Temqa",
-    "Tkhinvali",
-    "Tskhneti",
-    "Vake",
-    "Vake-Saburtalo",
-    "Vasizubani",
-    "Varketili",
-    "Vashlijvari",
-    "Vera",
-    "Vezisi",
-  ].map((district) => (
-    <option key={district} value={district}>
-      {district}
-    </option>
-  ))}
-</select>
-
-
+    value={filters.city}
+    onChange={(e) => handleFilterChange("city", e.target.value)}
+    className="w-full p-2 border rounded mt-1"
+  >
+    <option value="">{t("selectcity")}</option>
+    <option value="Tbilisi">{t("tbilisi")}</option>
+    <option value="Batumi">{t("batumi")}</option>
+  </select>
 </div>
+
+
+<div className="mb-3">
+  <label className="block text-sm font-medium text-gray-700">{t("district")}</label>
+  <select
+    value={filters.district[0] || ""} // Take the first selected district for single-select
+    onChange={(e) => handleFilterChange("district", [e.target.value])} // Wrap value in an array
+    className="w-full p-2 border rounded mt-1"
+  >
+    <option value="">{t("selectdistrict")}</option>
+    {[
+      "Abanotubani",
+      "Afrika",
+      "Avchala",
+      "Avlabari",
+      "Bagebi",
+      "Chugureti",
+      "DidiDighomi",
+      "Didgori",
+      "Didube",
+      "Didube-Chughureti",
+      "Dighmi 1-9",
+      "Dighmis Chala",
+      "Dighmis Massive",
+      "Digomi 1-9",
+      "Digomi Massive",
+      "Elia",
+      "Gldani",
+      "Gldani-Nadzaladevi",
+      "Iveri Settlement",
+      "Isani",
+      "Krtsanisi",
+      "Koshigora",
+      "KusTba", 
+      "Lisi",
+      "Lisi Adjacent Area",
+      "Lisi Lake",
+      "Marjanishvili",
+      "Mtatsminda",
+      "Mukhatgverdi",
+      "Mukhattskaro",
+      "Nutsubidze Plateau",
+      "Nutsubidze Plato",
+      "Okrokana",
+      "Old Tbilisi",
+      "Ortachala",
+      "Saburtalo",
+      "Samgori",
+      "Sof. Digomi",
+      "Sololaki",
+      "State University",
+      "Svaneti Quarter",
+      "Tsavkisi Valley",
+      "Temqa",
+      "Tkhinvali",
+      "Tskhneti",
+      "Vake",
+      "Vake-Saburtalo",
+      "Vasizubani",
+      "Varketili",
+      "Vashlijvari",
+      "Vera",
+      "Vezisi",
+    ].map((district) => (
+      <option key={district} value={district}>
+        {t(district.toLowerCase().replace(/\s+/g, ""))}
+      </option>
+    ))}
+  </select>
+</div>
+
 
 
             {/* Price Range */}
             <div className="mb-1">
-    <label className="block text-sm font-medium text-gray-700 mb-1">Price Range</label>
+    <label className="block text-sm font-medium text-gray-700 mb-1">{t("price")}</label>
     <div className="relative">
       <select
         value={filters.price}
         onChange={(e) => handleFilterChange("price", e.target.value)}
         className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
       >
-        <option value="">Select Price Range</option>
+        <option value="">{t("selectprice")}</option>
   <option value="0-300">0 - 300 USD</option>
   <option value="300-500">300 - 500 USD</option>
   <option value="500-700">500 - 700 USD</option>
@@ -542,7 +562,7 @@ window.open(
   <option value="900-1200">900 - 1200 USD</option>
    <option value="1200-1500">1200 - 1500USD</option>
   <option value="1500-1700">1500 - 1700 USD</option>
-  <option value="1700-1900">1700 - 1900 USD</option>
+  <option value="1700-1900">1700 - 1900 USD</option> 
   <option value="1900-2100">1900 - 2100 USD</option>
   <option value="2100-2500">2100 - 2500 USD</option>
   <option value="2500-3000">2500 - 3000 USD</option>
@@ -557,40 +577,41 @@ window.open(
 
             {/* Category */}
             <div className="mb-3">
-              <label className="block text-sm font-medium text-gray-700">Category</label>
-              <div className="flex gap-2 mt-1">
-                {["All", "Rent", "Sale"].map((option) => (
-                  <label key={option} className="flex items-center text-sm">
-                    <input
-                      type="radio"
-                      name="category"
-                      value={option === "All" ? "" : option}
-                      checked={filters.category === (option === "All" ? "" : option)}
-                      onChange={() => handleFilterChange("category", option === "All" ? "" : option)}
-                      className="mr-1"
-                    />
-                    {option}
-                  </label>
-                ))}
-              </div>
-            </div>
+  <label className="block text-sm font-medium text-gray-700">{t("category")}</label>
+  <div className="flex gap-2 mt-1">
+    {["All", "Rent", "Sale"].map((option) => (
+      <label key={option} className="flex items-center text-sm">
+        <input
+          type="radio"
+          name="category"
+          value={option === "all" ? "" : option}
+          checked={filters.category === (option === "All" ? "" : option)}
+          onChange={() => handleFilterChange("category", option === "All" ? "" : option)}
+          className="mr-1"
+        />
+        {t(option.toLowerCase())}
+      </label>
+    ))}
+  </div>
+</div>
+
 
             <hr className="mt-5" />
 
             {/* Number of Rooms */}
             <div className="mb-3">
-  <label className="block text-sm font-medium text-gray-700 mb-1">Bedrooms</label>
+  <label className="block text-sm font-medium text-gray-700 mb-1">{t("bedroom")}</label>
   <div className="relative">
     <select
       value={filters.rooms}
       onChange={(e) => handleFilterChange("rooms", e.target.value)}
       className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
     >
-      <option value="">Select Bedrooms</option>
-      <option value="1">1 Bedroom</option>
-      <option value="2">2 Bedrooms</option>
-      <option value="3">3 Bedrooms</option>
-      <option value="4+">4+ Bedrooms</option>
+      <option value="">{t("selectbed")}</option>
+      <option value="1">1  {t("bedroom")}</option>
+      <option value="2">2  {t("bedroom")} </option>
+      <option value="3">3   {t("bedroom")}</option>
+      <option value="4+">4+  {t("bedroom")} </option>
     </select>
   </div>
 </div>
@@ -601,7 +622,7 @@ window.open(
             {/* Heating */}
             <div className="mb-3">
 
-  <h3 className="text-sm font-medium text-gray-700 mb-2">Rental Period</h3>
+  <h3 className="text-sm font-medium text-gray-700 mb-2">{t("rentalp")}</h3>
  
   <div className="grid grid-cols-2 gap-2">
   {[
@@ -629,11 +650,15 @@ window.open(
         className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
       />
       <span className="text-gray-700">
-        {option.replace(/(\d+)([A-Za-z]+)/, "$1 $2")} {/* Adds space */}
+        {t("termDuration", {
+          count: option.match(/\d+/)[0], // Extracts the number
+          unit: t(option.match(/[A-Za-z]+/)[0].toLowerCase()), // Extracts the unit (e.g., "Day" or "Month")
+        })}
       </span>
     </label>
   ))}
 </div>
+
 
 <hr className="mt-5" />
 
@@ -643,80 +668,80 @@ window.open(
 
 {/* Residency Type */}
 <div className="mb-4">
-  <h3 className="text-sm font-medium text-gray-700 mb-2">Residency Type</h3>
+  <h3 className="text-sm font-medium text-gray-700 mb-2">{t("residencyType")}</h3>
   <div className="grid grid-cols-2 gap-2">
-  {[
-    { value: "New", label: "New Residency" },
-    { value: "Old", label: "Old Residency" },
-    { value: "Mixed", label: "Mixed Residency" },
-    { value: "historical", label: "Historical Residency" },
-  ].map((option) => (
-    <label key={option.value} className="flex items-center text-sm gap-2">
-      <input
-        type="radio"
-        name="residencyType"
-        value={option.value}
-        checked={filters.residencyType === option.value}
-        onChange={() => handleFilterChange("residencyType", option.value)}
-        className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-      />
-      <span className="text-gray-700">{option.label}</span>
-    </label>
-  ))}
+    {[
+      { value: "New", label: t("newResidency") },
+      { value: "Old", label: t("oldResidency") },
+      { value: "Mixed", label: t("mixedResidency") },
+      { value: "Historical", label: t("historicalResidency") },
+    ].map((option) => (
+      <label key={option.value} className="flex items-center text-sm gap-2">
+        <input
+          type="radio"
+          name="residencyType"
+          value={option.value}
+          checked={filters.residencyType === option.value}
+          onChange={() => handleFilterChange("residencyType", option.value)}
+          className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+        />
+        <span className="text-gray-700">{option.label}</span>
+      </label>
+    ))}
+  </div>
 </div>
 
-
-
-</div>
 
 <hr className="mt-5" />
 
 
 <div className="mb-4 mt-2">
-  <h3 className="text-sm font-medium text-gray-700 mb-2">Design Style</h3>
+  <h3 className="text-sm font-medium text-gray-700 mb-2">{t("designStyle")}</h3>
   <div className="grid grid-cols-2 gap-2">
-  {[
-    "White",
-    "Grey",
-    "Yellow",
-    "New Apartment",
-    "Mixed",
-    "Old",
-    "Retro",
-    "Under Repair",
-  ].map((style) => (
-    <label key={style} className="flex items-center text-sm gap-2">
-      <input
-        type="checkbox"
-        value={style}
-        checked={filters.designStyle?.includes(style)}
-        onChange={() =>
-          setFilters((prev) => ({
-            ...prev,
-            designStyle: prev.designStyle?.includes(style)
-              ? prev.designStyle.filter((item) => item !== style)
-              : [...(prev.designStyle || []), style],
-          }))
-        }
-        className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-      />
-      <span className="text-gray-700">{style}</span>
-    </label>
-  ))}
+    {[
+      "White",
+      "Grey",
+      "Yellow",
+      "New Apartment",
+      "Mixed",
+      "Old",
+      "Retro",
+      "Under Repair",
+    ].map((style) => (
+      <label key={style} className="flex items-center text-sm gap-2">
+        <input
+          type="checkbox"
+          value={style}
+          checked={filters.designStyle?.includes(style)}
+          onChange={() =>
+            setFilters((prev) => ({
+              ...prev,
+              designStyle: prev.designStyle?.includes(style)
+                ? prev.designStyle.filter((item) => item !== style)
+                : [...(prev.designStyle || []), style],
+            }))
+          }
+          className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+        />
+        <span className="text-gray-700">{t(style.toLowerCase().replace(/\s+/g, ""))}</span>
+      </label>
+    ))}
+  </div>
 </div>
 
-</div>
+
+
 
 <hr className="mt-5" />
 
 
 <div className="mb-4">
-  <h3 className="text-sm font-medium text-gray-700 mb-2">Pets</h3>
+  <h3 className="text-sm font-medium text-gray-700 mb-2">{t("pets")}</h3>
   <div className="grid grid-cols-2 gap-2">
     {[
-      { value: "Allowed", label: "Allowed" },
-      { value: "NotAllowed", label: "Not Allowed" },
-      { value: "ByAgreement", label: "By Agreement" },
+      { value: "Allowed", label: t("allowed") },
+      { value: "NotAllowed", label: t("notAllowed") },
+      { value: "ByAgreement", label: t("byAgreement") },
     ].map((option) => (
       <label key={option.value} className="flex items-center text-sm gap-2">
         <input
@@ -733,47 +758,51 @@ window.open(
   </div>
 </div>
 
+
+
 <hr className="mt-5" />
 
             {/* Amenities */}
             <div className="mb-4">
-  <h3 className="text-sm font-medium text-gray-700 mb-2">Amenities</h3>
+  <h3 className="text-sm font-medium text-gray-700 mb-2">{t("amenities")}</h3>
   <div className="grid grid-cols-2 gap-2">
-  {[
-    "Bath",
-    "Shower",
-    "Balcony",
-     "Courtyard",
-    "ParkingPlace",
-    "Conditioner",
-    "Dishwasher",
-    "Oven",
-    "Stove",
-    "CentralHeating",
-    "Fireplace",
-  ].map((option) => (
-    <label key={option} className="flex items-center text-sm gap-2">
-      <input
-        type="checkbox"
-        checked={filters.amenities.includes(option)}
-        onChange={() =>
-          setFilters((prev) => ({
-            ...prev,
-            amenities: prev.amenities.includes(option)
-              ? prev.amenities.filter((item) => item !== option)
-              : [...prev.amenities, option],
-          }))
-        }
-        className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-      />
-      <span className="text-gray-700">
-        {option.replace(/([A-Z])/g, " $1").trim()} {/* Makes labels clean */}
-      </span>
-    </label>
-  ))}
+    {[
+      "Bath",
+      "Shower",
+      "Balcony",
+      "Courtyard",
+      "ParkingPlace",
+      "Conditioner",
+      "Dishwasher",
+      "Oven",
+      "Stove",
+      "CentralHeating",
+      "Fireplace",
+    ].map((option) => (
+      <label key={option} className="flex items-center text-sm gap-2">
+        <input
+          type="checkbox"
+          checked={filters.amenities.includes(option)}
+          onChange={() =>
+            setFilters((prev) => ({
+              ...prev,
+              amenities: prev.amenities.includes(option)
+                ? prev.amenities.filter((item) => item !== option)
+                : [...prev.amenities, option],
+            }))
+          }
+          className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+        />
+        <span className="text-gray-700">
+          {t(option.toLowerCase().replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase())}
+        </span>
+      </label>
+    ))}
+  </div>
 </div>
 
-</div>
+
+
 <hr className="mt-5" />
 
 
