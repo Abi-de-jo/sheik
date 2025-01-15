@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiFillHeart } from "react-icons/ai";
@@ -6,11 +7,12 @@ import axios from "axios";
 import { BiHeart } from "react-icons/bi";
 
 function Favourite() {
+   const {t} = useTranslation("home")
   const [favorites, setFavorites] = useState([]); // Track favorite properties
   const [allProperties, setAllProperties] = useState([]); // Track all properties
   const navigate = useNavigate(); // Navigation hook
-  // const email = localStorage.getItem("teleNumber");  
-  const email = "1776941770";
+  const email = localStorage.getItem("teleNumber");  
+  // const email = "1776941770";
 
   useEffect(() => {
     const fetchAllProperties = async () => {
@@ -91,12 +93,13 @@ window.open(
     const diffInHours = Math.floor(diffInMinutes / 60);
   
     if (diffInHours < 24) {
-      return "New"; // Show "New" if updated within the last 24 hours
+      return  t("new")
     } else if (discount) {
-      return "Discounted"; // Replace "New" with "Discounted" if older than 24 hours and has a discount
+      return  t("discounted")
     } else if (diffInHours >= 24) {
       const diffInDays = Math.floor(diffInHours / 24);
-      return diffInDays === 1 ? "1 day ago" : `${diffInDays} days ago`;
+      return t("daysAgo", { count: diffInDays });
+
     }
   };
 
@@ -163,7 +166,7 @@ window.open(
     <div className="min-h-screen bg-gray-100 p-4">
   {/* Header Section */}
   <div className="flex justify-between items-center bg-white p-6 rounded-lg shadow-lg mb-6">
-    <h1 className="text-2xl font-bold text-gray-800">Favourite Properties</h1>
+    <h1 className="text-2xl font-bold text-gray-800">{t("fav")}</h1>
   </div>
 
   {/* Liked Properties */}
@@ -216,12 +219,31 @@ window.open(
                   {property.title || "Untitled Property"}
                 </h3>
                 <p className="text-xs text-gray-600 mt-1 truncate">
-                  {property.address || "No Address Available"}
+                {property.city ? t(property.city.toLowerCase()) : t("noDistrictAvailable")}               
+                
+
                 </p>
-                <p className="text-sm text-gray-800 font-bold mt-1">{property.price || "N/A"} USD</p>
-                <p className="text-xs text-gray-600 mt-1">
-                  {property.type || "N/A"} • {property.city || "N/A"}
-                </p>
+                <p className="text-sm text-gray-800 font-bold mt-1">
+  {property.discount ? (
+    <>
+      <span className="line-through text-gray-500">
+        {property.price} {property.currency}
+      </span>{" "}
+      <span>
+        {(property.price - property.discount).toFixed()} {property.currency}
+      </span>
+    </>
+  ) : (
+    `${property.price || "N/A"} ${property.currency}`
+  )}
+</p>
+<p className="text-xs text-gray-600 mt-1">
+                {t("propertyInfo", {
+  type: t(property.type.toLowerCase()) || "N/A", // Translate the type
+  bathrooms: property.bathrooms || "N/A",
+  area: property.area || "N/A"
+})}
+   </p>
               </div>
 
           {/* Write Button */}
@@ -233,16 +255,16 @@ window.open(
       window.open("https://t.me/David_Tibelashvili", "_blank");
     }}
   >
-    Contact
-  </button>
+        {t("contact")}
+        </button>
 
   {/* View Button */}
   <button
     className="px-4 py-1 bg-blue-500 ml-5 text-white text-xs font-medium rounded shadow hover:bg-blue-600 transition"
     onClick={() => navigate(`/card/${property.id}`, { state: { card: property } })}
   >
-    View
-  </button>
+        {t("view")}
+        </button>
               </div>
 
           {/* Favorite Icon */}
