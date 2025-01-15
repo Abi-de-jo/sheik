@@ -2,14 +2,16 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import UploadImage from "./UploadImage";
+import { useTranslation } from "react-i18next";
+
 import UploadVideo from "./UploadVideo";
- import Confetti from "react-confetti"; // Ensure you have this installed
- 
+import Confetti from "react-confetti"; // Ensure you have this installed
 const SecondComponent = ({ onSave }) => {
-   const [message, setMessage] = useState("");
+  const { t } = useTranslation("home")
+  const [message, setMessage] = useState("");
   const GOOGLE_API_KEY = "AIzaSyBgM-qPtgGcDc1VqDzDCDAcjQzuieT7Afo";
-    const [isConfettiActive, setIsConfettiActive] = useState(false); // State to toggle confetti
- 
+  const [isConfettiActive, setIsConfettiActive] = useState(false); // State to toggle confetti
+
   const [secondFormData, setSecondFormData] = useState({
     ...JSON.parse(localStorage.getItem("form1")), // Spread data from form1 directly
     dealType: "Rental",
@@ -19,8 +21,8 @@ const SecondComponent = ({ onSave }) => {
     totalFloors: "",
     termDuration: [],
     address: JSON.parse(localStorage.getItem("form1"))?.address || "",
-    addressURL:"",
-    googleaddressurl:"",
+    addressURL: "",
+    googleaddressurl: "",
     city: "Batumi",
     term: "Long-term",
     price: null,
@@ -34,11 +36,11 @@ const SecondComponent = ({ onSave }) => {
     video: "",
     propertyType: "",
     residencyType: "",
-    position:"",
+    position: "",
     discount: null,
     area: "",
     type: "",
-    design:[],
+    design: [],
     parking: "",
     bathrooms: "",
     phone: "",
@@ -51,9 +53,9 @@ const SecondComponent = ({ onSave }) => {
       "PetsNotAllowed",
       "PetsAllowed",
       "ByAgreement"
-      ],
+    ],
   });
-  
+
   // const role = "user"
   const role = localStorage.getItem("role")
 
@@ -66,82 +68,82 @@ const SecondComponent = ({ onSave }) => {
 
   const handlePublish = async () => {
     console.log(secondFormData.addressURL, "Address URL before saving");
- 
- 
+
+
     const email = localStorage.getItem("email")
     const teleNumber = localStorage.getItem("teleNumber");
     if (!secondFormData.addressURL) {
       alert("Address URL cannot be empty.");
       return;
     }
-     if (Array.isArray(secondFormData.video)) {
+    if (Array.isArray(secondFormData.video)) {
       secondFormData.video = secondFormData.video[0] || ""; // Take the first video URL or set as empty string
     }
     try {
-      console.log(secondFormData.video,"3333333333333333333333333333333333333333")
-      if(email){
+      console.log(secondFormData.video, "3333333333333333333333333333333333333333")
+      if (email) {
         const res = await axios.post(
           "https://sheik-back.vercel.app/api/residency/create",
           {
             teleNumber,
-             secondFormData,
-             email,
+            secondFormData,
+            email,
           }
         );
         console.log("Backend Response:", res);
 
-      } 
-      else{
+      }
+      else {
         const res = await axios.post(
           "https://sheik-back.vercel.app/api/residency/create",
           {
             teleNumber,
-             secondFormData,
-           }
+            secondFormData,
+          }
         );
         console.log("Backend Response:", res);
 
       }
-       
-       setIsConfettiActive(true);
-    setMessage("Successfully created! Waiting for Agent Response...");
 
-    // Scroll to the top
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth", // Smooth scrolling
-    });
+      setIsConfettiActive(true);
+      setMessage("Successfully created! Waiting for Agent Response...");
 
-    // Automatically stop confetti after 5 seconds
-    setTimeout(() => setIsConfettiActive(false), 5000);
+      // Scroll to the top
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth", // Smooth scrolling
+      });
 
-    const response = await axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-        secondFormData.addressURL
-      )}&key=${GOOGLE_API_KEY}`
-    );
-    if (response.data.status === "OK") {
-      const location = response.data.results[0].geometry.location;
+      // Automatically stop confetti after 5 seconds
+      setTimeout(() => setIsConfettiActive(false), 5000);
 
-      const newMarker = {
-        addressURL: secondFormData.addressURL,
-        lat: location.lat,
-        lng: location.lng,
-      };
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+          secondFormData.addressURL
+        )}&key=${GOOGLE_API_KEY}`
+      );
+      if (response.data.status === "OK") {
+        const location = response.data.results[0].geometry.location;
 
-    
+        const newMarker = {
+          addressURL: secondFormData.addressURL,
+          lat: location.lat,
+          lng: location.lng,
+        };
 
-      // Save to localStorage (simulating a database)
-      const savedMarkers =
-        JSON.parse(localStorage.getItem("markers")) || [];
-      const updatedMarkers = [...savedMarkers, newMarker];
-      localStorage.setItem("markers", JSON.stringify(updatedMarkers));
 
-      setMessage("Address saved successfully!");
-      onSave(updatedMarkers); // Pass updated data to parent component
-     } else {
-      alert("Invalid address! Please try again.");
-    }
+
+        // Save to localStorage (simulating a database)
+        const savedMarkers =
+          JSON.parse(localStorage.getItem("markers")) || [];
+        const updatedMarkers = [...savedMarkers, newMarker];
+        localStorage.setItem("markers", JSON.stringify(updatedMarkers));
+
+        setMessage("Address saved successfully!");
+        onSave(updatedMarkers); // Pass updated data to parent component
+      } else {
+        alert("Invalid address! Please try again.");
+      }
 
 
 
@@ -152,83 +154,62 @@ const SecondComponent = ({ onSave }) => {
     } catch (error) {
       console.error("Error sending data to backend:", error);
       throw error;
-    }}
-  
-   
-const handleImageUpdate = (imageURLs) => {
-  setSecondFormData((prev) => ({
-    ...prev,
-    images: imageURLs, // Add image URLs to the state
-  }));
-};
+    }
+  }
 
-const handleVideoUpload = (uploadedVideos) => {
-  setSecondFormData((prev) => ({
-    ...prev,
-    video: uploadedVideos.length > 0 ? uploadedVideos[0] : "", // Handle single video URL
-  }));
-};
-  
-  
+
+  const handleImageUpdate = (imageURLs) => {
+    setSecondFormData((prev) => ({
+      ...prev,
+      images: imageURLs, // Add image URLs to the state
+    }));
+  };
+
+  const handleVideoUpload = (uploadedVideos) => {
+    setSecondFormData((prev) => ({
+      ...prev,
+      video: uploadedVideos.length > 0 ? uploadedVideos[0] : "", // Handle single video URL
+    }));
+  };
+
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 mb-5">
-       {isConfettiActive && <Confetti width={window.innerWidth} height={window.innerHeight} />}
-        {message && <p className="text-green-600 text-center mt-4">{message}</p>}
+      {isConfettiActive && <Confetti width={window.innerWidth} height={window.innerHeight} />}
+      {message && <p className="text-green-600 text-center mt-4">{message}</p>}
       <div className="bg-white p-6 rounded-lg shadow-lg space-y-6 mb-6">
-        {/* Deal Type */}
+
+
         <div>
-          <h3 className="text-lg font-semibold">Deal Type</h3>
-          <div className="flex gap-4 mt-2">
-            {["Rental", "Sale"].map((type) => (
-              <button
-                key={type}
-                onClick={() =>
-                  setSecondFormData({ ...secondFormData, dealType: type })
-                }
-                className={`px-4 py-2 rounded-md ${
-                  secondFormData.dealType === type
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-600"
-                }`}
-              >
-                {type}
-              </button>
-            ))}
-          </div>
+          <label className="block text-sm font-medium">{t("address")}</label>
+          <input
+            type="text"
+            value={secondFormData.address}
+            onChange={(e) =>
+              setSecondFormData({ ...secondFormData, address: e.target.value })
+            }
+            className="w-full p-2 border border-gray-300 rounded-md"
+            placeholder="Enter address"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">{t("addressUrl")}</label>
+          <input
+            type="url"
+            value={secondFormData.googleaddressurl}
+            onChange={(e) =>
+              setSecondFormData({ ...secondFormData, googleaddressurl: e.target.value })
+            }
+            className="w-full p-2 border border-gray-300 rounded-md"
+            placeholder="Paste Address URL here"
+          />
         </div>
 
-        {/* title */}
+
 
         <div>
-  <label className="block text-sm font-medium">Address</label>
-  <input
-    type="text"
-    value={secondFormData.address}
-    onChange={(e) =>
-      setSecondFormData({ ...secondFormData, address: e.target.value })
-    }
-    className="w-full p-2 border border-gray-300 rounded-md"
-    placeholder="Enter address"
-  />
-</div>
-<div>
-  <label className="block text-sm font-medium">Address URL</label>
-  <input
-    type="url"
-    value={secondFormData.googleaddressurl}
-    onChange={(e) =>
-      setSecondFormData({ ...secondFormData, googleaddressurl: e.target.value })
-    }
-    className="w-full p-2 border border-gray-300 rounded-md"
-    placeholder="Paste Address URL here"
-  />
-</div>
-
-
-
- <div>
-          <label className="block text-sm font-medium">Map Address</label>
+          <label className="block text-sm font-medium">{t("mapAddress")}</label>
           <input
             type="text"
             value={secondFormData.addressURL}
@@ -246,7 +227,7 @@ const handleVideoUpload = (uploadedVideos) => {
 
 
         <div>
-          <label className="block text-sm font-medium">Title</label>
+          <label className="block text-sm font-medium">{t("title")}</label>
           <input
             type="text"
             value={secondFormData.title}
@@ -260,7 +241,7 @@ const handleVideoUpload = (uploadedVideos) => {
         {/* Number of Rooms, Size, Floors */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium">Number of Rooms</label>
+            <label className="block text-sm font-medium">{t("numberOfRooms")}</label>
             <select
               value={secondFormData.rooms}
               onChange={(e) =>
@@ -272,17 +253,17 @@ const handleVideoUpload = (uploadedVideos) => {
               className="w-full p-2 px-1 border border-gray-300 rounded-md"
             >
               <option value="" disabled>
-                Select
+                {t("select")}
               </option>
-              <option value="1">1 Room</option>
-              <option value="2">2 Rooms</option>
-              <option value="3">3 Rooms</option>
-              <option value="4">4+ Rooms</option>
+              <option value="1">1 {t("room")}</option>
+              <option value="2">2 {t("room")}</option>
+              <option value="3">3 {t("room")}</option>
+              <option value="4">4+ {t("room")}</option>
             </select>
           </div>
 
           <div>
-            <label className="block text-sm font-medium">Size (sq. m)</label>
+            <label className="block text-sm font-medium">{t("size")} ({t("sq.m")})</label>
             <input
               type="number"
               value={secondFormData.area}
@@ -297,7 +278,7 @@ const handleVideoUpload = (uploadedVideos) => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium">Floor</label>
+            <label className="block text-sm font-medium">{t("floor")}</label>
             <input
               type="number"
               value={secondFormData.floor ?? ""} // Display an empty string if floor is null
@@ -311,7 +292,7 @@ const handleVideoUpload = (uploadedVideos) => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium">Total Floors</label>
+            <label className="block text-sm font-medium">{t("totalFloor")}</label>
             <input
               type="number"
               value={secondFormData.totalFloors}
@@ -328,7 +309,7 @@ const handleVideoUpload = (uploadedVideos) => {
 
           <div>
             <label className="block text-sm font-medium">
-              Number of Parking
+              {t("numberOfParking")}
             </label>
             <select
               value={secondFormData.parking}
@@ -342,19 +323,18 @@ const handleVideoUpload = (uploadedVideos) => {
               className="w-full p-2 px-1 border border-gray-300 rounded-md"
             >
               <option value="" disabled>
-                Select
+                {t("select")}
               </option>
-              <option value="0">No Parking</option>
-              <option value="1">1 Parking</option>
-              <option value="2">2 Parking</option>
-              <option value="3">3 Parking</option>
-              <option value="4+">4+ Parking</option>
+              <option value="0">No {t("numberOfParking")}</option>
+              <option value="1">1 {t("numberOfParking")}</option>
+              <option value="2">2 {t("numberOfParking")}</option>
+              <option value="3">3 {t("numberOfParking")}</option>
+              <option value="4+">4+ {t("numberOfParking")}</option>
             </select>
           </div>
           <div>
             <label className="block text-sm font-medium">
-              Number of Bathroom
-            </label>
+              {t("numberOfBathroom")}            </label>
             <select
               value={secondFormData.bathroooms}
               defaultValue={secondFormData.bathrooms}
@@ -367,13 +347,14 @@ const handleVideoUpload = (uploadedVideos) => {
               className="w-full p-2 px-1 border border-gray-300 rounded-md"
             >
               <option value="" disabled>
-                Select
+                {t("select")}
+
               </option>
-              <option value="0">No Bathroom</option>
-              <option value="1">1 Bathroom</option>
-              <option value="2">2 Bathroom</option>
-              <option value="3">3 Bathroom</option>
-              <option value="4+">4+ Bathroom</option>
+              <option value="0">No {t("bath")}</option>
+              <option value="1">1 {t("bath")}</option>
+              <option value="2">2 {t("bath")}</option>
+              <option value="3">3 {t("bath")}</option>
+              <option value="4+">4+ {t("bath")}</option>
             </select>
           </div>
         </div>
@@ -381,252 +362,256 @@ const handleVideoUpload = (uploadedVideos) => {
         {/* metro */}
 
         <div>
-  <label className="block text-sm font-medium mb-2">Metro Options</label>
-  <div className="grid grid-cols-2 gap-4">
-    {[
-      "300 Aragveli",
-      "Akhmeteli Theatre",
-      "Avlabari",
-      "Delisi",
-      "Didube",
-      "Gotsiridze",
-      "Grmagele",
-      "Guramishvili",
-      "Isani",
-      "Liberty Square",
-      "Marjanishvili",
-      "Medical University",
-      "Nadzaladevi",
-      "Rustaveli",
-      "Samgori",
-      "Sarajishvili",
-      "State University",
-      "Station Square",
-      "Technical University",
-      "Tsereteli",
-      "Varketili",
-      "Vazha-Pshavela",
-    ].map((option, index) => (
-      <div key={index} className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          value={option}
-          checked={
-            option === "Others"
-              ? secondFormData.metro.includes("Others")
-              : secondFormData.metro.includes(option)
-          }
-          onChange={(e) => {
-            const isChecked = e.target.checked;
+          <label className="block text-sm font-medium mb-2">{t("metroOptions")}</label>
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              "300 Aragveli",
+              "Akhmeteli Theatre",
+              "Avlabari",
+              "Delisi",
+              "Didube",
+              "Gotsiridze",
+              "Grmagele",
+              "Guramishvili",
+              "Isani",
+              "Liberty Square",
+              "Marjanishvili",
+              "Medical University",
+              "Nadzaladevi",
+              "Rustaveli",
+              "Samgori",
+              "Sarajishvili",
+              "State University",
+              "Station Square",
+              "Technical University",
+              "Tsereteli",
+              "Varketili",
+              "Vazha-Pshavela",
+            ].map((option, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  value={option}
+                  checked={
+                    option === "Others"
+                      ? secondFormData.metro.includes("Others")
+                      : secondFormData.metro.includes(option)
+                  }
+                  onChange={(e) => {
+                    const isChecked = e.target.checked;
 
-            if (option === "Others") {
-              // Handle "Others" checkbox
-              if (!isChecked) {
-                setSecondFormData({
-                  ...secondFormData,
-                  metro: secondFormData.metro.filter((m) => m !== "Others"),
-                  otherMetro: "", // Clear otherMetro value when unchecked
-                });
-              } else {
-                setSecondFormData({
-                  ...secondFormData,
-                  metro: [...secondFormData.metro, "Others"],
-                });
-              }
-            } else {
-              // Handle standard options
-              const updatedMetro = isChecked
-                ? [...secondFormData.metro, option]
-                : secondFormData.metro.filter((m) => m !== option);
+                    if (option === "Others") {
+                      // Handle "Others" checkbox
+                      if (!isChecked) {
+                        setSecondFormData({
+                          ...secondFormData,
+                          metro: secondFormData.metro.filter((m) => m !== "Others"),
+                          otherMetro: "", // Clear otherMetro value when unchecked
+                        });
+                      } else {
+                        setSecondFormData({
+                          ...secondFormData,
+                          metro: [...secondFormData.metro, "Others"],
+                        });
+                      }
+                    } else {
+                      // Handle standard options
+                      const updatedMetro = isChecked
+                        ? [...secondFormData.metro, option]
+                        : secondFormData.metro.filter((m) => m !== option);
 
-              setSecondFormData({
-                ...secondFormData,
-                metro: updatedMetro,
-              });
-            }
-          }}
-          className="w-4 h-4"
-        />
-        <label className="text-sm">{option}</label>
-      </div>
-    ))}
-  </div>
-
-  {/* Show text input if "Others" is selected */}
-  {secondFormData.metro.includes("Others") && (
-    <div className="mt-4">
-      <label className="block text-sm font-medium">Specify Other Metro</label>
-      <input
-        type="text"
-        value={secondFormData.otherMetro || ""}
-        onChange={(e) =>
-          setSecondFormData({
-            ...secondFormData,
-            otherMetro: e.target.value,
-          })
-        }
-        className="w-full p-2 border border-gray-300 rounded-md"
-        placeholder="Enter custom metro"
-      />
-    </div>
-  )}
-</div>
+                      setSecondFormData({
+                        ...secondFormData,
+                        metro: updatedMetro,
+                      });
+                    }
+                  }}
+                  className="w-4 h-4"
+                />
+                <label className="text-sm">{t(option.toLowerCase().replace(/\s+/g, ""))}</label>
+              </div>
+            ))}
+          </div>
 
 
-<div>
-  <label className="block text-sm font-medium mb-2">District Options</label>
-  <div className="grid grid-cols-2 gap-4">
-    {[
-      "Abanotubani",
-      "Afrika",
-      "Avchala",
-      "Avlabari",
-      "Bagebi",
-      "Chugureti",
-      "DidiDighomi",
-      "Didgori",
-      "Didube",
-      "Didube-Chughureti",
-      "Dighmi 1-9",
-      "Dighmis Chala",
-      "Dighmis Massive",
-      "Digomi 1-9",
-      "Digomi Massive",
-      "Elia",
-      "Gldani",
-      "Gldani-Nadzaladevi",
-      "Iveri Settlement",
-      "Isani",
-      "Krtsanisi",
-      "Koshigora",
-      "KusTba",
-      "Lisi",
-      "Lisi Adjacent Area",
-      "Lisi Lake",
-      "Marjanishvili",
-      "Mtatsminda",
-      "Mukhatgverdi",
-      "Mukhattskaro",
-      "Nutsubidze Plateau",
-      "Nutsubidze Plato",
-      "Okrokana",
-      "Old Tbilisi",
-      "Ortachala",
-      "Saburtalo",
-      "Samgori",
-      "Sof. Digomi",
-      "Sololaki",
-      "State University",
-      "Svaneti Quarter",
-      "Tsavkisi Valley",
-      "Temqa",
-      "Tkhinvali",
-      "Tskhneti",
-      "Vake",
-      "Vake-Saburtalo",
-      "Vasizubani",
-      "Varketili",
-      "Vashlijvari",
-      "Vera",
-      "Vezisi",
-    ]
-      .sort() // Sort the options alphabetically
-      .map((option, index) => (
-        <div key={index} className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            value={option}
-            checked={
-              option === "Others"
-                ? secondFormData.district.includes("Others")
-                : secondFormData.district.includes(option)
-            }
-            onChange={(e) => {
-              const isChecked = e.target.checked;
-
-              if (option === "Others") {
-                // Handle "Others" checkbox
-                if (!isChecked) {
+          {/* Show text input if "Others" is selected */}
+          {secondFormData.metro.includes("Others") && (
+            <div className="mt-4">
+              <label className="block text-sm font-medium">Specify Other Metro</label>
+              <input
+                type="text"
+                value={secondFormData.otherMetro || ""}
+                onChange={(e) =>
                   setSecondFormData({
                     ...secondFormData,
-                    district: secondFormData.district.filter((m) => m !== "Others"),
-                    otherdistrict: "", // Clear otherdistrict value when unchecked
-                  });
-                } else {
-                  setSecondFormData({
-                    ...secondFormData,
-                    district: [...secondFormData.district, "Others"],
-                  });
+                    otherMetro: e.target.value,
+                  })
                 }
-              } else {
-                // Handle standard options
-                const updateddistrict = isChecked
-                  ? [...secondFormData.district, option]
-                  : secondFormData.district.filter((m) => m !== option);
-
-                setSecondFormData({
-                  ...secondFormData,
-                  district: updateddistrict,
-                });
-              }
-            }}
-            className="w-4 h-4"
-          />
-          <label className="text-sm">{option}</label>
+                className="w-full p-2 border border-gray-300 rounded-md"
+                placeholder="Enter custom metro"
+              />
+            </div>
+          )}
         </div>
-      ))}
-  </div>
 
-  {/* Show text input if "Others" is selected */}
-  {secondFormData.district.includes("Others") && (
-    <div className="mt-4">
-      <label className="block text-sm font-medium">Specify Other District</label>
-      <input
-        type="text"
-        value={secondFormData.otherdistrict || ""}
-        onChange={(e) =>
-          setSecondFormData({
-            ...secondFormData,
-            otherdistrict: e.target.value,
-          })
-        }
-        className="w-full p-2 border border-gray-300 rounded-md"
-        placeholder="Enter custom district"
-      />
-    </div>
-  )}
-</div>
+
+        <div>
+          <label className="block text-sm font-medium mb-2">{t("districtOptions")}</label>
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              "Abanotubani",
+              "Afrika",
+              "Avchala",
+              "Avlabari",
+              "Bagebi",
+              "Chugureti",
+              "DidiDighomi",
+              "Didgori",
+              "Didube",
+              "Didube-Chughureti",
+              "Dighmi 1-9",
+              "Dighmis Chala",
+              "Dighmis Massive",
+              "Digomi 1-9",
+              "Digomi Massive",
+              "Elia",
+              "Gldani",
+              "Gldani-Nadzaladevi",
+              "Iveri Settlement",
+              "Isani",
+              "Krtsanisi",
+              "Koshigora",
+              "KusTba",
+              "Lisi",
+              "Lisi Adjacent Area",
+              "Lisi Lake",
+              "Marjanishvili",
+              "Mtatsminda",
+              "Mukhatgverdi",
+              "Mukhattskaro",
+              "Nutsubidze Plateau",
+              "Nutsubidze Plato",
+              "Okrokana",
+              "Old Tbilisi",
+              "Ortachala",
+              "Saburtalo",
+              "Samgori",
+              "Sof. Digomi",
+              "Sololaki",
+              "State University",
+              "Svaneti Quarter",
+              "Tsavkisi Valley",
+              "Temqa",
+              "Tkhinvali",
+              "Tskhneti",
+              "Vake",
+              "Vake-Saburtalo",
+              "Vasizubani",
+              "Varketili",
+              "Vashlijvari",
+              "Vera",
+              "Vezisi",
+            ]
+              .sort() // Sort the options alphabetically
+              .map((option, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    value={option}
+                    checked={
+                      option === "Others"
+                        ? secondFormData.district.includes("Others")
+                        : secondFormData.district.includes(option)
+                    }
+                    onChange={(e) => {
+                      const isChecked = e.target.checked;
+
+
+
+
+
+                      if (option === "Others") {
+                        // Handle "Others" checkbox
+                        if (!isChecked) {
+                          setSecondFormData({
+                            ...secondFormData,
+                            district: secondFormData.district.filter((m) => m !== "Others"),
+                            otherdistrict: "", // Clear otherdistrict value when unchecked
+                          });
+                        } else {
+                          setSecondFormData({
+                            ...secondFormData,
+                            district: [...secondFormData.district, "Others"],
+                          });
+                        }
+                      } else {
+                        // Handle standard options
+                        const updateddistrict = isChecked
+                          ? [...secondFormData.district, option]
+                          : secondFormData.district.filter((m) => m !== option);
+
+                        setSecondFormData({
+                          ...secondFormData,
+                          district: updateddistrict,
+                        });
+                      }
+                    }}
+                    className="w-4 h-4"
+                  />
+                  <label className="text-sm">{t(option.toLowerCase().replace(/\s+/g, ""))}</label>
+                </div>
+              ))}
+          </div>
+
+          {/* Show text input if "Others" is selected */}
+          {secondFormData.district.includes("Others") && (
+            <div className="mt-4">
+              <label className="block text-sm font-medium">Specify Other District</label>
+              <input
+                type="text"
+                value={secondFormData.otherdistrict || ""}
+                onChange={(e) =>
+                  setSecondFormData({
+                    ...secondFormData,
+                    otherdistrict: e.target.value,
+                  })
+                }
+                className="w-full p-2 border border-gray-300 rounded-md"
+                placeholder="Enter custom district"
+              />
+            </div>
+          )}
+        </div>
 
 
         {/* images */}
 
         <div>
-  <h3 className="text-lg font-semibold mb-2">Images</h3>
-  <p className="text-sm text-gray-500 mb-4">
-    Upload additional images (max 10 images, max size per photo - 10MB,
-    jpg or png).
-  </p>
-  <UploadImage onImageUpdate={handleImageUpdate} />
-</div>
+          <h3 className="text-lg font-semibold mb-2">{t("img")}</h3>
+          <p className="text-sm text-gray-500 mb-4">
+            {t("imgdes")}
+          </p>
+          <UploadImage onImageUpdate={handleImageUpdate} />
+        </div>
 
-{/* //now changed */}
+        {/* //now changed */}
 
-{role !=="user"  &&
- <div>
-  <h3 className="text-lg font-semibold mb-2">Videos</h3>
-  <p className="text-sm text-gray-500 mb-4">
-    Upload Video (max 1 video, max size - 10MB to 30MB, mp4, mov, avi).
-  </p>
-  <UploadVideo onVideoUpdate={handleVideoUpload} />
-</div>
+        {role !== "user" &&
+          <div>
+            <h3 className="text-lg font-semibold mb-2">{t("vdo")}</h3>
+            <p className="text-sm text-gray-500 mb-4">
+              {t("vdodec")}
+            </p>
+            <UploadVideo onVideoUpdate={handleVideoUpload} />
+          </div>
 
-}
-
+        }
 
 
 
 
- 
+
+
 
 
 
@@ -635,100 +620,103 @@ const handleVideoUpload = (uploadedVideos) => {
         {/* Address */}
         <div>
           <select
-            value={secondFormData.city} // Bind to the 'address' field in state
+            value={secondFormData.city} // Bind to the 'city' field in state
             onChange={(e) =>
               setSecondFormData({ ...secondFormData, city: e.target.value })
-            } // Update 'address' when selection changes
+            } // Update 'city' when selection changes
             className="w-full p-2 px-1 border ml-2 border-gray-300 rounded-md"
           >
             <option value="" disabled>
-              Select City
+              {t("selectCity")}
             </option>
-            <option value="Tbilisi">Tbilisi</option>
-            <option value="Batumi">Batumi</option>
-            <option value="Kutaisi">Kutaisi</option>
-            <option value="Rustavi">Rustavi</option>
+            <option value="Tbilisi">{t("tbilisi")}</option>
+            <option value="Batumi">{t("batumi")}</option>
+            <option value="Kutaisi">{t("kutaisi")}</option>
+            <option value="Rustavi">{t("rustavi")}</option>
           </select>
         </div>
+
+
+
         <div>
           <select
-            value={secondFormData.propertyType} // Bind to the 'address' field in state
+            value={secondFormData.propertyType} // Bind to the 'propertyType' field in state
             onChange={(e) =>
               setSecondFormData({
                 ...secondFormData,
                 propertyType: e.target.value,
               })
-            } // Update 'address' when selection changes
+            } // Update 'propertyType' when selection changes
             className="w-full p-2 px-1 border ml-2 border-gray-300 rounded-md"
           >
             <option value="" disabled>
-              Select Property
+              {t("selectProperty")}
             </option>
-            <option value="Office">Office</option>
-            <option value="Cottage">Cottage</option>
-            <option value="Commercial">Commercial</option>
-            <option value="Apartment">Apartment</option>
-            <option value="Land">Land</option>
+            <option value="Office">{t("office")}</option>
+            <option value="Cottage">{t("cottage")}</option>
+            <option value="Commercial">{t("commercial")}</option>
+            <option value="Apartment">{t("apartment")}</option>
+            <option value="Land">{t("land")}</option>
           </select>
         </div>
 
 
-        
+
+
         <div>
           <select
-            value={secondFormData.residencyType} // Bind to the 'address' field in state
+            value={secondFormData.residencyType} // Bind to the 'residencyType' field in state
             onChange={(e) =>
               setSecondFormData({
                 ...secondFormData,
                 residencyType: e.target.value,
               })
-            } // Update 'address' when selection changes
+            } // Update 'residencyType' when selection changes
             className="w-full p-2 px-1 border ml-2 border-gray-300 rounded-md"
           >
             <option value="" disabled>
-              Select Residency
+              {t("selectResidency")}
             </option>
-            <option value="New">New</option>
-            <option value="Old">Old</option>
-            <option value="Mixed">Mixed</option>
-            <option value="historical">historical</option>
+            <option value="New">{t("new")}</option>
+            <option value="Old">{t("old")}</option>
+            <option value="Mixed">{t("mixed")}</option>
+            <option value="historical">{t("historical")}</option>
           </select>
         </div>
+
+
+
+
         <div>
           <select
-            value={secondFormData.type} // Bind to the 'address' field in state
+            value={secondFormData.type} // Bind to the 'type' field in state
             onChange={(e) =>
               setSecondFormData({ ...secondFormData, type: e.target.value })
-            } // Update 'address' when selection changes
+            } // Update 'type' when selection changes
             className="w-full p-2 px-1 border ml-2 border-gray-300 rounded-md"
           >
             <option value="" disabled>
-              Select Type
+              {t("selectType")}
             </option>
-            <option value="Rent">Rent</option>
-            <option value="Sale">Sale</option>
-            <option value="Lease">Lease</option>
-            <option value="DailyRent">DailyRent</option>
+            <option value="Rent">{t("rent")}</option>
+            <option value="Sale">{t("sale")}</option>
+            <option value="Lease">{t("lease")}</option>
+            <option value="DailyRent">{t("dailyRent")}</option>
           </select>
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">
-            Design Options
-          </label>
+          <label className="block text-sm font-medium mb-2">{t("designStyle")}</label>
           <div className="grid grid-cols-2 gap-4">
             {[
-          
-    
-    "White",
-    "Yellow",
-    "Grey",
-    "New Apartment",
-    "Mixed",
-    "Old",
-    "Under Repair",
-    "Retro",
-              
+              "White",
+              "Yellow",
+              "Grey",
+              "New Apartment",
+              "Mixed",
+              "Old",
+              "Under Repair",
+              "Retro",
             ].map((option, index) => (
               <div key={index} className="flex items-center gap-2">
                 <input
@@ -747,10 +735,8 @@ const handleVideoUpload = (uploadedVideos) => {
                       if (!isChecked) {
                         setSecondFormData({
                           ...secondFormData,
-                          design: secondFormData.design.filter(
-                            (m) => m !== "Others"
-                          ),
-                          otherdesign: "",  
+                          design: secondFormData.design.filter((m) => m !== "Others"),
+                          otherdesign: "",
                         });
                       } else {
                         setSecondFormData({
@@ -766,13 +752,13 @@ const handleVideoUpload = (uploadedVideos) => {
 
                       setSecondFormData({
                         ...secondFormData,
-                        design: updateddesign, 
+                        design: updateddesign,
                       });
                     }
                   }}
                   className="w-4 h-4"
                 />
-                <label className="text-sm">{option}</label>
+                <label className="text-sm">{t(option.toLowerCase().replace(/\s+/g, ""))}</label>
               </div>
             ))}
           </div>
@@ -780,9 +766,7 @@ const handleVideoUpload = (uploadedVideos) => {
           {/* Show text input if "Others" is selected */}
           {secondFormData.design.includes("Others") && (
             <div className="mt-4">
-              <label className="block text-sm font-medium">
-                Specify Other design
-              </label>
+              <label className="block text-sm font-medium">{t("specifyOtherDesign")}</label>
               <input
                 type="text"
                 value={secondFormData.otherdesign || ""}
@@ -793,26 +777,30 @@ const handleVideoUpload = (uploadedVideos) => {
                   })
                 }
                 className="w-full p-2 border border-gray-300 rounded-md"
-                placeholder="Enter custom design"
+                placeholder={t("enterCustomDesign")}
               />
             </div>
           )}
         </div>
+
+
+
+
+
         {/* Term */}
         <div>
-          <h3 className="text-lg font-semibold">Term</h3>
+          <h3 className="text-lg font-semibold">{t("term")}</h3>
           <div className="flex gap-4 mt-2">
             {["Long-term", "Daily"].map((term) => (
               <button
                 key={term}
                 onClick={() => setSecondFormData({ ...secondFormData, term })}
-                className={`px-4 py-2 rounded-md ${
-                  secondFormData.term === term
+                className={`px-4 py-2 rounded-md ${secondFormData.term === term
                     ? "bg-blue-600 text-white"
                     : "bg-gray-200 text-gray-600"
-                }`}
+                  }`}
               >
-                {term}
+                {t(term.toLowerCase().replace(/-/g, ""))}
               </button>
             ))}
           </div>
@@ -822,106 +810,111 @@ const handleVideoUpload = (uploadedVideos) => {
             <div className="space-y-5 mt-4">
               {/* Long-term specific fields */}
               <div className="flex flex-wrap gap-4">
-  {[
-    "1 day",
-    "1 week",
-    "1 month",
-    "2 months",
-    "3 months",
-    "4 months",
-    "5 months",
-    "6 months",
-    "12 months",
-  ].map((duration) => (
-    <button
-      key={duration}
-      className={`px-4 py-2 rounded-md ${
-        secondFormData.termDuration.includes(duration)
-          ? "bg-blue-600 text-white"
-          : "bg-gray-200 text-gray-600"
-      }`}
-      onClick={() =>
-        setSecondFormData({
-          ...secondFormData,
-          termDuration: secondFormData.termDuration.includes(duration)
-            ? secondFormData.termDuration.filter((item) => item !== duration) // Remove if already selected
-            : [...secondFormData.termDuration, duration], // Add if not selected
-        })
-      }
-    >
-      {duration}
-    </button>
-  ))}
-</div>
+                {[
+                  "1 day",
+                  "1 week",
+                  "1 month",
+                  "2 months",
+                  "3 months",
+                  "4 months",
+                  "5 months",
+                  "6 months",
+                  "12 months",
+                ].map((duration) => (
+                  <button
+                    key={duration}
+                    className={`px-4 py-2 rounded-md ${secondFormData.termDuration.includes(duration)
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-200 text-gray-600"
+                      }`}
+                    onClick={() =>
+                      setSecondFormData({
+                        ...secondFormData,
+                        termDuration: secondFormData.termDuration.includes(duration)
+                          ? secondFormData.termDuration.filter(
+                            (item) => item !== duration
+                          ) // Remove if already selected
+                          : [...secondFormData.termDuration, duration], // Add if not selected
+                      })
+                    }
+                  >
+                    {t(duration.replace(/\s+/g, ""))}
+                  </button>
+                ))}
+              </div>
 
 
 
 
               {/* Commission */}
-              {role !=="user"
-             ? (
-           <div>
-                <label className="block text-sm font-medium">Commission</label>
-                <div className="flex gap-2">
-                  <input
-                    type="number"
-                    value={secondFormData.commission}
-                    onChange={(e) =>
-                      setSecondFormData({
-                        ...secondFormData,
-                        commission: Number(e.target.value),
-                      })
-                    }
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-           </div>
-           ) : (
-           <div>
-                <label className="block text-sm font-medium">Role</label>
-                <div className="flex gap-4">
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="position"
-                      value="agent"
-                      checked={secondFormData.position === "agent"}
-                      onChange={(e) =>
-                        setSecondFormData({
-                          ...secondFormData,
-                          position: e.target.value,
-                        })
-                      }
-                      className="mr-2"
-                    />
-                    Agent
-                  </label>
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="position"
-                      value="owner"
-                      checked={secondFormData.position === "owner"}
-                      onChange={(e) =>
-                        setSecondFormData({
-                          ...secondFormData,
-                          position: e.target.value,
-                        })
-                      }
-                      className="mr-2"
-                    />
-                    Owner
-                  </label>
-                </div>
-           </div>
-           )}
+              {role !== "user"
+                ? (
+                  <div>
+                    <label className="block text-sm font-medium">{t("commission")}</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="number"
+                        value={secondFormData.commission}
+                        onChange={(e) =>
+                          setSecondFormData({
+                            ...secondFormData,
+                            commission: Number(e.target.value),
+                          })
+                        }
+                        className="w-full p-2 border border-gray-300 rounded-md"
+                      />
+                    </div>
+                  </div>
+                ) : (
+
+                  <div>
+                    <label className="block text-sm font-medium">{t("role")}</label>
+                    <div className="flex gap-4">
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="position"
+                          value="agent"
+                          checked={secondFormData.position === "agent"}
+                          onChange={(e) =>
+                            setSecondFormData({
+                              ...secondFormData,
+                              position: e.target.value,
+                            })
+                          }
+                          className="mr-2"
+                        />
+                        {t("agent")}
+                      </label>
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="position"
+                          value="owner"
+                          checked={secondFormData.position === "owner"}
+                          onChange={(e) =>
+                            setSecondFormData({
+                              ...secondFormData,
+                              position: e.target.value,
+                            })
+                          }
+                          className="mr-2"
+                        />
+                        {t("owner")}
+                      </label>
+                    </div>
+                  </div>
+
+
+
+                )}
 
 
 
 
-    
+
               <div className="mt-4">
-                <label className="block text-sm font-medium">Price</label>
+                <label className="block text-sm font-medium">{t("price")}</label>
                 <div className="flex gap-2">
                   <input
                     type="number"
@@ -952,7 +945,7 @@ const handleVideoUpload = (uploadedVideos) => {
 
               {/* Deposit */}
               <div>
-                <label className="block text-sm font-medium">Deposit</label>
+                <label className="block text-sm font-medium">{t("deposit")}</label>
                 <input
                   type="number"
                   value={secondFormData.deposit}
@@ -969,7 +962,7 @@ const handleVideoUpload = (uploadedVideos) => {
               {/* Payment Method */}
               <div>
                 <label className="block text-sm font-medium">
-                  Payment Method
+                  {t("payment")}
                 </label>
                 <select
                   value={secondFormData.paymentMethod}
@@ -981,17 +974,16 @@ const handleVideoUpload = (uploadedVideos) => {
                   }
                   className="w-full p-2 border border-gray-300 rounded-md"
                 >
-                  <option value="FirstDeposit">
-                  FirstDeposit
-                  </option>
-                  <option value="Monthly">Monthly</option>
+                  <option value="FirstDeposit">{t("firstDeposit")}</option>
+                  <option value="Monthly">{t("monthly")}</option>
                 </select>
               </div>
+
             </div>
           ) : (
             // Daily-specific UI
             <div className="mt-4">
-              <label className="block text-sm font-medium">Price</label>
+              <label className="block text-sm font-medium">{t("price")}</label>
               <div className="flex gap-2">
                 <input
                   type="number"
@@ -1022,8 +1014,8 @@ const handleVideoUpload = (uploadedVideos) => {
           )}
         </div>
 
-     {role !=="user" && <div className="mt-4">
-          <label className="block text-sm font-medium">Discount</label>
+        {role !== "user" && <div className="mt-4">
+          <label className="block text-sm font-medium">{t("discounted")}</label>
           <div className="flex gap-2">
             <input
               type="number"
@@ -1054,10 +1046,10 @@ const handleVideoUpload = (uploadedVideos) => {
 
         {/* amenities */}
         <div className="">
-          <h3 className="text-lg font-semibold">Heating</h3>
+          <h3 className="text-lg font-semibold">{t("heating")}</h3>
           <div className="flex gap-2 mt-2 flex-wrap">
             {[
-          "Central",
+              "Central",
               "Karma",
               "Electric",
               "AC Heating",
@@ -1072,76 +1064,80 @@ const handleVideoUpload = (uploadedVideos) => {
                       : [...prev.heating, option],
                   }))
                 }
-                className={`px-4 py-2 rounded-md ${
-                  secondFormData.heating.includes(option)
+                className={`px-4 py-2 rounded-md ${secondFormData.heating.includes(option)
                     ? "bg-blue-600 text-white"
                     : "bg-gray-200 text-gray-600"
-                }`}
+                  }`}
               >
-                {option}
+                {t(option.toLowerCase().replace(/\s+/g, ""))}
               </button>
             ))}
           </div>
         </div>
 
+
         <div className="">
-         
-         
+
+
           <h3 className="text-lg font-semibold">Amenities</h3>
-        
-        
+
+
+
+
           <div className="grid grid-cols-1 gap-4">
-  {[
-     "Oven",
-    "Microwave",
-    "VacuumCleaner",
-   "AirConditioner",
-    "Balcony",
-    "Stove",
-    "Dishwasher",
-    "SmartTV",
-    "WiFi",
-    "ParkingPlace",
-    "PlayStation",
-    "Projector",
-    "Elevator",
-    "Heating",
- 
- 
-   
-  ].map((option) => (
-    <div
-      key={option}
-      className="flex items-center justify-between p-3 border border-gray-300 rounded-lg shadow-sm bg-white"
-    >
-      <div className="text-gray-800 font-medium text-sm">
-        {option.replace(/([A-Z])/g, " $1")} {/* Adds spaces for camelCase */}
-      </div>
-      <label className="relative inline-flex items-center cursor-pointer">
-        <input
-          type="checkbox"
-          checked={secondFormData.amenities.includes(option)}
-          onChange={() =>
-            setSecondFormData((prev) => ({
-              ...prev,
-              amenities: prev.amenities.includes(option)
-                ? prev.amenities.filter((item) => item !== option)
-                : [...prev.amenities, option],
-            }))
-          }
-          className="sr-only peer"
-        />
-        <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer-checked:bg-blue-600 peer-checked:before:translate-x-4 before:content-[''] before:absolute before:top-0.5 before:left-0.5 before:bg-white before:border before:rounded-full before:h-4 before:w-4 before:transition-all peer-checked:before:border-white"></div>
-      </label>
-    </div>
-  ))}
-</div>
+            {[
+              "Oven",
+              "Microwave",
+              "VacuumCleaner",
+              "AirConditioner",
+              "Balcony",
+              "Stove",
+              "Dishwasher",
+              "SmartTV",
+              "WiFi",
+              "ParkingPlace",
+              "PlayStation",
+              "Projector",
+              "Elevator",
+              "Heating",
+            ].map((option) => (
+              <div
+                key={option}
+                className="flex items-center justify-between p-3 border border-gray-300 rounded-lg shadow-sm bg-white"
+              >
+                <div className="text-gray-800 font-medium text-sm">
+                  {t(option.toLowerCase())}
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={secondFormData.amenities.includes(option)}
+                    onChange={() =>
+                      setSecondFormData((prev) => ({
+                        ...prev,
+                        amenities: prev.amenities.includes(option)
+                          ? prev.amenities.filter((item) => item !== option)
+                          : [...prev.amenities, option],
+                      }))
+                    }
+                    className="sr-only peer"
+                  />
+                  <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer-checked:bg-blue-600 peer-checked:before:translate-x-4 before:content-[''] before:absolute before:top-0.5 before:left-0.5 before:bg-white before:border before:rounded-full before:h-4 before:w-4 before:transition-all peer-checked:before:border-white"></div>
+                </label>
+              </div>
+            ))}
+          </div>
+
+
 
 
 
         </div>
 
-                  <div>       
+
+
+
+        <div>
           <div className="grid grid-cols-1 gap-4">
             {secondFormData.additional.map((item, index) => (
               <div
@@ -1149,12 +1145,11 @@ const handleVideoUpload = (uploadedVideos) => {
                 className="flex items-center justify-between p-2 border border-gray-300 rounded-md"
               >
                 <div className="flex items-center gap-2 mb-3">
-                 <span className="text-sm font-medium text-gray-800">
-          {item
-            .replace(/([A-Z])/g, " $1") // Add spaces for camelCase
-            .replace(/^\w/, (c) => c.toUpperCase())} {/* Capitalize the first letter */}
-        </span>
+                  <span className="text-sm font-medium text-gray-800">
+                    {t(item.toLowerCase())}
+                  </span>
                 </div>
+
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"
@@ -1167,8 +1162,8 @@ const handleVideoUpload = (uploadedVideos) => {
                           prev.selectedAdditional?.includes(item);
                         const updatedSelected = isSelected
                           ? prev.selectedAdditional.filter(
-                              (feature) => feature !== item
-                            )
+                            (feature) => feature !== item
+                          )
                           : [...(prev.selectedAdditional || []), item];
                         return {
                           ...prev,
@@ -1184,52 +1179,55 @@ const handleVideoUpload = (uploadedVideos) => {
             ))}
           </div>
 
-         { role ==="user" && <div className="mt-4">
-  <label className="block text-sm font-medium">Owner Name</label>
-  <input
-    type="text"
-    value={secondFormData.name}
-    onChange={(e) =>
-      setSecondFormData({ ...secondFormData, name: e.target.value })
-    }
-    className="w-full p-2 border border-gray-300 rounded-md"
-    placeholder="Enter Name"
-  />
-</div>}
+          {role === "user" && (
+            <div className="mt-4">
+              <label className="block text-sm font-medium">{t("ownerName")}</label>
+              <input
+                type="text"
+                value={secondFormData.name}
+                onChange={(e) =>
+                  setSecondFormData({ ...secondFormData, name: e.target.value })
+                }
+                className="w-full p-2 border border-gray-300 rounded-md"
+                placeholder={t("enterName")}
+              />
+            </div>
+          )}
 
-
-          {role ==="user" && <div className="mt-3">
-  <label className="block text-sm font-medium">Phone no</label>
-  <input
-    type="text"
-    value={secondFormData.phone}
-    onChange={(e) =>
-      setSecondFormData({ ...secondFormData, phone: e.target.value })
-    }
-    className="w-full p-2 border border-gray-300 rounded-md"
-    placeholder="Enter phone no"
-  />
-</div>}
-
+          {role === "user" && (
+            <div className="mt-3">
+              <label className="block text-sm font-medium">{t("phoneNo")}</label>
+              <input
+                type="text"
+                value={secondFormData.phone}
+                onChange={(e) =>
+                  setSecondFormData({ ...secondFormData, phone: e.target.value })
+                }
+                className="w-full p-2 border border-gray-300 rounded-md"
+                placeholder={t("enterPhone")}
+              />
+            </div>
+          )}
         </div>
 
-        
 
 
-        </div>
 
-        {/* Publish Button */}
-        <div className="text-center">
-          <button
-            onClick={handlePublish}
-            className="px-6 py-2 mb-7 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700"
-          >
-            Publish
-          </button>
 
-          </div>
       </div>
-   );
+
+      {/* Publish Button */}
+      <div className="text-center">
+        <button
+          onClick={handlePublish}
+          className="px-6 py-2 mb-7 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700"
+        >
+          {t("pub")}
+        </button>
+
+      </div>
+    </div>
+  );
 };
 
 SecondComponent.propTypes = {
