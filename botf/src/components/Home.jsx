@@ -6,10 +6,13 @@ import { BiHeart } from "react-icons/bi";
 import { AiFillHeart } from "react-icons/ai";
 import axios from "axios";
 import { getAllLikes } from "../utils/api";
-import { LoadScript } from "@react-google-maps/api";
+ import { useTranslation } from "react-i18next";
+
+import LanguageSwitcher from "../LanguageSwitcher";
 
 function Home() {
 
+  const { t } = useTranslation("home");
 
 
   const getTimeDifference = (updatedAt, discount) => {
@@ -21,12 +24,13 @@ function Home() {
     const diffInHours = Math.floor(diffInMinutes / 60);
   
     if (diffInHours < 24) {
-      return "New"; // Show "New" if updated within the last 24 hours
+      return  t("new")
     } else if (discount) {
-      return "Discounted"; 
+      return  t("discounted")
     } else if (diffInHours >= 24) {
       const diffInDays = Math.floor(diffInHours / 24);
-      return diffInDays === 1 ? "1 day ago" : `${diffInDays} days ago`;
+      return t("daysAgo", { count: diffInDays });
+
     }
   };
   
@@ -229,7 +233,12 @@ window.open(
       {/* Header Section */}
      
       <div className="flex justify-between items-center mb-4">
-  <h1 className="text-lg font-bold text-gray-800">Properties</h1>
+  <h1 className="text-lg font-bold text-gray-800">      {t("propertiesTitle")}
+  </h1>
+         <div  className="ml-20">
+ <LanguageSwitcher />
+
+ </div>
   <button
     onClick={() => setIsMapView(!isMapView)}
     className="flex items-center px-4 py-2 text-sm font-medium border rounded-lg bg-white text-gray-700 border-gray-300 hover:bg-blue-100 transition"
@@ -251,7 +260,8 @@ window.open(
             d="M4 6h16M4 10h16M4 14h16M4 18h16"
           />
         </svg>
-        List
+        {t("listView")}
+
       </>
     ) : (
       <>
@@ -270,7 +280,8 @@ window.open(
             d="M5 3l14 9-14 9V3z"
           />
         </svg>
-        Map
+        {t("mapView")}
+
       </>
     )}
   </button>
@@ -303,9 +314,9 @@ window.open(
                 <div className="absolute top-2 left-2 z-10">
   <span
     className={`${
-      getTimeDifference(property.updatedAt, property.discount) === "New"
+      getTimeDifference(property.updatedAt, property.discount) === t("new")
         ? "bg-green-500"
-        : getTimeDifference(property.updatedAt, property.discount) === "Discounted"
+        : getTimeDifference(property.updatedAt, property.discount) === t("discounted")
         ? "bg-red-500"
         : "bg-blue-500"
     } text-white text-xs font-medium px-2 py-1 text-center rounded`}
@@ -362,8 +373,12 @@ window.open(
 
 </p>
                 <p className="text-xs text-gray-600 mt-1">
-                {property.type || "N/A"} • {property.bathrooms || "N/A"} Bath • {property.area || "N/A"} Sq.mt
-                </p>
+                {t("propertyInfo", {
+  type: t(property.type.toLowerCase()) || "N/A", // Translate the type
+  bathrooms: property.bathrooms || "N/A",
+  area: property.area || "N/A"
+})}
+   </p>
               </div>
         
               {/* Actions Section */}
@@ -377,7 +392,7 @@ window.open(
       window.open("https://t.me/David_Tibelashvili", "_blank");
     }}
   >
-    Contact
+    {t("contact")}
   </button>
 
   {/* View Button */}
@@ -385,7 +400,8 @@ window.open(
     className="px-4 py-1 bg-blue-500 mr-20 text-white text-xs font-medium rounded shadow hover:bg-blue-600 transition"
     onClick={() => navigate(`/card/${property.id}`, { state: { card: property } })}
   >
-    View
+        {t("view")}
+
   </button>
 
   {/* Favorites Icon */}
