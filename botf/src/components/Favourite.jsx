@@ -190,11 +190,11 @@ window.open(
         
                 {/* Dynamic Labels */}
                 <div className="absolute top-2 left-2 space-y-1">
-                 <span
+                <span
     className={`${
-      getTimeDifference(property.updatedAt, property.discount) === "New"
+      getTimeDifference(property.updatedAt, property.discount) === t("new")
         ? "bg-green-500"
-        : getTimeDifference(property.updatedAt, property.discount) === "Discounted"
+        : getTimeDifference(property.updatedAt, property.discount) === t("discounted")
         ? "bg-red-500"
         : "bg-blue-500"
     } text-white text-xs font-medium px-2 py-1 text-center rounded`}
