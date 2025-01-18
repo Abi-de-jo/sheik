@@ -20,7 +20,7 @@ const UploadVideo = ({ onVideoUpdate }) => {
               uploadPreset: "abisheik",
               resourceType: "video", // Videos only
               multiple: false,
-              maxFileSize: 400000000,
+              maxFileSize: 700000000,
               allowedFormats: ["mp4", "mov", "avi"],
             },
             (err, result) => {
