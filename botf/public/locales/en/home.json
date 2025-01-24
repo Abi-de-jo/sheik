@@ -1,4 +1,11 @@
 {
+  "anal": "Analytics",
+  "allagents": "All Agent List",
+  "allowners": "All Owner List",
+  "dash": "DashBoard",
+  "agentachieve": "Agents Archieve",
+  "ownerdraft": "Owner Draft",
+  "agentdraft": "Agent Draft",
   "propertiesTitle": "Properties",
   "listView": "List",
   "s": "Search",
@@ -239,5 +246,7 @@
   "saburtalo": "Saburtalo",
   "sofeli dighomi": "Sofeli Dighomi",
   "state university": "State University",
-  "fav": "Favorite Property"
+  "fav": "Favorite Property",
+  "welcome":"Welcome back , Admin!",
+  "action":"Admin Actions"
 }
