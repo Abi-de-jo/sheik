@@ -238,6 +238,8 @@
   "vasizubani": "ვაზისუბანი",
   "varketili": "ვარკეთილი",
   "vashlijvari": "ვაშლიჯვარი",
+  "update_profile": "პროფილის განახლება",
+
   "vera": "ვერა",
   "vezisi": "ვეზისი",
   "shower": "შხაპი",
@@ -246,5 +248,23 @@
   "conditioner": "კონდიციონერი",
   "centralheating": "ცენტრალური გათბობა",
   "fireplace": "ბუხარი",
-  "fav": "საყვარელი ქონება"
+  "fav": "საყვარელი ქონება",
+  "login": "შესვლა",
+  "enter_email": "შეიყვანეთ თქვენი ელფოსტა",
+  "first_name": "სახელი",
+  "last_name": "გვარი",
+  "email": "ელფოსტა",
+  "save_changes": "შენახვა","published": "გამოქვეყნებული",
+  "requested": "მოთხოვნ",
+   "creation": "შექმნა",
+  "history": "ისტორია",
+  "properties": "უძრავი ქონება",
+
+  "rented": "გაქირავებულ",
+  "archived": "არქივირებული",
+  "hide_update_form": "განახლების ფორმის დამალვა"
+
+
+
+
 }
