@@ -5,14 +5,16 @@ import { FaUserCircle } from "react-icons/fa";
 import UseAll from "../hooks/useall";
 import axios from "axios";
 import { getAllUsers } from "../utils/api";
- 
-const Profile = () => {
-  // const teleNumber = "999"; 
-  // const role = "agent";  
-   const [matchedResidencies, setMatchedResidencies] = useState([]); // State for matched residencies
+import { useTranslation} from 'react-i18next'
 
-   const teleNumber = localStorage.getItem("teleNumber")
-  const role = localStorage.getItem("role")
+const Profile = () => {
+  const {t} = useTranslation("home");
+  const teleNumber = "1219674630"; 
+  const role = "user";  
+    const [matchedResidencies, setMatchedResidencies] = useState([]); // State for matched residencies
+
+  //  const teleNumber = localStorage.getItem("teleNumber")
+  // const role = localStorage.getItem("role")
     const navigate = useNavigate();
   const { data, isLoading, error } = UseAll();
   const [filterStatus, setFilterStatus] = useState("published");
@@ -188,21 +190,23 @@ console.log(err)
         <div className="bg-white rounded-lg shadow-lg p-6 text-center">
           <FaUserCircle className="text-blue-500 w-24 h-24 mx-auto" />
           <form onSubmit={handleLoginSubmit} className="space-y-4">
-            <p className="text-xl font-bold text-gray-700">Login</p>
+            <p className="text-xl font-bold text-gray-700"> {t("login")}</p>
             <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
-            >
-              Login
-            </button>
+  type="email"
+  placeholder={t("enter_email")}
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+  className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500"
+  required
+/>
+
+          <button
+  type="submit"
+  className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
+>
+  {t("login")}
+</button>
+
           </form>
         </div>
       </div>
@@ -224,155 +228,159 @@ console.log(err)
           onClick={toggleUpdateForm}
           className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
         >
-          {showUpdateForm ? "Hide Update Form" : "Update"}
-        </button>}
+{showUpdateForm ? t("hide_update_form") : t("update")}
+</button>}
       </div>
 
       {/* Profile Update Section */}
      
-         {showUpdateForm && (
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <h2 className="text-xl font-bold text-gray-700 mb-4 border-b pb-2">Update Profile</h2>
-          <div className="space-y-4">
-          <input
-              type="text"
-              placeholder="First Name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500"
-            />
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500"
-            />
-            {role === "agent" && (
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500"
-              />
-            )}
-            <button
-              onClick={handleProfileUpdate}
-              className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition"
-            >
-              Save Changes
-            </button>
-          </div>
-        </div>
+      {showUpdateForm && (
+  <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+    <h2 className="text-xl font-bold text-gray-700 mb-4 border-b pb-2">
+      {t("update_profile")}
+    </h2>
+    <div className="space-y-4">
+      <input
+        type="text"
+        placeholder={t("first_name")}
+        value={firstName}
+        onChange={(e) => setFirstName(e.target.value)}
+        className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500"
+      />
+      <input
+        type="text"
+        placeholder={t("last_name")}
+        value={lastName}
+        onChange={(e) => setLastName(e.target.value)}
+        className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500"
+      />
+      {role === "agent" && (
+        <input
+          type="email"
+          placeholder={t("email")}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500"
+        />
       )}
-       {role === "user" && (
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-        <h2 className="text-xl font-bold text-gray-700 mb-4 border-b pb-2">
-          Login
-        </h2>
-        <form onSubmit={handleLoginSubmit} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500"
-            required
-          />
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
-          >
-            Login
-          </button>
-        </form>
-      </div>
-    )}
+      <button
+        onClick={handleProfileUpdate}
+        className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition"
+      >
+        {t("save_changes")}
+      </button>
+    </div>
+  </div>
+)}
+{role === "user" && (
+  <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+    <h2 className="text-xl font-bold text-gray-700 mb-4 border-b pb-2">
+      {t("login")}
+    </h2>
+    <form onSubmit={handleLoginSubmit} className="space-y-4">
+      <input
+        type="email"
+        placeholder={t("enter_email")}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500"
+        required
+      />
+      <button
+        type="submit"
+        className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
+      >
+        {t("login")}
+      </button>
+    </form>
+  </div>
+)}
+
 
       {/* Filter Buttons for Agents */}
       {role === "agent" ? (
-        <div className="flex justify-center flex-wrap space-x-4 mb-4">
-          <button
-            onClick={() => handleStatusClick("published")}
-            className={`px-4 py-2 rounded shadow ${
-              filterStatus === "published"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-700"
-            } hover:bg-blue-400 transition`}
-          >
-            Published
-          </button>
-
-          <button
-            onClick={() => handleStatusClick("draft")}
-            className={`px-4 py-2 rounded shadow ${
-              filterStatus === "draft"
-                ? "bg-yellow-500 text-white"
-                : "bg-gray-200 text-gray-700"
-            } hover:bg-yellow-400 transition`}
-          >
-            Requested
-          </button>
-
-          <button
-            onClick={() => handleStatusClick("rented")}
-            className={`px-4 py-2 rounded shadow ${
-              filterStatus === "rented"
-                ? "bg-green-500 text-white"
-                : "bg-gray-200 text-gray-700"
-            } hover:bg-green-400 transition`}
-          >
-            Rented
-          </button>
-          <button
-            onClick={() => handleStatusClick("archieve")}
-            className={`px-4 py-2 mt-3 rounded shadow ${
-              filterStatus === "archieve"
-                ? "bg-red-500 text-white"
-                : "bg-gray-200 text-gray-700"
-            } hover:bg-red-400 transition`}
-          >
-            Archived
-          </button>
-        </div>
+       <div className="flex justify-center flex-wrap space-x-4 mb-4">
+       <button
+         onClick={() => handleStatusClick("published")}
+         className={`px-4 py-2 rounded shadow ${
+           filterStatus === "published"
+             ? "bg-blue-500 text-white"
+             : "bg-gray-200 text-gray-700"
+         } hover:bg-blue-400 transition`}
+       >
+         {t("published")}
+       </button>
+     
+       <button
+         onClick={() => handleStatusClick("draft")}
+         className={`px-4 py-2 rounded shadow ${
+           filterStatus === "draft"
+             ? "bg-yellow-500 text-white"
+             : "bg-gray-200 text-gray-700"
+         } hover:bg-yellow-400 transition`}
+       >
+         {t("requested")}
+       </button>
+     
+       <button
+         onClick={() => handleStatusClick("rented")}
+         className={`px-4 py-2 rounded shadow ${
+           filterStatus === "rented"
+             ? "bg-green-500 text-white"
+             : "bg-gray-200 text-gray-700"
+         } hover:bg-green-400 transition`}
+       >
+         {t("rented")}
+       </button>
+       <button
+         onClick={() => handleStatusClick("archieve")}
+         className={`px-4 py-2 mt-3 rounded shadow ${
+           filterStatus === "archieve"
+             ? "bg-red-500 text-white"
+             : "bg-gray-200 text-gray-700"
+         } hover:bg-red-400 transition`}
+       >
+         {t("archived")}
+       </button>
+     </div>
       )
      :(
 // USer
 <div className="flex justify-center space-x-4 mb-4">
-<button
-  onClick={() => handleStatusClick("draft")}
-  className={`px-4 py-2 rounded shadow ${
-    filterStatus === "draft"
-      ? "bg-blue-500 text-white"
-      : "bg-gray-200 text-gray-700"
-  } hover:bg-blue-400 transition`}
->
-  Creation
-</button>
-<button
-          onClick={() => handleStatusClick("")} // Show history
-          className={`px-4 py-2 rounded shadow ${
-            filterStatus === ""
-              ? "bg-red-500 text-white"
-              : "bg-gray-200 text-gray-700"
-          } hover:bg-red-400 transition`}
-        >
-          History
-        </button>
+  <button
+    onClick={() => handleStatusClick("draft")}
+    className={`px-4 py-2 rounded shadow ${
+      filterStatus === "draft"
+        ? "bg-blue-500 text-white"
+        : "bg-gray-200 text-gray-700"
+    } hover:bg-blue-400 transition`}
+  >
+    {t("creation")}
+  </button>
+  <button
+    onClick={() => handleStatusClick("")} // Show history
+    className={`px-4 py-2 rounded shadow ${
+      filterStatus === ""
+        ? "bg-red-500 text-white"
+        : "bg-gray-200 text-gray-700"
+    } hover:bg-red-400 transition`}
+  >
+    {t("history")}
+  </button>
 </div>
      )
     }
 
       {/* Properties Section */}
       <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-      <h2 className="text-xl font-bold text-gray-700 mb-4 border-b pb-2">
-         {role === "user" && filterStatus === "draft"
-      ? "Creation"
-      : role === "user" && filterStatus === ""
-      ? "History"
-      : `${filterStatus} Properties`}
-      </h2>
+    <h2 className="text-xl font-bold text-gray-700 mb-4 border-b pb-2">
+  {role === "user" && filterStatus === "draft"
+    ? t("creation")
+    : role === "user" && filterStatus === ""
+    ? t("history")
+    : `${t(filterStatus)} ${t("properties")}`}
+</h2>
+
 
       {isLoading ? (
         <p className="text-gray-600 text-center">Loading properties...</p>
