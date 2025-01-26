@@ -20,8 +20,8 @@ const AgentCard = () => {
   const [editedCard, setEditedCard] = useState(location.state?.property || {});
 
   const role = localStorage.getItem("role");
- const email = localStorage.getItem("teleNumber")
-//  const email ="7219063798";
+//  const email = localStorage.getItem("teleNumber")
+ const email ="1469627446";
   const handleBack = () => {
     navigate(-1);
   };
@@ -384,6 +384,29 @@ const AgentCard = () => {
           </div>
         ) : (
           <p className="text-gray-500">You cannot edit or delete this property.</p>
+        )}
+        {editedCard.status === "draft" ? (
+          <>
+            {isEditing ? (
+              <button
+                className="px-5 py-2 mr-[230px] bg-green-500 text-white rounded-md hover:bg-green-600"
+                onClick={handleSave}
+              >
+                Save
+              </button>
+            ) : (
+              <button
+                className="px-5 py-2 mr-[230px] bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                onClick={handleEdit}
+              >
+                Edit
+              </button>
+            )}
+          </>
+        ) : (
+          <p className="text-gray-500">
+            You can only edit or save this property when its status
+          </p>
         )}
         
           
