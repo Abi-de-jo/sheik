@@ -9,12 +9,12 @@ import { useTranslation} from 'react-i18next'
 
 const Profile = () => {
   const {t} = useTranslation("home");
-  const teleNumber = "1219674630"; 
-  const role = "user";  
+  // const teleNumber = "1219674630"; 
+  // const role = "user";  
     const [matchedResidencies, setMatchedResidencies] = useState([]); // State for matched residencies
 
-  //  const teleNumber = localStorage.getItem("teleNumber")
-  // const role = localStorage.getItem("role")
+   const teleNumber = localStorage.getItem("teleNumber")
+  const role = localStorage.getItem("role")
     const navigate = useNavigate();
   const { data, isLoading, error } = UseAll();
   const [filterStatus, setFilterStatus] = useState("published");
