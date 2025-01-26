@@ -5,9 +5,11 @@ import axios from "axios";
 const API_BASE_URL = "https://sheik-back.vercel.app/api";
 
 const AgentCard = () => {
+  const [isUploading, setIsUploading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-
+  const CLOUDINARY_UPLOAD_URL = "https://api.cloudinary.com/v1_1/dbandd0k7/image/upload";
+  const CLOUDINARY_UPLOAD_PRESET = "zf9wfsfi";
   const [isEditing, setIsEditing] = useState(false);
   const [showRentForm, setShowRentForm] = useState(false); // To show/hide the rent form
   const [rentDetails, setRentDetails] = useState({
@@ -118,6 +120,41 @@ const AgentCard = () => {
     }
   };
 
+  const handleImageRemove = (imageUrl) => {
+    setEditedCard((prev) => ({
+      ...prev,
+      images: prev.images.filter((img) => img !== imageUrl),
+    }));
+  };
+  const handleImageUpload = async () => {
+    try {
+      setIsUploading(true);
+      const fileInput = document.createElement("input");
+      fileInput.type = "file";
+      fileInput.accept = "image/*";
+      fileInput.click();
+
+      fileInput.onchange = async () => {
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+        const response = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
+        const uploadedImageUrl = response.data.secure_url;
+
+        setEditedCard((prev) => ({
+          ...prev,
+          images: [...(prev.images || []), uploadedImageUrl],
+        }));
+        setIsUploading(false);
+      };
+    } catch (error) {
+      console.error("Image upload failed:", error);
+      alert("Failed to upload image. Please try again.");
+      setIsUploading(false);
+    }
+  };
   return (
     <div className="p-6 border border-gray-300 rounded-md shadow-md bg-white space-y-4 mb-11">
       <button
@@ -126,16 +163,33 @@ const AgentCard = () => {
         >
           Back
         </button>
-      {editedCard.images && editedCard.images.length > 0 ? (
+        {editedCard.images && editedCard.images.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {editedCard.images.map((image, index) => (
-            <img
-              key={index}
-              src={image}
-              alt={`Property Image ${index + 1}`}
-              className="w-full h-32 object-cover rounded-md border border-gray-300"
-            />
+            <div key={index} className="relative">
+              <img
+                src={image}
+                alt={`Property Image ${index + 1}`}
+                className="w-full h-32 object-cover rounded-md border border-gray-300"
+              />
+              {isEditing && (
+                <button
+                  className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full"
+                  onClick={() => handleImageRemove(image)}
+                >
+                  ✕
+                </button>
+              )}
+            </div>
           ))}
+          {isEditing && (
+            <button
+              className="w-full h-32 bg-gray-100 flex items-center justify-center border border-gray-300 rounded-md"
+              onClick={handleImageUpload}
+            >
+              {isUploading ? "Uploading..." : "Upload Image"}
+            </button>
+          )}
         </div>
       ) : (
         <p className="text-gray-500">No images available for this property.</p>
@@ -404,9 +458,7 @@ const AgentCard = () => {
             )}
           </>
         ) : (
-          <p className="text-gray-500">
-            You can only edit or save this property when its status
-          </p>
+         ""
         )}
         
           
