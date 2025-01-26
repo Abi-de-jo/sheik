@@ -5,15 +5,16 @@ import axios from 'axios';
 const API_BASE_URL = "https://sheik-back.vercel.app/api"; // Replace with your backend base URL
 const CLOUDINARY_UPLOAD_URL = "https://api.cloudinary.com/v1_1/dbandd0k7/image/upload";
 const CLOUDINARY_UPLOAD_PRESET = "zf9wfsfi";
+import {useTranslation} from "react-i18next"
 const CardDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [editedCard, setEditedCard] = useState(location.state?.card || {});
   const [isUploading, setIsUploading] = useState(false);
-
-  const email = "david@gmail.com";
-  // const email = localStorage.getItem("email");
+const {t} = useTranslation("home")
+  // const email = "david@gmail.com";
+  const email = localStorage.getItem("email");
   const role = localStorage.getItem("role");
 
   const handleBack = () => {
@@ -122,8 +123,8 @@ const CardDetails = () => {
           className="px-4 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600"
           onClick={handleBack}
         >
-          Back
-        </button>
+          {t("back")}
+          </button>
       </div>
     );
   }
@@ -135,7 +136,7 @@ const CardDetails = () => {
           className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow hover:bg-gray-400"
           onClick={handleBack}
         >
-          Back
+          {t("back")}
         </button>
     {/* Image Carousel Section */}
     <div className="relative w-full h-full bg-gray-200 rounded-md overflow-hidden">
@@ -281,7 +282,8 @@ const CardDetails = () => {
 
           {/* Price with Discount */}
           <div className="text-lg font-semibold">
-            <span className="text-gray-800">Price: </span>
+            <span className="text-gray-800">          {t("price")}
+            </span>
             <p className="text-sm text-gray-800 font-bold mt-1">
   {editedCard.discount ? (
     <>
@@ -327,73 +329,88 @@ const CardDetails = () => {
           {/* City, Metro, and District */}
           <div className="grid grid-cols-2 gap-4 text-sm">
             <p>
-              <span className="font-medium text-gray-700">City:</span> {editedCard.city || "N/A"}
+            <span className="font-medium text-gray-700">{t("city")}:</span> 
+           {editedCard.city ? t(`${editedCard.city.toLowerCase()}`) : t("not_available")}
+
             </p>
             <p>
-              <span className="font-medium text-gray-700">Metro:</span>{" "}
-              {editedCard.metro?.length > 0 ? editedCard.metro.join(", ") : "N/A"}
+              <span className="font-medium text-gray-700">{t("metro")}</span>{" "}
+              {editedCard.metro?.length > 0 
+  ? editedCard.metro.map((item) => t(`${item.toLowerCase()}`)).join(", ") 
+  : t("not_available")}
             </p>
             <p className="col-span-2">
-              <span className="font-medium text-gray-700">District:</span>{" "}
-              {editedCard.district?.length > 0 ? editedCard.district.join(", ") : "N/A"}
+              <span className="font-medium text-gray-700">{t("district")}</span>{" "}
+              {editedCard.district?.length > 0 
+  ? editedCard.district.map((item) => t(`${item.toLowerCase()}`)).join(", ") 
+  : t("not_available")}
             </p>
           </div>
 
-          {/* editedCard Details */}
           <div className="grid grid-cols-2 gap-4 text-sm border-t pt-4">
-            <p>
-              <span className="font-medium text-gray-700">Property:</span>{" "}
-              {editedCard.propertyType || "N/A"}
-            </p>
-            <p>
-              <span className="font-medium text-gray-700">Residency:</span>{" "}
-              {editedCard.residencyType || "N/A"}
-            </p>
-            <p>
-              <span className="font-medium text-gray-700">Size:</span> {editedCard.area || "N/A"} sq. mt
-            </p>
-            <p>
-              <span className="font-medium text-gray-700">Room:</span> {editedCard.rooms || "N/A"}
-            </p>
-            <p>
-              <span className="font-medium text-gray-700">Bathroom:</span>{" "}
-              {editedCard.bathrooms || "N/A"}
-            </p>
-            <p>
-              <span className="font-medium text-gray-700">Floor:</span>{" "}
-              {editedCard.floor || "N/A"} / {editedCard.totalFloors || "N/A"}
-            </p>
-            <p>
-              <span className="font-medium text-gray-700">Parking:</span> {editedCard.parking || "N/A"}
-            </p>
-            
-            <p className="">
-              <span className="font-medium text-gray-700">Design:</span>{" "}
-              {editedCard.design?.length > 0 ? editedCard.design.join(", ") : "N/A"}
-            </p>
-          </div>
+  <p>
+    <span className="font-medium text-gray-700">{t("property")}:</span>{" "}
+    {editedCard.propertyType ? t(`${editedCard.propertyType.toLowerCase()}`) : t("not_available")}
+  </p>
+  <p>
+    <span className="font-medium text-gray-700">{t("residency")}:</span>{" "}
+    {editedCard.residencyType ? t(`${editedCard.residencyType.toLowerCase()}`) : t("not_available")}
+  </p>
+  <p>
+    <span className="font-medium text-gray-700">{t("size")}:</span>{" "}
+    {editedCard.area || t("not_available")} {t("sq.m")}
+  </p>
+  <p>
+    <span className="font-medium text-gray-700">{t("room")}:</span>{" "}
+    {editedCard.rooms || t("not_available")}
+  </p>
+  <p>
+    <span className="font-medium text-gray-700">{t("bath")}:</span>{" "}
+    {editedCard.bathrooms || t("not_available")}
+  </p>
+  <p>
+    <span className="font-medium text-gray-700">{t("floor")}:</span>{" "}
+    {editedCard.floor || t("not_available")} / {editedCard.totalFloors || t("not_available")}
+  </p>
+  <p>
+    <span className="font-medium text-gray-700">{t("parking")}:</span>{" "}
+    {editedCard.parking || t("not_available")}
+  </p>
+  <p>
+    <span className="font-medium text-gray-700">{t("design")}:</span>{" "}
+    {editedCard.design?.length > 0
+      ? editedCard.design.map((item) => t(`${item.toLowerCase()}`)).join(", ")
+      : t("not_available")}
+  </p>
+</div>
+
 
           {/* Term and Payment Details */}
           <div className="grid grid-cols-2 gap-4 text-sm border-t pt-4">
-            <p>
-              <span className="font-medium text-gray-700">Term:</span> {editedCard.term || "N/A"}
-            </p>
-            <p>
-              <span className="font-medium text-gray-700">Duration:</span>{" "}
-              {editedCard.termDuration?.length > 0 ? editedCard.termDuration.join(",") : "N/A"}
-            </p>
-            <p>
-              <span className="font-medium text-gray-700">Payment:</span>{" "}
-              {editedCard.paymentMethod || "N/A"}
-            </p>
-            <p>
-              <span className="font-medium text-gray-700">Deposit:</span> {editedCard.deposit || "N/A"} {editedCard.currency}
-            </p>
-            <p>
-              <span className="font-medium text-gray-700">Commission:</span>{" "}
-              {editedCard.commission || "N/A"}%
-            </p>
-          </div>
+  <p>
+    <span className="font-medium text-gray-700">{t("term")}:</span>{" "}
+    {editedCard.term ? t(`${editedCard.term.toLowerCase()}`) : t("not_available")}
+  </p>
+  <p>
+    <span className="font-medium text-gray-700">{t("durations")}:</span>{" "}
+    {editedCard.termDuration?.length > 0
+      ? editedCard.termDuration.map((item) => t(`${item.toLowerCase()}`)).join(", ")
+      : t("not_available")}
+  </p>
+  <p>
+    <span className="font-medium text-gray-700">{t("payment")}:</span>{" "}
+    {editedCard.paymentMethod ? t(`${editedCard.paymentMethod.toLowerCase()}`) : t("not_available")}
+  </p>
+  <p>
+    <span className="font-medium text-gray-700">{t("deposit")}:</span>{" "}
+    {editedCard.deposit || t("not_available")} {editedCard.currency || ""}
+  </p>
+  <p>
+    <span className="font-medium text-gray-700">{t("commission")}:</span>{" "}
+    {editedCard.commission || t("not_available")}%
+  </p>
+</div>
+
 
           {/* Video */}
           {editedCard.video && (
@@ -405,56 +422,63 @@ const CardDetails = () => {
                   rel="noopener noreferrer"
                   className="text-blue-500 hover:underline"
                 >
-                  Watch Video
-                </a>
+  {t("watch_video")}
+  </a>
               </p>
             </div>
           )}
 
           {/* Additional Sections */}
           <div className="border-t pt-4 space-y-4">
-            {/* Amenities */}
-            <div>
-              <h3 className="font-semibold text-gray-700">Amenities</h3>
-              <ul className="list-disc ml-6">
-                {editedCard.amenities && editedCard.amenities.length > 0 ? (
-                  editedCard.amenities.map((item, index) => (
-                    <li key={index} className="text-sm text-gray-600">{item}</li>
-                  ))
-                ) : (
-                  <p className="text-sm text-gray-500">No amenities listed</p>
-                )}
-              </ul>
-            </div>
+  {/* Amenities */}
+  <div>
+    <h3 className="font-semibold text-gray-700">{t("amenities")}</h3>
+    <ul className="list-disc ml-6">
+      {editedCard.amenities && editedCard.amenities.length > 0 ? (
+        editedCard.amenities.map((item, index) => (
+          <li key={index} className="text-sm text-gray-600">
+            {t(`${item.toLowerCase()}`)}
+          </li>
+        ))
+      ) : (
+        <p className="text-sm text-gray-500">{t("no_amenities_listed")}</p>
+      )}
+    </ul>
+  </div>
 
-            {/* Heating */}
-            <div>
-              <h3 className="font-semibold text-gray-700">Heating</h3>
-              <ul className="list-disc ml-6">
-                {editedCard.heating && editedCard.heating.length > 0 ? (
-                  editedCard.heating.map((item, index) => (
-                    <li key={index} className="text-sm text-gray-600">{item}</li>
-                  ))
-                ) : (
-                  <p className="text-sm text-gray-500">No heating information</p>
-                )}
-              </ul>
-            </div>
+  {/* Heating */}
+  <div>
+    <h3 className="font-semibold text-gray-700">{t("heating")}</h3>
+    <ul className="list-disc ml-6">
+      {editedCard.heating && editedCard.heating.length > 0 ? (
+        editedCard.heating.map((item, index) => (
+          <li key={index} className="text-sm text-gray-600">
+            {t(`${item.toLowerCase()}`)}
+          </li>
+        ))
+      ) : (
+        <p className="text-sm text-gray-500">{t("no_heating_information")}</p>
+      )}
+    </ul>
+  </div>
 
-            {/* Additional Information */}
-            <div>
-              <h3 className="font-semibold text-gray-700">Additional Information</h3>
-              <ul className="list-disc ml-6">
-                {editedCard.selectedAdditional && editedCard.selectedAdditional.length > 0 ? (
-                  editedCard.selectedAdditional.map((item, index) => (
-                    <li key={index} className="text-sm text-gray-600">{item}</li>
-                  ))
-                ) : (
-                  <p className="text-sm text-gray-500">No additional information</p>
-                )}
-              </ul>
-            </div>
-          </div>
+  {/* Additional Information */}
+  <div>
+    <h3 className="font-semibold text-gray-700">{t("additional_information")}</h3>
+    <ul className="list-disc ml-6">
+      {editedCard.selectedAdditional && editedCard.selectedAdditional.length > 0 ? (
+        editedCard.selectedAdditional.map((item, index) => (
+          <li key={index} className="text-sm text-gray-600">
+            {t(`${item.toLowerCase()}`)}
+          </li>
+        ))
+      ) : (
+        <p className="text-sm text-gray-500">{t("no_additional_information")}</p>
+      )}
+    </ul>
+  </div>
+</div>
+
         </div>
 
 
