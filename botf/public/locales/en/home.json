@@ -4,7 +4,7 @@
   "allowners": "All Owner List",
   "dash": "DashBoard",
    "save": "Save",
-  "property":"ქონების",
+  "property":"property",
   
   "property_update_success": "Property updated successfully!",
   "property_update_failed": "Failed to update property.",
