@@ -502,27 +502,27 @@ const {t} = useTranslation("home")
                 className="px-4 py-2 bg-green-500 text-white rounded-md shadow hover:bg-green-600"
                 onClick={handleSave}
               >
-                Save
+                {t("save")}
               </button>
             ) : (
               <button
                 className="px-4 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600"
                 onClick={handleEdit}
               >
-                Edit
+                {t("edit")}
               </button>
             )}
             <button
               className="px-4 py-2 bg-yellow-500 text-white rounded-md shadow hover:bg-yellow-600"
               onClick={handleUpdate}
             >
-              Update
+              {t("update")}
             </button>
             <button
               className="px-4 py-2 bg-red-500 text-white rounded-md shadow hover:bg-red-600"
               onClick={handleDelete}
             >
-              Delete
+              {t("delete")}
             </button>
 
           </div>
