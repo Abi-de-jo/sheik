@@ -3,8 +3,11 @@ import { getAllDraftAgent } from "../utils/api";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa"; // Import icons
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
- 
+import { useTranslation } from "react-i18next";
+
 function AgentDraftDetails() {
+  const {t} = useTranslation("home");
+
   const [drafts, setDrafts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -463,13 +466,13 @@ ${selectedDraft.price >= 0 && selectedDraft.price <= 300
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 p-4 mb-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Agents Draft</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">{t("agentdraft")}</h1>
 
       <div className="bg-white p-4 rounded-lg shadow-lg mb-6">
-        <h2 className="text-xl font-semibold text-gray-700 mb-4">Filter Drafts</h2>
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">{t("filterdraft")}</h2>
         <div className="flex flex-wrap gap-4 items-center">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Filter by Date</label>
+            <label className="block text-sm font-medium text-gray-700">{t("filterbydate")}</label>
             <input
               type="date"
               value={filterDate}
@@ -478,26 +481,26 @@ ${selectedDraft.price >= 0 && selectedDraft.price <= 300
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Filter by Email</label>
+            <label className="block text-sm font-medium text-gray-700">{t("filterbyemail")}</label>
             <input
               type="email"
               value={filterEmail}
               onChange={(e) => setFilterEmail(e.target.value)}
-              placeholder="Enter email"
-              className="mt-1 block w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500"
+              placeholder={t("enter_email")}
+              className="mt-1 block w-full px-4 py-2 border rounded focus:ring-2 overflow-ellipsis focus:ring-blue-500"
             />
           </div>
           <button
             onClick={applyFilters}
             className="mt-6 bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
           >
-            Apply Filters
+            {t('apply')}
           </button>
           <button
             onClick={clearFilters}
             className="mt-6 bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition"
           >
-            Clear Filters
+            {t("clear")}
           </button>
         </div>
       </div>
@@ -527,13 +530,13 @@ ${selectedDraft.price >= 0 && selectedDraft.price <= 300
           {draft.title || "Untitled Draft"}
         </h2>
         <p className="text-sm text-gray-600 mt-1">
-          <span className="font-medium">Price:</span> ${draft.price || "N/A"}
+          <span className="font-medium">{t("price")}:</span> ${draft.price || "N/A"}
         </p>
         <p className="text-sm text-gray-600 mt-1">
-          <span className="font-medium">Status:</span> {draft.status}
+          <span className="font-medium">{t("status")}:</span> {draft.status}
         </p>
         <p className="text-sm text-gray-500 mt-1">
-          <span className="font-medium">Updated At:</span>{" "}
+          <span className="font-medium">{t("updatedat")}:</span>{" "}
           {new Date(draft.updatedAt).toLocaleDateString("en-GB")}
         </p>
       </div>
