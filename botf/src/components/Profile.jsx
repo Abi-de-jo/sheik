@@ -9,8 +9,8 @@ import { useTranslation} from 'react-i18next'
 
 const Profile = () => {
   const {t} = useTranslation("home");
-  // const teleNumber = "1219674630"; 
-  // const role = "user";  
+  // const teleNumber = "1469627446"; 
+  // const role = "agent";  
     const [matchedResidencies, setMatchedResidencies] = useState([]); // State for matched residencies
 
    const teleNumber = localStorage.getItem("teleNumber")
@@ -405,9 +405,9 @@ console.log(err)
             className="w-full h-32 object-cover rounded"
           />
           <div className="mt-2 sm:mt-4">
-            <p className="text-sm font-medium">Price: {property.price || "N/A"}</p>
-            <p className="text-sm">Type: {property.type || "N/A"}</p>
-            <p className="text-sm">Area: {property.area || "N/A"} sqft</p>
+            <p className="text-sm font-medium">{t("price")}: {property.price || "N/A"}</p>
+            <p className="text-sm">{t("type")}:: {property.type || "N/A"}</p>
+            <p className="text-sm">{t("type")}:: {property.area || "N/A"} sqft</p>
           </div>
         </div>
         <div className="w-full sm:w-1/2 flex flex-col justify-between px-4 mt-2 sm:mt-0">
@@ -461,10 +461,10 @@ console.log(err)
                 />
                 <div className="mt-2 sm:mt-4">
                   <p className="text-sm font-medium">
-                    Price: {property.price || "N/A"}
+                  {t("price")}:: {property.price || "N/A"}
                   </p>
-                  <p className="text-sm">Type: {property.type || "N/A"}</p>
-                  <p className="text-sm">Area: {property.area || "N/A"} sqft</p>
+                  <p className="text-sm">{t("type")}: {property.type || "N/A"}</p>
+                  <p className="text-sm">{t("sq.m")}: {property.area || "N/A"} sqft</p>
                 </div>
               </div>
               <div className="w-full sm:w-1/2 flex flex-col justify-between px-4 mt-2 sm:mt-0">
