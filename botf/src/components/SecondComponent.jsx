@@ -274,7 +274,7 @@ const SecondComponent = ({ onSave }) => {
                 })
               }
               className="w-full p-2 border border-gray-300 rounded-md"
-              placeholder={t("size"}
+              placeholder={t("size")}
             />
           </div>
           <div>
@@ -288,7 +288,7 @@ const SecondComponent = ({ onSave }) => {
                 setSecondFormData({ ...secondFormData, floor: value });
               }}
               className="w-full p-2 border border-gray-300 rounded-md"
-              placeholder={t("floor"}
+              placeholder={t("floor")}
             />
           </div>
           <div>
@@ -303,7 +303,7 @@ const SecondComponent = ({ onSave }) => {
                 })
               }
               className="w-full p-2 border border-gray-300 rounded-md"
-              placeholder={t("totalFloor"}
+              placeholder={t("totalFloor")}
             />
           </div>
 
