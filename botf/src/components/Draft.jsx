@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { getAllDraft } from "../utils/api";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function Draft() {
+  const { t } = useTranslation("home"); // Georgian translation
   const [drafts, setDrafts] = useState([]);
-  const [filteredDrafts, setFilteredDrafts] = useState([]); // Filtered drafts
-  const [filterDate, setFilterDate] = useState(""); // Filter date
-  const [filterEmail, setFilterEmail] = useState(""); // Filter email
+  const [filteredDrafts, setFilteredDrafts] = useState([]); 
+  const [filterDate, setFilterDate] = useState(""); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -17,9 +18,8 @@ function Draft() {
         const data = await getAllDraft();
         setDrafts(data);
         setFilteredDrafts(data);
-        console.log(data);
       } catch (err) {
-        setError("Failed to fetch drafts. Please try again later.", err);
+        setError(t("fetch_error"));
       } finally {
         setLoading(false);
       }
@@ -32,14 +32,8 @@ function Draft() {
     let updatedDrafts = [...drafts];
 
     if (filterDate) {
-      updatedDrafts = updatedDrafts.filter((draft) =>
-        new Date(draft.updatedAt).toISOString().split("T")[0] === filterDate
-      );
-    }
-
-    if (filterEmail) {
-      updatedDrafts = updatedDrafts.filter((draft) =>
-        draft.userEmail?.toLowerCase().includes(filterEmail.toLowerCase())
+      updatedDrafts = updatedDrafts.filter(
+        (draft) => new Date(draft.updatedAt).toISOString().split("T")[0] === filterDate
       );
     }
 
@@ -48,12 +42,11 @@ function Draft() {
 
   const clearFilters = () => {
     setFilterDate("");
-    setFilterEmail("");
     setFilteredDrafts(drafts);
   };
 
   if (loading) {
-    return <p className="text-center mt-10">Loading drafts...</p>;
+    return <p className="text-center mt-10">{t("loading")}</p>;
   }
 
   if (error) {
@@ -66,14 +59,20 @@ function Draft() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 p-4 mb-11">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Owners Draft</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+        {t("owners_draft")}
+      </h1>
 
       {/* Filter Section */}
       <div className="bg-white p-4 rounded-lg shadow-lg mb-6">
-        <h2 className="text-xl font-semibold text-gray-700 mb-4">Filter Drafts</h2>
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">
+          {t("filter_drafts")}
+        </h2>
         <div className="flex flex-wrap gap-4 items-center">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Filter by Date</label>
+            <label className="block text-sm font-medium text-gray-700">
+              {t("filter_by_date")}
+            </label>
             <input
               type="date"
               value={filterDate}
@@ -86,13 +85,13 @@ function Draft() {
             onClick={applyFilters}
             className="mt-6 bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
           >
-            Apply Filters
+            {t("apply_filters")}
           </button>
           <button
             onClick={clearFilters}
             className="mt-6 bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition"
           >
-            Clear Filters
+            {t("clear_filters")}
           </button>
         </div>
       </div>
@@ -103,7 +102,7 @@ function Draft() {
             <div
               key={draft.id}
               className="relative flex items-center bg-white border border-gray-300 rounded-xl shadow-md p-4"
-              onClick={() => handleImageClick(draft)} // Navigate on image click
+              onClick={() => handleImageClick(draft)}
             >
               <div className="w-20 h-20 flex-shrink-0 bg-gray-200 rounded-lg overflow-hidden">
                 <img
@@ -115,35 +114,29 @@ function Draft() {
 
               <div className="flex-1 pl-4">
                 <h2 className="text-lg font-semibold text-gray-800 truncate">
-                  {draft.title || "Untitled Draft"}
+                  {draft.title || t("untitled_draft")}
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  <span className="font-medium">Price:</span> ${draft.price || "N/A"}
+                  <span className="font-medium">{t("price")}:</span> ${draft.price || t("not_available")}
                 </p>
                 <p className="text-sm text-gray-600 mt-1">
-                  <span className="font-medium">Name:</span> {draft.name || "N/A"}
-                </p>
-                <p className="text-sm text-gray-600 mt-1">
-                  <span className="font-medium">Phone no:</span> {draft.phone || "N/A"}
-                </p>
-                <p className="text-sm text-gray-600 mt-1">
-                  <span className="font-medium">Status:</span> {draft.status}
+                  <span className="font-medium">{t("status")}:</span> {t(draft.status)}
                 </p>
                 <p className="text-sm text-gray-500 mt-1">
-                  <span className="font-medium">Updated At:</span>{" "}
+                  <span className="font-medium">{t("updated_at")}:</span>{" "}
                   {new Date(draft.updatedAt).toLocaleDateString("en-GB")}
                 </p>
               </div>
 
               {/* Position Bubble */}
               <div className="absolute top-4 right-4 bg-blue-500 text-white text-xs font-semibold py-1 px-3 rounded-full shadow-lg">
-                {draft.position || "Unknown"}
+                {draft.position ? t(draft.position) : t("unknown")}
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-gray-500 text-center">No drafts available.</p>
+        <p className="text-gray-500 text-center">{t("no_drafts_available")}</p>
       )}
     </div>
   );
