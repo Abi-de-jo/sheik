@@ -12,7 +12,7 @@ function Favourite() {
   const [allProperties, setAllProperties] = useState([]); // Track all properties
   const navigate = useNavigate(); // Navigation hook
   const email = localStorage.getItem("teleNumber");  
-  // const email = "1776941770";
+  // const email = "7219063798";
 
   useEffect(() => {
     const fetchAllProperties = async () => {
@@ -133,24 +133,33 @@ window.open(
 
   const toggleFavorite = async (propertyId) => {
     try {
-      const isLiked = favorites.includes(propertyId);
+      // Check if the property is already liked
+      const isLiked = favorites.some((fav) => fav.id === propertyId);
   
       if (isLiked) {
-        // Send a DELETE request to remove the like
+        // Send DELETE request to remove like
         await axios.delete(`https://sheik-back.vercel.app/api/user/dislikes/${propertyId}`, {
           data: { email },
         });
-        setFavorites((prev) => prev.filter((id) => id !== propertyId));
+  
+        // Update state to remove the unliked property
+        setFavorites((prev) => prev.filter((fav) => fav.id !== propertyId));
       } else {
-        // Send a POST request to add the like
+        // Send POST request to add like
         await axios.post(`https://sheik-back.vercel.app/api/user/likes/${propertyId}`, { email });
-        setFavorites((prev) => [...prev, propertyId]);
+  
+        // Find the full property details and add to favorites
+        const likedProperty = allProperties.find((prop) => prop.id === propertyId);
+        if (likedProperty) {
+          setFavorites((prev) => [...prev, likedProperty]);
+        }
       }
     } catch (error) {
       console.error("Error toggling favorite status:", error.message || error);
       alert("Failed to update favorite status. Please try again.");
     }
   };
+  
 
   
 
@@ -190,11 +199,11 @@ window.open(
         
                 {/* Dynamic Labels */}
                 <div className="absolute top-2 left-2 space-y-1">
-                <span
+                 <span
     className={`${
-      getTimeDifference(property.updatedAt, property.discount) === t("new")
+      getTimeDifference(property.updatedAt, property.discount) === "New"
         ? "bg-green-500"
-        : getTimeDifference(property.updatedAt, property.discount) === t("discounted")
+        : getTimeDifference(property.updatedAt, property.discount) === "Discounted"
         ? "bg-red-500"
         : "bg-blue-500"
     } text-white text-xs font-medium px-2 py-1 text-center rounded`}
@@ -268,19 +277,20 @@ window.open(
               </div>
 
           {/* Favorite Icon */}
-         <div
-                          className="cursor-pointer absolute right-2 top-2 "
+          <div
+                          className="cursor-pointer absolute right-6 bottom-4"
                           onClick={(e) => {
-                            e.stopPropagation();
-                            toggleFavorite(property.id);
-                          }}
-                        >
-                          {favorites?.includes(property.id) ? (
-                            <AiFillHeart color="red" size={20} />
-                          ) : (
-                            <BiHeart color="gray" size={20} />
-                          )}
-                        </div>
+      e.stopPropagation();
+      toggleFavorite(property.id);
+    }}
+  >
+    {favorites?.includes(property.id) ? (
+      <BiHeart color="gray" size={25} />
+    ) : (
+      <AiFillHeart color="red" size={25} />
+    )}
+  </div>
+          
         </div>
       ))}
     </div>
