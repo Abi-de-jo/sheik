@@ -122,6 +122,12 @@ function Draft() {
                 <p className="text-sm text-gray-600 mt-1">
                   <span className="font-medium">{t("status")}:</span> {t(draft.status)}
                 </p>
+                <p className="text-sm text-gray-600 mt-1">
+                  <span className="font-medium">{t("name")}:</span> {t(draft.name)}
+                </p>
+                <p className="text-sm text-gray-600 mt-1">
+                  <span className="font-medium">{t("phone")}:</span> {t(draft.phone)}
+                </p>
                 <p className="text-sm text-gray-500 mt-1">
                   <span className="font-medium">{t("updated_at")}:</span>{" "}
                   {new Date(draft.updatedAt).toLocaleDateString("en-GB")}
