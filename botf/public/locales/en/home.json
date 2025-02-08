@@ -10,6 +10,7 @@
 
   "property_update_success": "Property updated successfully!",
   "property_update_failed": "Failed to update property.",
+  
   "property_delete_success": "Property deleted successfully!",
   "property_delete_failed": "Failed to delete property.",
   "no_card_selected": "No Card Selected",
