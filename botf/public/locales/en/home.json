@@ -11,6 +11,8 @@
   "filterbydate": "Filter by Date",
   "filterbyemail": "Filter by Email",
   "apply": "Apply Filter",
+  "name":"Name",
+  "phone":"phone",
   "property_update_success": "Property updated successfully!",
   "property_update_failed": "Failed to update property.",
   "property_delete_success": "Property deleted successfully!",
