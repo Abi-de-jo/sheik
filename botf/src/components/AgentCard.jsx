@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { useTranslation } from "react-i18next";
+ 
 const API_BASE_URL = "https://sheik-back.vercel.app/api";
 
 const AgentCard = () => {
+  const {t} = useTranslation("home")
   const [isUploading, setIsUploading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -22,8 +24,8 @@ const AgentCard = () => {
   const [editedCard, setEditedCard] = useState(location.state?.property || {});
 
   const role = localStorage.getItem("role");
-//  const email = localStorage.getItem("teleNumber")
- const email ="1469627446";
+ const email = localStorage.getItem("teleNumber")
+//  const email ="1469627446";
   const handleBack = () => {
     navigate(-1);
   };
@@ -161,7 +163,7 @@ const AgentCard = () => {
           className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
           onClick={handleBack}
         >
-          Back
+          {t("back")}
         </button>
         {editedCard.images && editedCard.images.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -197,185 +199,195 @@ const AgentCard = () => {
 
     {isEditing ? (
   <div className="space-y-2">
-    <input
-      type="text"
-      name="title"
-      value={editedCard.title || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="Property Title"
-    />
-    <input
-      type="text"
-      name="address"
-      value={editedCard.address || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="Address"
-    />
-    <input
-      type="text"
-      name="addressURL"
-      value={editedCard.addressURL || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="Address URL"
-    />
-    <input
-      type="text"
-      name="googleaddressurl"
-      value={editedCard.googleaddressurl || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="Google Address URL"
-    />
-    <input
-      type="text"
-      name="price"
-      value={editedCard.price || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="Price"
-    />
-    <input
-      type="text"
-      name="discount"
-      value={editedCard.discount || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="Discount"
-    />
-    
-    <input
-      type="text"
-      name="rooms"
-      value={editedCard.rooms || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="Rooms"
-    />
-    
-    <input
-      type="text"
-      name="floor"
-      value={editedCard.floor || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="Floor"
-    />
-    <input
-      type="text"
-      name="totalFloors"
-      value={editedCard.totalFloors || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="Total Floors"
-    />
-    <input
-      type="text"
-      name="termDuration"
-      value={editedCard.termDuration || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="Term Duration"
-    />
-    <input
-      type="text"
-      name="city"
-      value={editedCard.city || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="City"
-    />
-    <input
-      type="text"
-      name="district"
-      value={editedCard.district || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="City"
-    />
-    <input
-      type="text"
-      name="propertyType"
-      value={editedCard.propertyType || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="Property Type"
-    />
-    <input
-      type="text"
-      name="residencyType"
-      value={editedCard.residencyType || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="Residency Type"
-    />
-    <input
-      type="text"
-      name="bathrooms"
-      value={editedCard.bathrooms || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="Bathrooms"
-    />
-    <textarea
-      name="description"
-      value={editedCard.description || ""}
-      onChange={handleInputChange}
-      className="w-full p-2 border rounded"
-      placeholder="Description"
-      rows="4"
-    ></textarea>
-  </div>
+  <input
+    type="text"
+    name="title"
+    value={editedCard.title || ""}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    placeholder={t("property_title")}
+  />
+  <input
+    type="text"
+    name="address"
+    value={editedCard.address || ""}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    placeholder={t("address")}
+  />
+  <input
+    type="text"
+    name="addressURL"
+    value={editedCard.addressURL || ""}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    placeholder={t("address_url")}
+  />
+  <input
+    type="text"
+    name="googleaddressurl"
+    value={editedCard.googleaddressurl || ""}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    placeholder={t("address_url")}
+  />
+  <input
+    type="text"
+    name="price"
+    value={editedCard.price || ""}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    placeholder={t("price")}
+  />
+  <input
+    type="text"
+    name="discount"
+    value={editedCard.discount || ""}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    placeholder={t("discount")}
+  />
+  <input
+    type="text"
+    name="rooms"
+    value={editedCard.rooms || ""}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    placeholder={t("rooms")}
+  />
+  <input
+    type="text"
+    name="floor"
+    value={editedCard.floor || ""}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    placeholder={t("floor")}
+  />
+  <input
+    type="text"
+    name="totalFloors"
+    value={editedCard.totalFloors || ""}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    placeholder={t("total_floors")}
+  />
+  <input
+    type="text"
+    name="termDuration"
+    value={editedCard.termDuration || ""}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    placeholder={t("term_duration")}
+  />
+  <input
+    type="text"
+    name="city"
+    value={editedCard.city || ""}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    placeholder={t("city")}
+  />
+  <input
+    type="text"
+    name="district"
+    value={editedCard.district || ""}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    placeholder={t("district")}
+  />
+  <input
+    type="text"
+    name="propertyType"
+    value={editedCard.propertyType || ""}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    placeholder={t("property_type")}
+  />
+  <input
+    type="text"
+    name="residencyType"
+    value={editedCard.residencyType || ""}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    placeholder={t("residency_type")}
+  />
+  <input
+    type="text"
+    name="bathrooms"
+    value={editedCard.bathrooms || ""}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    placeholder={t("bathrooms")}
+  />
+  <textarea
+    name="description"
+    value={editedCard.description || ""}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    placeholder={t("description")}
+    rows="4"
+  ></textarea>
+</div>
 ) : (
   <div className="space-y-2">
-    <h2 className="text-xl font-bold">{editedCard.title || "Untitled Property"}</h2>
-    <p className="text-gray-700">
-      <span className="font-semibold">Address: </span>
-      {editedCard.address || "No address provided"}
-    </p>
-    <p className="text-gray-700">
-      <span className="font-semibold">Google Address URL: </span>
-      {editedCard.googleaddressurl || "No URL provided"}
-    </p>
-    
-    <p className="text-gray-700">
-      <span className="font-semibold">Rooms: </span>
-      {editedCard.rooms || "Not specified"}
-    </p>
-    
-    <p className="text-gray-700">
-      <span className="font-semibold">City: </span>
-      {editedCard.city || "Not specified"}
-    </p>
-    <p className="text-yellow-500 font-semibold">
-    <span className="font-semibold">Price: </span>
+  <h2 className="text-xl font-bold">
+    {editedCard.title || t("untitled_property")}
+  </h2>
+
+  <p className="text-gray-700">
+    <span className="font-semibold">{t("address")}: </span>
+    {editedCard.address || t("no_address_provided")}
+  </p>
+
+  <p className="text-gray-700">
+    <span className="font-semibold">{t("address_url")}: </span>
+    {editedCard.googleaddressurl || t("no_url_provided")}
+  </p>
+
+  <p className="text-gray-700">
+    <span className="font-semibold">{t("rooms")}: </span>
+    {editedCard.rooms || t("not_specified")}
+  </p>
+
+  <p className="text-gray-700">
+  <span className="font-semibold">{t("city")}: </span>
+  {editedCard.city ? t(editedCard.city.toLowerCase(), { defaultValue: editedCard.city }) : t("not_specified")}
+</p>
+
+
+  <p className="font-semibold">
+    <span className="font-semibold">{t("price")}: </span>
     {editedCard.discount ? (
       <>
-        <span className="line-through text-gray-500">${editedCard.price}</span>{" "}
+        <span className="line-through text-gray-500">
+          ${editedCard.price}
+        </span>{" "}
         <span>${editedCard.price - editedCard.discount}</span>
       </>
+    ) : editedCard.price ? (
+      `$${editedCard.price}`
     ) : (
-      editedCard.price ? `$${editedCard.price}` : "N/A"
+      t("not_available")
     )}
   </p>
-    {editedCard.description && (
-      <p className="text-gray-600">
-        <span className="font-semibold">Description: </span>
-        {editedCard.description}
-      </p>
-    )}
-    <p className="text-sm text-gray-500">
-      <span className="font-semibold">Status: </span>
-      {editedCard.status || "Unknown"}
+
+  {editedCard.description && (
+    <p className="text-gray-600">
+      <span className="font-semibold">{t("description")}: </span>
+      {editedCard.description}
     </p>
-  </div>
+  )}
+
+  <p className="text-sm text-gray-500">
+    <span className="font-semibold">{t("status")}: </span>
+    {editedCard.status || t("unknown")}
+  </p>
+</div>
 )}
 
-      <div className="flex items-center -ml-5 justify-center">
+      <div className="flex items-center -ml-4 justify-center ">
         {role === "admin" || email === editedCard.userTeleNumber ? (
-          <div>
+          <div >
             {editedCard.status === "published" && (
               <>
                 {isEditing ? (
@@ -383,33 +395,35 @@ const AgentCard = () => {
                     className="px-2 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
                     onClick={handleSave}
                   >
-                    Save
+                    {t("save")}
                   </button>
                 ) : (
                   <button
                     className="px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                     onClick={handleEdit}
                   >
-                    Edit
+                                        {t("edit")}
+
                   </button>
                 )}
                 <button
                   className="px-2 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ml-4"
                   onClick={handleArchive}
                 >
-                  Archive
+                                      {t("archive")}
+
                 </button>
                 <button
                   className="px-3 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 ml-4"
                   onClick={() => setShowRentForm(true)} // Show the rent form
                 >
-                  Rent
+                  {t("rent")}
                 </button>
                 <button
-            className="px-2 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 ml-4"
+            className="px-2 py-2 mt-3 -ml-0  bg-purple-500 text-white rounded-md hover:bg-purple-600  ml-3"
             onClick={handleUpdate}
           >
-            Update
+            {t("update")}
           </button>
                
                 
