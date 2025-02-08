@@ -8,8 +8,9 @@
   "agentachieve": "აგენტების არქივი",
   "propertiesTitle": "ქონება",
   "listView": "სია",
-    "property":"ქონების",
-
+  "property": "ქონების",
+  "enter": "შეიყვანეთ მისამართი",
+  "paste": "აქ ჩასვით მისამართის URL",
   "mapView": "რუკა",
   "contact": "კონტაქტი",
   "action": "ადმინისტრ მოქმედებები",
