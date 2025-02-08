@@ -190,7 +190,7 @@ const SecondComponent = ({ onSave }) => {
               setSecondFormData({ ...secondFormData, address: e.target.value })
             }
             className="w-full p-2 border border-gray-300 rounded-md"
-            placeholder="Enter address"
+            placeholder = {t("enter")}
           />
         </div>
         <div>
@@ -202,7 +202,7 @@ const SecondComponent = ({ onSave }) => {
               setSecondFormData({ ...secondFormData, googleaddressurl: e.target.value })
             }
             className="w-full p-2 border border-gray-300 rounded-md"
-            placeholder="Paste Address URL here"
+            placeholder={t("paste")}
           />
         </div>
 
@@ -274,7 +274,7 @@ const SecondComponent = ({ onSave }) => {
                 })
               }
               className="w-full p-2 border border-gray-300 rounded-md"
-              placeholder="Size"
+              placeholder={t("size"}
             />
           </div>
           <div>
@@ -288,7 +288,7 @@ const SecondComponent = ({ onSave }) => {
                 setSecondFormData({ ...secondFormData, floor: value });
               }}
               className="w-full p-2 border border-gray-300 rounded-md"
-              placeholder="Floor"
+              placeholder={t("floor"}
             />
           </div>
           <div>
@@ -303,7 +303,7 @@ const SecondComponent = ({ onSave }) => {
                 })
               }
               className="w-full p-2 border border-gray-300 rounded-md"
-              placeholder="Total Floors"
+              placeholder={t("totalFloor"}
             />
           </div>
 
@@ -1079,7 +1079,7 @@ const SecondComponent = ({ onSave }) => {
         <div className="">
 
 
-          <h3 className="text-lg font-semibold">Amenities</h3>
+          <h3 className="text-lg font-semibold">{t("amenities")}</h3>
 
 
 
