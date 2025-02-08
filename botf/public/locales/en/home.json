@@ -5,7 +5,9 @@
   "dash": "DashBoard",
    "save": "Save",
   "property":"property",
-  
+    "enter":"Enter Address",
+"paste":"Paste Address URL here",
+
   "property_update_success": "Property updated successfully!",
   "property_update_failed": "Failed to update property.",
   "property_delete_success": "Property deleted successfully!",
