@@ -55,6 +55,7 @@ model Residency {
   addressURL    String?
   googleaddressurl String?
   paymentMethod String?
+  taxOption  String?
   parking       Int?
   balcony       Boolean?
   currency      String?
