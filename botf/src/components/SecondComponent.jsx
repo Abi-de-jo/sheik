@@ -35,6 +35,7 @@ const SecondComponent = ({ onSave }) => {
     title: "",
     video: "",
     propertyType: "",
+    taxOption: "",
     residencyType: "",
     position: "",
     discount: null,
@@ -659,6 +660,22 @@ const SecondComponent = ({ onSave }) => {
             <option value="Land">{t("land")}</option>
           </select>
         </div>
+          {secondFormData.propertyType === "Commercial" && (
+          <div className="w-full   ml-2 border-gray-300 rounded-md">
+            <label className="block text-sm font-medium"></label>
+            <select
+              value={secondFormData.taxOption}
+              onChange={(e) =>
+                setSecondFormData({ ...secondFormData, taxOption: e.target.value })
+              }
+              className="w-full p-2 border border-gray-300 rounded-md"
+            >
+              <option value="" disabled>{t("select")}</option>
+              <option value="Including Tax">{t("includingTax")}</option>
+              <option value="Excluding Tax">{t("excludingTax")}</option>
+            </select>
+          </div>
+        )}
 
 
 
