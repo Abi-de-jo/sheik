@@ -398,7 +398,7 @@ ${selectedDraft.price >= 0 && selectedDraft.price <= 300
   🏠 ${selectedDraft.area} Sq.m | #${selectedDraft?.floor}floors | #${selectedDraft?.rooms}Rooms
   
 ${amenitiesFormatted}
-  ${selectedDraft?.parking > 0 ? "✅ Parking" : "✖️ Parking"}
+${selectedDraft?.parking > 0 ? "✅ Parking" : "✖️ Parking"}
   
   For Business:
 ${businessFormatted}
