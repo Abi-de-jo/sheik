@@ -289,7 +289,7 @@ ${selectedDraft?.parking > 0 ? "✅ Parking" : "✖️ Parking"}
             ? "#ByAgreement"
             : "#NotAllowed"
         }
-⏰ ${selectedDraft?.term} ${selectedDraft?.termDuration
+⏰ #${selectedDraft?.term} ${selectedDraft?.termDuration
           ?.map((duration) => `#${duration.replace(" ", "")}`)
           .join(" ")}
 💳 #${selectedDraft?.paymentMethod}   
@@ -410,7 +410,7 @@ ${selectedDraft?.parking > 0 ? "✅ Parking" : "✖️ Parking"}
   For Business:
 ${businessFormatted}
 
-  ⏰${selectedDraft?.term} ${selectedDraft?.termDuration
+  ⏰ #${selectedDraft?.term} ${selectedDraft?.termDuration
             ?.map((duration) => `#${duration.replace(" ", "")}`)
             .join(" ")}
   💰 ${selectedDraft.price}${selectedDraft.currency === "USD" ? "$" : "₾"} ${
