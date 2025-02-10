@@ -51,6 +51,8 @@ model Residency {
   floor         Int?
   totalFloors   Int?
   area          Float?
+  business     String[] @default([])
+
   type          String?
   addressURL    String?
   googleaddressurl String?
