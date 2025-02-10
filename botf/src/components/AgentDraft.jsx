@@ -479,19 +479,20 @@ ${businessFormatted}
 
 
 
-      const chatId =
-      selectedDraft.type === "Rent"
-        ? TELEGRAM_CHAT_ID
-        : selectedDraft.propertyType === "Commercial"
-        ? COMMERCIAL_CHAT_ID
-        : SALE_CHAT_ID;
-    
-    const message =
-      selectedDraft.type === "Rent"
-        ? rentMessage
-        : selectedDraft.propertyType === "Commercial"
-        ? comMessage
-        : saleMessage;
+     const chatId =
+  selectedDraft.propertyType === "Commercial"
+    ? COMMERCIAL_CHAT_ID // If Commercial, always go to COMMERCIAL_CHAT_ID
+    : selectedDraft.type === "Rent"
+    ? TELEGRAM_CHAT_ID // If not Commercial but Rent, go to TELEGRAM_CHAT_ID
+    : SALE_CHAT_ID; // If neither, it's a Sale, so go to SALE_CHAT_ID
+
+const message =
+  selectedDraft.propertyType === "Commercial"
+    ? comMessage // If Commercial, send commercial message
+    : selectedDraft.type === "Rent"
+    ? rentMessage // If Rent, send rent message
+    : saleMessage; // Otherwise, send sale message
+
       await uploadMediaToTelegram(media, chatId, TELEGRAM_BOT_TOKEN, message);
 
       alert("Details published to Telegram successfully!");
