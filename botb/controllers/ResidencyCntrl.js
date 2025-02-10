@@ -29,6 +29,7 @@ export const createResidency = asyncHandler(async (req, res) => {
     design,
     paymentMethod,
     googleaddressurl,
+        taxOption,
     floor,
     totalFloors,
     balcony,
@@ -79,6 +80,8 @@ export const createResidency = asyncHandler(async (req, res) => {
         term,
         name,
     phone,
+            taxOption,
+
         bathrooms,
         floor,
         totalFloors,
