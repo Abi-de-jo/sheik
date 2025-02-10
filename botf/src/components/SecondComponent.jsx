@@ -35,6 +35,8 @@ const SecondComponent = ({ onSave }) => {
     title: "",
     video: "",
     propertyType: "",
+        business: [],
+
     taxOption: "",
     residencyType: "",
     position: "",
@@ -57,7 +59,7 @@ const SecondComponent = ({ onSave }) => {
     ],
   });
 
-  // const role = "user"
+  // const role = "agent"
   const role = localStorage.getItem("role")
 
 
@@ -71,7 +73,9 @@ const SecondComponent = ({ onSave }) => {
     console.log(secondFormData.addressURL, "Address URL before saving");
 
 
+    // const email = "abigeomap@gmail.com"
     const email = localStorage.getItem("email")
+    // const teleNumber =  "1469627446"
     const teleNumber = localStorage.getItem("teleNumber");
     if (!secondFormData.addressURL) {
       alert("Address URL cannot be empty.");
@@ -1092,64 +1096,109 @@ const SecondComponent = ({ onSave }) => {
           </div>
         </div>
 
-
         <div className="">
 
 
-          <h3 className="text-lg font-semibold">{t("amenities")}</h3>
+ 
+     
+
+
+{/* Amenities Section */}
+<h3 className="text-lg font-semibold">{t("amenities")}</h3>
+<div className="grid grid-cols-1 gap-4">
+ {[
+   "Oven",
+   "Microwave",
+   "VacuumCleaner",
+   "AirConditioner",
+   "Balcony",
+   "Stove",
+   "Dishwasher",
+   "SmartTV",
+   "WiFi",
+   "ParkingPlace",
+   "PlayStation",
+   "Projector",
+   "Elevator",
+   "Heating",
+ ].map((option) => (
+   <div
+     key={option}
+     className="flex items-center justify-between p-3 border border-gray-300 rounded-lg shadow-sm bg-white"
+   >
+     <div className="text-gray-800 font-medium text-sm">{t(option.toLowerCase())}</div>
+     <label className="relative inline-flex items-center cursor-pointer">
+       <input
+         type="checkbox"
+         checked={secondFormData.amenities.includes(option)}
+         onChange={() =>
+           setSecondFormData((prev) => ({
+             ...prev,
+             amenities: prev.amenities.includes(option)
+               ? prev.amenities.filter((item) => item !== option)
+               : [...prev.amenities, option],
+           }))
+         }
+         className="sr-only peer"
+       />
+       <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer-checked:bg-blue-600 peer-checked:before:translate-x-4 before:content-[''] before:absolute before:top-0.5 before:left-0.5 before:bg-white before:border before:rounded-full before:h-4 before:w-4 before:transition-all peer-checked:before:border-white"></div>
+     </label>
+   </div>
+ ))}
+</div>
+
+{/* Business Type Section (Only for Commercial) */}
+{secondFormData.propertyType === "Commercial" && (
+ <>
+   <h3 className="text-lg font-semibold mt-6">{t("businessType")}</h3>
+   <div className="grid grid-cols-1 gap-4">
+     {[
+       "Showroom",
+       "Office",
+       "Retail",
+       "Restaurant",
+       "Hotel",
+       "CreativeSpace",
+       "Cafe",
+       "Coworking",
+       "BeautySalon",
+     ].map((option) => (
+       <div
+         key={option}
+         className="flex items-center justify-between p-3 border border-gray-300 rounded-lg shadow-sm bg-white"
+       >
+         <div className="text-gray-800 font-medium text-sm">{t(option.toLowerCase())}</div>
+         <label className="relative inline-flex items-center cursor-pointer">
+           <input
+             type="checkbox"
+             checked={secondFormData.business?.includes(option)}
+             onChange={() =>
+               setSecondFormData((prev) => ({
+                 ...prev,
+                 business: prev.business?.includes(option)
+                   ? prev.business.filter((item) => item !== option)
+                   : [...(prev.business || []), option],
+               }))
+             }
+             className="sr-only peer"
+           />
+           <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer-checked:bg-blue-600 peer-checked:before:translate-x-4 before:content-[''] before:absolute before:top-0.5 before:left-0.5 before:bg-white before:border before:rounded-full before:h-4 before:w-4 before:transition-all peer-checked:before:border-white"></div>
+         </label>
+       </div>
+     ))}
+   </div>
+ </>
+)}
 
 
 
 
-          <div className="grid grid-cols-1 gap-4">
-            {[
-              "Oven",
-              "Microwave",
-              "VacuumCleaner",
-              "AirConditioner",
-              "Balcony",
-              "Stove",
-              "Dishwasher",
-              "SmartTV",
-              "WiFi",
-              "ParkingPlace",
-              "PlayStation",
-              "Projector",
-              "Elevator",
-              "Heating",
-            ].map((option) => (
-              <div
-                key={option}
-                className="flex items-center justify-between p-3 border border-gray-300 rounded-lg shadow-sm bg-white"
-              >
-                <div className="text-gray-800 font-medium text-sm">
-                  {t(option.toLowerCase())}
-                </div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={secondFormData.amenities.includes(option)}
-                    onChange={() =>
-                      setSecondFormData((prev) => ({
-                        ...prev,
-                        amenities: prev.amenities.includes(option)
-                          ? prev.amenities.filter((item) => item !== option)
-                          : [...prev.amenities, option],
-                      }))
-                    }
-                    className="sr-only peer"
-                  />
-                  <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer-checked:bg-blue-600 peer-checked:before:translate-x-4 before:content-[''] before:absolute before:top-0.5 before:left-0.5 before:bg-white before:border before:rounded-full before:h-4 before:w-4 before:transition-all peer-checked:before:border-white"></div>
-                </label>
-              </div>
-            ))}
-          </div>
 
 
 
 
 
-        </div>
+       </div>
 
 
 
