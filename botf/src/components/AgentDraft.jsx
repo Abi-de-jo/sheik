@@ -94,6 +94,7 @@ function AgentDraftDetails() {
       const TELEGRAM_BOT_TOKEN = "7712916176:AAF15UqOplv1hTdJVxILWoUOEefEKjGJOso";
       const TELEGRAM_CHAT_ID = "-4545005015";
       const SALE_CHAT_ID = "-4664195143";
+      const COMMERCIAL_CHAT_ID = "-4773672468";  // Chat ID for commercial properties
 
       const ADMIN_NOTIFICATION_CHAT_ID = selectedDraft.userTeleNumber;
 
@@ -354,6 +355,82 @@ ${selectedDraft.price >= 0 && selectedDraft.price <= 300
 📸 [Instagram](https://www.instagram.com/rent_in_tbilisi?igsh=MWU5aWVxa3Fxd2dlbw==) 🌐 [FB](https://www.facebook.com/share/j6jBfExKXjgNVpVQ/) 🎥 [YouTube](https://www.youtube.com/@RENTINTBILISI)
         `;
 
+
+
+        const comMessage = `
+        #${selectedDraft?.city} #${selectedDraft?.district} 🏢#${selectedDraft?.metro}
+  📍[${selectedDraft.address}](${selectedDraft.googleaddressurl})
+          
+  #${selectedDraft?.title} 
+  Apartment for #${selectedDraft?.type}✨ #${selectedDraft?.residencyType}
+          
+  🏠 ${selectedDraft.area} Sq.m | #${selectedDraft?.floor}floor | #${selectedDraft?.bathrooms}Bath
+  
+  ${amenitiesFormatted}
+  ${selectedDraft?.parking > 0 ? "✅ Parking" : "✖️ Parking"}
+  
+  🐕 Pets: ${selectedDraft.selectedAdditional?.includes("PetsAllowed")
+            ? "#Allowed"
+            : selectedDraft.selectedAdditional?.includes("ByAgreement")
+              ? "#ByAgreement"
+              : "#NotAllowed"
+          }
+  ⏰ ${selectedDraft?.termDuration
+            ?.map((duration) => `#${duration.replace(" ", "")}`)
+            .join(" ")}
+  💳 #${selectedDraft?.paymentMethod}   
+  💰 ${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"} | Deposit ${selectedDraft.deposit}${selectedDraft.currency == "USD" ? "$" : "₾"}
+    0% Commission
+  ${selectedDraft.price >= 0 && selectedDraft.price <= 300
+            ? "#Price0to300"
+            : selectedDraft.price > 300 && selectedDraft.price <= 500
+              ? "#Price300to500"
+              : selectedDraft.price > 500 && selectedDraft.price <= 700
+                ? "#Price500to700"
+                : selectedDraft.price > 700 && selectedDraft.price <= 900
+                  ? "#Price700to900"
+                  : selectedDraft.price > 900 && selectedDraft.price <= 1200
+                    ? "#Price900to1200"
+                    : selectedDraft.price > 1200 && selectedDraft.price <= 1500
+                      ? "#Price1200to1500"
+                      : selectedDraft.price > 1500 && selectedDraft.price <= 1700
+                        ? "#Price1500to1700"
+                        : selectedDraft.price > 1700 && selectedDraft.price <= 1900
+                          ? "#Price1700to1900"
+                          : selectedDraft.price > 1900 && selectedDraft.price <= 2100
+                            ? "#Price1900to2100"
+                            : selectedDraft.price > 2100 && selectedDraft.price <= 2500
+                              ? "#Price2100to2500"
+                              : selectedDraft.price > 2500 && selectedDraft.price <= 3000
+                                ? "#Price2500to3000"
+                                : selectedDraft.price > 3000 && selectedDraft.price <= 4000
+                                  ? "#Price3000to4000"
+                                  : selectedDraft.price > 4000 && selectedDraft.price <= 5000
+                                    ? "#Price4000to5000"
+                                    : selectedDraft.price > 5000
+                                      ? "#PriceAbove5000"
+                                      : ""}
+    
+        
+  👤 Contact: [@David_Tibelashvili]
+  📞 +995 599 20 67 16 | ${selectedDraft?.email?.includes('geomap')
+            ? `#${selectedDraft?.email?.split('geomap')[0] || "user"}`
+            : `#${selectedDraft?.email?.split('@')[0] || "user"}`
+          }
+         
+  ⭐ [Check all listings](https://t.me/rent_tbilisi_ge/9859) | [Reviews](https://t.me/reviews_rent_tbilisi)
+          
+  📸 [Instagram](https://www.instagram.com/rent_in_tbilisi?igsh=MWU5aWVxa3Fxd2dlbw==) 🌐 [FB](https://www.facebook.com/share/j6jBfExKXjgNVpVQ/) 🎥 [YouTube](https://www.youtube.com/@RENTINTBILISI)
+          `;
+  
+
+
+
+
+
+
+
+
       const propertyDetails = `
        *YOUR PROPERTY ACCEPTED BY ADMIN* 
 
@@ -400,9 +477,19 @@ ${selectedDraft.price >= 0 && selectedDraft.price <= 300
 
 
 
-      const chatId = selectedDraft.type === "Rent" ? TELEGRAM_CHAT_ID : SALE_CHAT_ID;
-      const message = selectedDraft.type === "Rent" ? rentMessage : saleMessage;
-
+      const chatId =
+      selectedDraft.type === "Rent"
+        ? TELEGRAM_CHAT_ID
+        : selectedDraft.type === "Commercial"
+        ? COMMERCIAL_CHAT_ID
+        : SALE_CHAT_ID;
+    
+    const message =
+      selectedDraft.type === "Rent"
+        ? rentMessage
+        : selectedDraft.type === "Commercial"
+        ? comMessage
+        : saleMessage;
       await uploadMediaToTelegram(media, chatId, TELEGRAM_BOT_TOKEN, message);
 
       alert("Details published to Telegram successfully!");
