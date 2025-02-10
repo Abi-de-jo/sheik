@@ -11,8 +11,6 @@
   "filterbydate": "Filter by Date",
   "filterbyemail": "Filter by Email",
   "apply": "Apply Filter",
-  "name":"Name",
-  "phone":"phone",
   "property_update_success": "Property updated successfully!",
   "property_update_failed": "Failed to update property.",
   "property_delete_success": "Property deleted successfully!",
@@ -334,5 +332,16 @@
   "state university": "State University",
   "fav": "Favorite Property",
   "welcome": "Welcome back , Admin!",
-  "action": "Admin Actions"
+  "action": "Admin Actions",
+  "businessType": "Business Type",
+  "showroom": "Showroom",
+  "retail": "Retail",
+  "restaurant": "Restaurant",
+  "hotel": "Hotel",
+  "creativespace": "Creative Space",
+  "cafe": "Cafe",
+  "coworking": "Coworking",
+  "beautysalon": "Beauty Salon",
+  "includingTax": "Including Tax",
+  "excludingTax": "Excluding Tax"
 }
