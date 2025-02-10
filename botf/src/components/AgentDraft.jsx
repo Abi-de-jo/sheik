@@ -231,6 +231,38 @@ function AgentDraftDetails() {
         selectedDraft?.amenities || []
       );
 
+      const allBusinessTypes = [
+        "Showroom",
+        "Office",
+        "Retail",
+        "Restaurant",
+        "Hotel",
+        "CreativeSpace",
+        "Cafe",
+        "Coworking",
+        "BeautySalon"
+      ];
+      
+      const formatBusinessInTwoColumns = (selectedBusiness) => {
+        // Map all business options to their respective status
+        const formattedBusiness = allBusinessTypes.map((business) => {
+          return selectedBusiness.includes(business)
+            ? `✅ #${business.replace(/\s+/g, "")}`
+            : `✖️ #${business.replace(/\s+/g, "")}`;
+        });
+      
+        // Chunk into rows of 2 for better formatting
+        const chunkedBusiness = [];
+        for (let i = 0; i < formattedBusiness.length; i += 2) {
+          chunkedBusiness.push(formattedBusiness.slice(i, i + 2));
+        }
+      
+        // Join rows into final output
+        return chunkedBusiness.map((row) => row.join("  ")).join("\n");
+      };
+      
+      const businessFormatted = formatBusinessInTwoColumns(selectedDraft?.business || []);
+      
 
       const rentMessage = `
       #${selectedDraft?.city} #${selectedDraft?.district} 🏢#${selectedDraft?.metro}
@@ -361,56 +393,26 @@ ${selectedDraft.price >= 0 && selectedDraft.price <= 300
         #${selectedDraft?.city} #${selectedDraft?.district} 🏢#${selectedDraft?.metro}
   📍[${selectedDraft.address}](${selectedDraft.googleaddressurl})
           
-  #${selectedDraft?.title} 
-  Apartment for #${selectedDraft?.type}✨ #${selectedDraft?.residencyType}
-          
-  🏠 ${selectedDraft.area} Sq.m | #${selectedDraft?.floor}floor | #${selectedDraft?.bathrooms}Bath
+  #${selectedDraft?.propertyType} for #${selectedDraft?.type}
+  ✨ ${selectedDraft?.design}       
+  🏠 ${selectedDraft.area} Sq.m | #${selectedDraft?.floor}floors | #${selectedDraft?.rooms}Rooms
   
   ${amenitiesFormatted}
   ${selectedDraft?.parking > 0 ? "✅ Parking" : "✖️ Parking"}
   
-  🐕 Pets: ${selectedDraft.selectedAdditional?.includes("PetsAllowed")
-            ? "#Allowed"
-            : selectedDraft.selectedAdditional?.includes("ByAgreement")
-              ? "#ByAgreement"
-              : "#NotAllowed"
-          }
+  For Business:
+  ${businessFormatted}
+
   ⏰ ${selectedDraft?.termDuration
             ?.map((duration) => `#${duration.replace(" ", "")}`)
             .join(" ")}
-  💳 #${selectedDraft?.paymentMethod}   
-  💰 ${selectedDraft.price}${selectedDraft.currency == "USD" ? "$" : "₾"} | Deposit ${selectedDraft.deposit}${selectedDraft.currency == "USD" ? "$" : "₾"}
-    0% Commission
-  ${selectedDraft.price >= 0 && selectedDraft.price <= 300
-            ? "#Price0to300"
-            : selectedDraft.price > 300 && selectedDraft.price <= 500
-              ? "#Price300to500"
-              : selectedDraft.price > 500 && selectedDraft.price <= 700
-                ? "#Price500to700"
-                : selectedDraft.price > 700 && selectedDraft.price <= 900
-                  ? "#Price700to900"
-                  : selectedDraft.price > 900 && selectedDraft.price <= 1200
-                    ? "#Price900to1200"
-                    : selectedDraft.price > 1200 && selectedDraft.price <= 1500
-                      ? "#Price1200to1500"
-                      : selectedDraft.price > 1500 && selectedDraft.price <= 1700
-                        ? "#Price1500to1700"
-                        : selectedDraft.price > 1700 && selectedDraft.price <= 1900
-                          ? "#Price1700to1900"
-                          : selectedDraft.price > 1900 && selectedDraft.price <= 2100
-                            ? "#Price1900to2100"
-                            : selectedDraft.price > 2100 && selectedDraft.price <= 2500
-                              ? "#Price2100to2500"
-                              : selectedDraft.price > 2500 && selectedDraft.price <= 3000
-                                ? "#Price2500to3000"
-                                : selectedDraft.price > 3000 && selectedDraft.price <= 4000
-                                  ? "#Price3000to4000"
-                                  : selectedDraft.price > 4000 && selectedDraft.price <= 5000
-                                    ? "#Price4000to5000"
-                                    : selectedDraft.price > 5000
-                                      ? "#PriceAbove5000"
-                                      : ""}
-    
+  💰 ${selectedDraft.price}${selectedDraft.currency === "USD" ? "$" : "₾"} ${
+  selectedDraft.taxOption === "Including Tax"
+    ? "(Including Tax)"
+    : selectedDraft.taxOption === "Excluding Tax"
+    ? "(Not including Tax)"
+    : ""
+} + Deposit ${selectedDraft.deposit}${selectedDraft.currency === "USD" ? "$" : "₾"} 
         
   👤 Contact: [@David_Tibelashvili]
   📞 +995 599 20 67 16 | ${selectedDraft?.email?.includes('geomap')
