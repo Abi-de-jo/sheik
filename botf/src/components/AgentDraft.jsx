@@ -480,14 +480,14 @@ ${selectedDraft.price >= 0 && selectedDraft.price <= 300
       const chatId =
       selectedDraft.type === "Rent"
         ? TELEGRAM_CHAT_ID
-        : selectedDraft.type === "Commercial"
+        : selectedDraft.propertyType === "Commercial"
         ? COMMERCIAL_CHAT_ID
         : SALE_CHAT_ID;
     
     const message =
       selectedDraft.type === "Rent"
         ? rentMessage
-        : selectedDraft.type === "Commercial"
+        : selectedDraft.propertyType === "Commercial"
         ? comMessage
         : saleMessage;
       await uploadMediaToTelegram(media, chatId, TELEGRAM_BOT_TOKEN, message);
