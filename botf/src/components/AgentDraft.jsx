@@ -231,37 +231,44 @@ function AgentDraftDetails() {
         selectedDraft?.amenities || []
       );
 
-      const allBusinessTypes = [
-        "Showroom",
-        "Office",
-        "Retail",
-        "Restaurant",
-        "Hotel",
-        "CreativeSpace",
-        "Cafe",
-        "Coworking",
-        "BeautySalon"
-      ];
-      
-      const formatBusinessInTwoColumns = (selectedBusiness) => {
-        // Map all business options to their respective status
-        const formattedBusiness = allBusinessTypes.map((business) => {
-          return selectedBusiness.includes(business)
-            ? `✅ #${business.replace(/\s+/g, "")}`
-            : `✖️ #${business.replace(/\s+/g, "")}`;
-        });
-      
-        // Chunk into rows of 2 for better formatting
-        const chunkedBusiness = [];
-        for (let i = 0; i < formattedBusiness.length; i += 2) {
-          chunkedBusiness.push(formattedBusiness.slice(i, i + 2));
-        }
-      
-        // Join rows into final output
-        return chunkedBusiness.map((row) => row.join("  ")).join("\n");
-      };
-      
-      const businessFormatted = formatBusinessInTwoColumns(selectedDraft?.business || []);
+     const allBusinessTypes = [
+  "Showroom",
+  "Office",
+  "Retail",
+  "Restaurant",
+  "Hotel",
+  "CreativeSpace",
+  "Cafe",
+  "Coworking",
+  "BeautySalon"
+];
+
+const formatBusinessInTwoColumns = (selectedBusiness) => {
+  // Map all business options to their respective status
+  const formattedBusiness = allBusinessTypes.map((business) => {
+    return selectedBusiness.includes(business)
+      ? `✅ #${business.replace(/\s+/g, "")}`
+      : `✖️ #${business.replace(/\s+/g, "")}`;
+  });
+
+  // Prioritize ✅ first and then ❌
+  const orderedBusiness = [
+    ...formattedBusiness.filter((item) => item.startsWith("✅")),
+    ...formattedBusiness.filter((item) => item.startsWith("✖️")),
+  ];
+
+  // Chunk into rows of 2 for better formatting
+  const chunkedBusiness = [];
+  for (let i = 0; i < orderedBusiness.length; i += 2) {
+    chunkedBusiness.push(orderedBusiness.slice(i, i + 2));
+  }
+
+  // Join rows into final output
+  return chunkedBusiness.map((row) => row.join("  ")).join("\n");
+};
+
+const businessFormatted = formatBusinessInTwoColumns(selectedDraft?.business || []);
+
       
 
       const rentMessage = `
