@@ -282,7 +282,7 @@ ${selectedDraft?.parking > 0 ? "✅ Parking" : "✖️ Parking"}
             ? "#ByAgreement"
             : "#NotAllowed"
         }
-⏰ ${selectedDraft?.termDuration
+⏰ ${selectedDraft?.term} ${selectedDraft?.termDuration
           ?.map((duration) => `#${duration.replace(" ", "")}`)
           .join(" ")}
 💳 #${selectedDraft?.paymentMethod}   
@@ -391,19 +391,19 @@ ${selectedDraft.price >= 0 && selectedDraft.price <= 300
 
         const comMessage = `
         #${selectedDraft?.city} #${selectedDraft?.district} 🏢#${selectedDraft?.metro}
-  📍[${selectedDraft.address}](${selectedDraft.googleaddressurl})
+📍[${selectedDraft.address}](${selectedDraft.googleaddressurl})
           
   #${selectedDraft?.propertyType} for #${selectedDraft?.type}
   ✨ ${selectedDraft?.design}       
   🏠 ${selectedDraft.area} Sq.m | #${selectedDraft?.floor}floors | #${selectedDraft?.rooms}Rooms
   
-  ${amenitiesFormatted}
+${amenitiesFormatted}
   ${selectedDraft?.parking > 0 ? "✅ Parking" : "✖️ Parking"}
   
   For Business:
-  ${businessFormatted}
+${businessFormatted}
 
-  ⏰ ${selectedDraft?.termDuration
+  ⏰${selectedDraft?.term} ${selectedDraft?.termDuration
             ?.map((duration) => `#${duration.replace(" ", "")}`)
             .join(" ")}
   💰 ${selectedDraft.price}${selectedDraft.currency === "USD" ? "$" : "₾"} ${
