@@ -17,6 +17,8 @@ export const createResidency = asyncHandler(async (req, res) => {
     selectedAdditional,
     residencyType,
     termDuration,
+        business,
+
     term,
     rooms,
     city,
@@ -74,6 +76,8 @@ export const createResidency = asyncHandler(async (req, res) => {
         propertyType,
         design,
         residencyType,
+            business,
+
         heating,
         rooms,
         termDuration,
