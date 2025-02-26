@@ -36,6 +36,25 @@ function Home() {
   
   
   
+    // Generate 10 random watermarks
+    const generateWatermarks = (count) => {
+      const watermarks = [];
+      for (let i = 0; i < count; i++) {
+        const randomTop = Math.floor(Math.random() * 100); // Random top position
+        const randomLeft = Math.floor(Math.random() * 100); // Random left position
+        watermarks.push(
+          <img
+            key={i}
+            src="./abi.jpg"
+            alt="Watermark"
+            className="absolute w-5 h-5 rounded-full mix-blend-screen
+ opacity-40 pointer-events-none mix-blend-multiply"
+            style={{ top: `${randomTop}%`, left: `${randomLeft}%` }}
+          />
+        );
+      }
+      return watermarks;
+    }
 
   const { data, isLoading, error } = useProperties(); // Fetch properties using the hook
   const [isMapView, setIsMapView] = useState(false); // Toggle between List and Map view
@@ -304,31 +323,32 @@ window.open(
             >
               {/* Image Section */}
               <div className="relative">
-                <img
-                  src={property.images?.[0] || "https://via.placeholder.com/300x200?text=No+Image"}
-                  alt="Property"
-                  className="w-full h-32 object-cover"
-                />
-        
-                {/* Dynamic Labels */}
-                <div className="absolute top-2 left-2 z-0">
-  <span
-    className={`${
-      getTimeDifference(property.updatedAt, property.discount) === t("new")
-        ? "bg-green-500"
-        : getTimeDifference(property.updatedAt, property.discount) === t("discounted")
-        ? "bg-red-500"
-        : "bg-blue-500"
-    } text-white text-xs font-medium px-2 py-1 text-center rounded`}
-  >
-    {getTimeDifference(property.updatedAt, property.discount)}
-  </span>
-</div>
+      {/* Main Image */}
+      <img
+        src={property.images?.[0] || "https://via.placeholder.com/300x200?text=No+Image"}
+        alt="Property"
+        className="w-full h-32 object-cover"
+      />
 
+      {/* Watermark Images */}
+      {generateWatermarks(5)}
 
+      {/* Dynamic Labels */}
+      <div className="absolute top-2 left-2 z-10">
+        <span
+          className={`${
+            getTimeDifference(property.updatedAt, property.discount) === t("new")
+              ? "bg-green-500"
+              : getTimeDifference(property.updatedAt, property.discount) === t("discounted")
+              ? "bg-red-500"
+              : "bg-blue-500"
+          } text-white text-xs font-medium px-2 py-1 text-center rounded`}
+        >
+          {getTimeDifference(property.updatedAt, property.discount)}
+        </span>
+      </div>
+    </div>
 
-
-              </div>
         
               {/* Content Section */}
               <div className="p-3">
