@@ -131,6 +131,24 @@ window.open(
   }, [email, allProperties]);
 
 
+  const generateWatermarks = (count) => {
+    const watermarks = [];
+    for (let i = 0; i < count; i++) {
+      const randomTop = Math.floor(Math.random() * 100); // Random top position
+      const randomLeft = Math.floor(Math.random() * 100); // Random left position
+      watermarks.push(
+        <img
+          key={i}
+          src="./abi.jpg"
+          alt="Watermark"
+          className="absolute w-7 h-7 rounded-full mix-blend-lighten
+opacity-40 pointer-events-none "
+          style={{ top: `${randomTop}%`, left: `${randomLeft}%` }}
+        />
+      );
+    }
+    return watermarks;
+  }
   const toggleFavorite = async (propertyId) => {
     try {
       // Check if the property is already liked
@@ -196,6 +214,8 @@ window.open(
                   alt="Property"
                   className="w-full h-40 object-cover"
                 />
+                                      {generateWatermarks(5)}
+
         
                 {/* Dynamic Labels */}
                 <div className="absolute top-2 left-2 space-y-1">
