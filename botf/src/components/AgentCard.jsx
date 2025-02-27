@@ -79,9 +79,9 @@ const AgentCard = () => {
     }
 
     try {
-      await axios.post(`${API_BASE_URL}/residency/rented/${editedCard.id}`,);
+      await axios.post(`${API_BASE_URL}/residency/rented/${editedCard.id}`);
       setIsEditing(false);
-      alert("Property updated successfully!");
+      alert("Property rented successfully!");
     } catch (error) {
       console.error("Error updating property:", error);
       alert("Failed to update property. Please try again.");
@@ -89,7 +89,6 @@ const AgentCard = () => {
   
     console.log(rentDetails);
   };
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
