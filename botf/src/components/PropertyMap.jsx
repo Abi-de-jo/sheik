@@ -114,9 +114,20 @@ window.open(
    { t(property.type.toLowerCase()) || "N/A"  } 
     </p>
   <p className="text-lg text-gray-700 mb-4">
-    <span className="font-semibold text-gray-900">{t("price")}:</span> $
-    {property.price || "N/A"} {property.currency || ""}
-  </p>
+    <span className="font-semibold text-gray-900">{t("price")}:</span> 
+   {property.discount ? (
+    <>
+      <span className="line-through text-gray-500">
+        {property.price} {property.currency}
+      </span>{" "}
+      <span>
+        {(property.price - property.discount).toFixed()} {property.currency}
+      </span>
+    </>
+  ) : (
+    `${property.price || "N/A"} ${property.currency}`
+  )}
+</p>  
   <p className="text-lg text-gray-700 mb-4">
     <span className="font-semibold text-gray-900">{t("room")}:</span>{" "}
     {property.rooms || "N/A"}
