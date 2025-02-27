@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import useProperties from "../hooks/useProperties";
-
+import { useTranslation } from "react-i18next";
 const DashboardView = () => {
+  const {t} = useTranslation("home");
   const navigate = useNavigate();
   const { data = [] } = useProperties(); // Fallback to an empty array if data is undefined
 
@@ -44,10 +45,22 @@ const DashboardView = () => {
                 <h3 className="text-lg font-semibold text-gray-800">
                   {property.title || "Untitled Property"}
                 </h3>
-                <p className="text-sm text-gray-600 mt-1">
-                  <span className="font-medium">Price:</span> {property.price || "N/A"}
-                </p>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-gray-700 mb-4">
+    <span className="font-semibold text-gray-900">{t("price")}:</span> 
+   {property.discount ? (
+    <>
+      <span className="line-through text-gray-500">
+        {property.price} {property.currency}
+      </span>{" "}
+      <span>
+        {(property.price - property.discount).toFixed()} {property.currency}
+      </span>
+    </>
+  ) : (
+    `${property.price || "N/A"} ${property.currency}`
+  )}
+</p>  
+                <p className="text-sm text-gray-600 -mt-1">
                   <span className="font-medium">Type:</span> {property.type || "N/A"}
                 </p>
                 <p className="text-sm text-gray-500 mt-1">
