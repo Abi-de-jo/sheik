@@ -5,6 +5,9 @@ const PropertyDetails = () => {
   const navigate = useNavigate();
   const property = location.state?.property;
 
+  // Extract Email Username
+ 
+
   if (!property) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -51,12 +54,20 @@ const PropertyDetails = () => {
         {/* Property Info */}
         <div className="p-4">
           <div className="grid grid-cols-1 gap-4 text-sm">
-            <p className="text-gray-700">
-              <span className="font-bold">Price:</span>{" "}
-              <span className="text-blue-600">
-                {property.price ? `$${property.price}` : "N/A"}
-              </span>
-            </p>
+          <p className="text-sm text-gray-800 font-bold mt-1">
+  {property.discount ? (
+    <>
+      <span className="line-through text-gray-500">
+        {property.price} {property.currency}
+      </span>{" "}
+      <span>
+        {(property.price - property.discount).toFixed()} {property.currency}
+      </span>
+    </>
+  ) : (
+    `${property.price || "N/A"} ${property.currency}`
+  )}
+</p>
             <p className="text-gray-700">
               <span className="font-bold">Type:</span> {property.type || "N/A"}
             </p>
@@ -68,6 +79,17 @@ const PropertyDetails = () => {
               <span className="font-bold">Description:</span>{" "}
               {property.description || "No description available."}
             </p>
+
+            {/* Display userEmail with split method */}
+            <p className="text-gray-700">
+              <span className="font-bold">User Email:</span>{" "}
+              {property.email}
+            </p>
+            <p className="text-gray-700">
+              <span className="font-bold">User Name:</span>{" "}
+              {(property.email).split("geomap",1)}
+            </p>
+ 
           </div>
         </div>
       </div>
