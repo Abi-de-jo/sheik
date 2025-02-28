@@ -82,34 +82,8 @@ function AgentDraftDetails() {
 
       // Google Sheets Integration
 
-      const googleSheetUrl =
-      "https://script.google.com/macros/s/AKfycbztkHkyYlCLyduVRNUcuW-eIzxrpnwQFE3zKXPzhjyAzyppvcC7PuIaTgboHzaSHJLv/exec";
+  
 
-      const formData = new FormData();
-      Object.entries({
-        ...selectedDraft,
-        images: selectedDraft.images?.join(", ") || "",
-        metro: selectedDraft.metro?.join(", ") || "",
-        district: selectedDraft.district?.join(", ") || "",
-        amenities: selectedDraft.amenities?.join(", ") || "",
-        selectedAdditional: selectedDraft.selectedAdditional?.join(", ") || "",
-        status: "published",
-      }).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
-
-      const googleResponse = await fetch(googleSheetUrl, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (googleResponse.ok) {
-        console.log("Data posted to Google Sheets successfully!");
-        alert("Details posted successfully to Google Sheets!");
-      } else {
-        console.error("Failed to post to Google Sheets.");
-        alert("Failed to post details to Google Sheets.");
-      }
 
 
 
