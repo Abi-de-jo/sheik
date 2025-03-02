@@ -21,7 +21,7 @@ const UploadVideo = ({ onVideoUpdate }) => {
               uploadPreset: "xmmcvp1e", // Video upload preset
               resourceType: "video", // Allow videos only
               multiple: false, // Allow multiple video uploads
-              maxFileSize: 400000000, // 400MB per file
+              maxFileSize: 1000000000, // 1000MB per file
               allowedFormats: ["mp4", "mov", "avi"], // Allowed video formats
             },
             (err, result) => {
