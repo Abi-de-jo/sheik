@@ -286,7 +286,7 @@ ${selectedDraft?.parking > 0 ? "✅ Parking" : "✖️ Parking"}
             ? "#ByAgreement"
             : "#NotAllowed"
         }
-⏰ #${selectedDraft?.term} ${selectedDraft?.termDuration
+⏰ #${selectedDraft?.term ==="Long-term"? "Longterm" :"Daily"} ${selectedDraft?.termDuration
           ?.map((duration) => `#${duration.replace(" ", "")}`)
           .join(" ")}
 💳 #${selectedDraft?.paymentMethod}   
@@ -324,8 +324,8 @@ ${selectedDraft.price >= 0 && selectedDraft.price <= 300
   
       
 👤 Contact: [@David_Tibelashvili]
-📞 +995 599 20 67 16 | ${selectedDraft?.email?.includes('geomap')
-          ? `#${selectedDraft?.email?.split('geomap')[0] || "user"}`
+📞 +995 599 20 67 16 | ${selectedDraft?.email?.includes('rentintblisi')
+          ? `#${selectedDraft?.email?.split('rentintblisi')[0] || "user"}`
           : `#${selectedDraft?.email?.split('@')[0] || "user"}`
         }
        
@@ -381,8 +381,8 @@ ${selectedDraft.price >= 0 && selectedDraft.price <= 300
   
       
 👤 Contact: [@David_Tibelashvili]
-📞 +995 599 20 67 16 | ${selectedDraft?.email?.includes('geomap')
-          ? `#${selectedDraft?.email?.split('geomap')[0] || "user"}`
+📞 +995 599 20 67 16 | ${selectedDraft?.email?.includes('rentintblisi')
+          ? `#${selectedDraft?.email?.split('rentintblisi')[0] || "user"}`
           : `#${selectedDraft?.email?.split('@')[0] || "user"}`
         }
        
@@ -407,7 +407,7 @@ ${selectedDraft?.parking > 0 ? "✅ Parking" : "✖️ Parking"}
   For Business:
 ${businessFormatted}
 
-  ⏰ #${selectedDraft?.term} ${selectedDraft?.termDuration
+  ⏰ #${selectedDraft?.term ==="Long-term"? "Longterm" :"Daily"} ${selectedDraft?.termDuration
             ?.map((duration) => `#${duration.replace(" ", "")}`)
             .join(" ")}
   💰 ${selectedDraft.price}${selectedDraft.currency === "USD" ? "$" : "₾"} ${
@@ -419,8 +419,8 @@ ${businessFormatted}
 } + Deposit ${selectedDraft.deposit}${selectedDraft.currency === "USD" ? "$" : "₾"} 
         
   👤 Contact: [@David_Tibelashvili]
-  📞 +995 599 20 67 16 | ${selectedDraft?.email?.includes('geomap')
-            ? `#${selectedDraft?.email?.split('geomap')[0] || "user"}`
+  📞 +995 599 20 67 16 | ${selectedDraft?.email?.includes('rentintblisi')
+            ? `#${selectedDraft?.email?.split('rentintblisi')[0] || "user"}`
             : `#${selectedDraft?.email?.split('@')[0] || "user"}`
           }
          
@@ -455,7 +455,7 @@ ${businessFormatted}
         🔢 *Floor:* ${selectedDraft.floor || "N/A"} / ${selectedDraft.totalFloors || "N/A"}
         
         📅 *Term Duration:* ${selectedDraft.termDuration?.length > 0 ? selectedDraft.termDuration.join(', ') : "N/A"}  
-        📜 *Term:* ${selectedDraft.term || "N/A"}  
+        📜 *Term:* ${selectedDraft?.term==="Long-term"? "Longterm" :"Daily" || "N/A"}  
         🚗 *Parking:* ${selectedDraft.parking || "N/A"}  
         
         🌆 *City:* ${selectedDraft.city || "N/A"}  
