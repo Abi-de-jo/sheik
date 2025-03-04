@@ -14,7 +14,7 @@ function AllAgents() {
         const users = await getAllUsers();
         console.log(users);
         // Filter users who have "geomap" in their email
-        const geomapUsers = users.filter((user) => user.email?.includes("geomap"));
+        const geomapUsers = users.filter((user) => user.email?.includes("rentintbilisi"));
 
         setAgents(geomapUsers); // Set filtered users
       } catch (err) {
@@ -43,7 +43,7 @@ function AllAgents() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-blue-50 p-6 mb-8">
-      <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">Agents with Geomap</h1>
+      <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">Agents with RentInTbilisi</h1>
       {agents.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {agents.map((agent) => (
@@ -77,7 +77,7 @@ function AllAgents() {
           ))}
         </div>
       ) : (
-        <p className="text-center text-gray-500">No agents found with geomap in their email.</p>
+        <p className="text-center text-gray-500">No agents found with rRentInTbilisi in their email.</p>
       )}
     </div>
   );
