@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { getAll } from "../utils/api";
+import { useNavigate } from "react-router-dom";
+
+
 
 export default function AgentsAchieve() {
   const [data, setData] = useState([]); // Initialize state as an empty array
-
+  
+  const navigate = useNavigate()
   useEffect(() => {
     async function fetchData() {
       try {
@@ -99,7 +103,8 @@ export default function AgentsAchieve() {
                   <button className="bg-blue-500 text-white text-xs font-bold py-1 px-4 rounded-lg hover:bg-blue-600 transition">
                     Contact Agent
                   </button>
-                  <button className="bg-green-500 text-white text-xs font-bold py-1 px-4 rounded-lg hover:bg-green-600 transition">
+                  <button className="bg-green-500 text-white text-xs font-bold py-1 px-4 rounded-lg hover:bg-green-600 transition"     onClick={() => navigate(`/single/${item.id}`)}
+                  >
                     View Details
                   </button>
                 </div>
