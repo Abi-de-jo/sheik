@@ -22,6 +22,8 @@ import AdminPub from "./components/AdminPub";
 import PropertyMap from "./components/PropertyMap.jsx";
 import AgentsAchieve from "./components/AgentsAchieve.jsx";
 import AllOwners from "./components/Allowners.jsx";
+import SingleAgent from "./components/SingleAgent.jsx";
+
 
 import "./cloudinaryLoader.js"
 import { LoadScript } from "@react-google-maps/api";
@@ -45,6 +47,8 @@ const App = () => {
             <Route path="/search" element={<Search />} />
             <Route path="/ads" element={<SecondComponent />} />
             <Route path="/property-details/:id" element={<PropertyMap />} />
+                       <Route path="/single/:id" element={<SingleAgent />} /> {/* Dynamic Route */}
+
             <Route path="/agent-ahieve" element={<AgentsAchieve />} />
 
             {/* Conditional Profile Page */}
