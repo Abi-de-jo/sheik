@@ -15,7 +15,7 @@ export const createUser = asyncHandler(async (req, res) => {
     if (userExists) {
       const email = userExists.email || "";
 
-      if (email.includes("rentintblisi")) {
+      if (email.includes("rentintbilisi")) {
         return res.status(200).json({
           message: "Agent",
           email: userExists.email,
