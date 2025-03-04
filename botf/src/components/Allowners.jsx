@@ -86,7 +86,7 @@ function AllOwners() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-blue-50 p-6 mb-8">
-      <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">Owner with Geomap</h1>
+      <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">Owner with RentInTbilisi</h1>
       {owner.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {owner.map((owner) => (
@@ -114,7 +114,7 @@ function AllOwners() {
           ))}
         </div>
       ) : (
-        <p className="text-center text-gray-500">No owner found with geomap in their email.</p>
+        <p className="text-center text-gray-500">No owner found with RentInTbilisi in their email.</p>
       )}
 
       {/* Modal Popup */}
