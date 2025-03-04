@@ -68,6 +68,7 @@ const App = () => {
             <Route path="/analytics" element={<Dashboard />} />
             <Route path="/agents-list" element={<AllAgents />} />
                        <Route path="/owners-list" element={<AllOwners />} />
+            <Route path="/single/:id" element={<SingleAgent />} /> {/* Dynamic Route */}
 
             <Route path="/draft-details/:id" element={<AgentDraftDetails />} />
                         <Route path="/dashboard-view" element={<DashboardView  />} />
