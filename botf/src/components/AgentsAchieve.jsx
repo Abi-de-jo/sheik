@@ -71,7 +71,7 @@ export default function AgentsAchieve() {
                   {item.title || "Untitled"}
                 </h2>
                 <p className="text-gray-600 mb-1 text-sm">
-                  Agent: <span className="font-semibold">{item.email.split("geomap")[0]}</span>
+                  Agent: <span className="font-semibold">{item.email.split("rentintbilisi")[0]}</span>
                 </p>
                 <p className="text-gray-600 mb-1 text-sm">
                   Agent Mail: <span className="font-semibold">{item.email}</span>
