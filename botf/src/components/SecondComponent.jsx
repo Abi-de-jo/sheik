@@ -23,7 +23,7 @@ const SecondComponent = ({ onSave }) => {
     address: JSON.parse(localStorage.getItem("form1"))?.address || "",
     addressURL: "",
     googleaddressurl: "",
-    city: "Batumi",
+    city: "Tbilisi",
     term: "Long-term",
     price: null,
     currency: "USD",
