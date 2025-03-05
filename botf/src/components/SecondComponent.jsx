@@ -27,7 +27,7 @@ const SecondComponent = ({ onSave }) => {
     term: "Long-term",
     price: null,
     currency: "USD",
-    commission: null || "0",
+    commission: null,
     deposit: "",
     paymentMethod: "FirstDeposit",
     metro: [],
