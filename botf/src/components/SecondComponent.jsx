@@ -69,6 +69,40 @@ const SecondComponent = ({ onSave }) => {
 
 
   const handlePublish = async () => {
+
+    const requiredFields = [
+      "address", 
+      "addressURL", 
+      "googleaddressurl", 
+      "city", 
+      "price",
+      "district",
+      "metro",
+      "propertyType", 
+      "residencyType", 
+      "title", 
+      "area", 
+      "floor", 
+
+      "totalFloors", 
+      "rooms", 
+      "bathrooms", 
+      "parking", 
+      "images"
+    ];
+
+      // Check for empty required fields
+  const emptyFields = requiredFields.filter(field => {
+    if (Array.isArray(secondFormData[field])) {
+      return secondFormData[field].length === 0;
+    }
+    return !secondFormData[field];
+  });
+
+  if (emptyFields.length > 0) {
+    alert(`Please fill in all required fields before submitting: ${emptyFields.join(", ")}`);
+    return;
+  }
     console.log(secondFormData.addressURL, "Address URL before saving");
 
 
@@ -1041,7 +1075,7 @@ const SecondComponent = ({ onSave }) => {
 
 
               {/* Payment Method */}
-                 {secondFormData.type !== "Sale" && (
+              {secondFormData.type !== "Sale" && (
 
               <div>
                 <label className="block text-sm font-medium">
