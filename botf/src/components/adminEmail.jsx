@@ -71,7 +71,7 @@ const AdminEmail = () => {
         <h3 className="text-lg font-semibold text-gray-600 mt-4 mb-2">{t("publishing_archives")}</h3>
         <div className="grid grid-cols-2 gap-4">
           <button onClick={() => navigate("/admin-pub")} className="bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition">{t("pub")}</button>
-          <button onClick={() => navigate("/agent-archive")} className="bg-gray-700 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-800 transition">{t("agentachieve")}</button>
+          <button onClick={() => navigate("/agent-ahieve")} className="bg-gray-700 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-800 transition">{t("agentachieve")}</button>
         </div>
       </div>
     </div>
