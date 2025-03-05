@@ -1041,6 +1041,8 @@ const SecondComponent = ({ onSave }) => {
 
 
               {/* Payment Method */}
+                 {secondFormData.type !== "Sale" && (
+
               <div>
                 <label className="block text-sm font-medium">
                   {t("payment")}
@@ -1059,6 +1061,7 @@ const SecondComponent = ({ onSave }) => {
                   <option value="Monthly">{t("monthly")}</option>
                 </select>
               </div>
+              )}
 
             </div>
           ) : (
