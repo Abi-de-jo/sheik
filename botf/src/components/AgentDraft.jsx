@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 
 function AgentDraftDetails() {
   const { t } = useTranslation("home");
+  const API_BASE_URL = "https://sheik-back.vercel.app/api"; // Replace with your backend base URL
 
   const [drafts, setDrafts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -241,8 +242,7 @@ function AgentDraftDetails() {
 ];
 
 const formatBusinessInTwoColumns = (selectedBusiness) => {
-  // Map all business options to their respective status
-  const formattedBusiness = allBusinessTypes.map((business) => {
+   const formattedBusiness = allBusinessTypes.map((business) => {
     return selectedBusiness.includes(business)
       ? `✅ #${business.replace(/\s+/g, "")}`
       : `✖️ #${business.replace(/\s+/g, "")}`;
@@ -517,11 +517,25 @@ const message =
     return <p className="text-center text-red-500 mt-10">{error}</p>;
   }
 
-  const handleReject = (id) => {
-    setLoadingActionId(id); // Set loading for this draft
-
-    console.log(`Draft with ID ${id} rejected.`);
+  const handleReject = async (id) => {
+    setLoadingActionId(id); // Show loading spinner for this action
+  
+    try {
+      await axios.delete(`${API_BASE_URL}/residency/delete/${id}`);
+      alert(t("draft_rejected_successfully"));
+  
+      // Remove the rejected draft from the list
+      setDrafts((prevDrafts) => prevDrafts.filter((draft) => draft.id !== id));
+      setFilteredDrafts((prevFiltered) => prevFiltered.filter((draft) => draft.id !== id));
+      
+    } catch (error) {
+      console.error("Error rejecting draft:", error);
+      alert(t("draft_reject_failed"));
+    } finally {
+      setLoadingActionId(null); // Reset loading state
+    }
   };
+  
 
   if (loading) {
     return <p className="text-center mt-10">Loading drafts...</p>;
