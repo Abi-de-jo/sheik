@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import UploadImage from "./UploadImage";
@@ -27,7 +27,7 @@ const SecondComponent = ({ onSave }) => {
     term: "Long-term",
     price: null,
     currency: "USD",
-    commission: null,
+    commission: null || "0",
     deposit: "",
     paymentMethod: "FirstDeposit",
     metro: [],
@@ -35,7 +35,7 @@ const SecondComponent = ({ onSave }) => {
     title: "",
     video: "",
     propertyType: "",
-        business: [],
+    business: [],
 
     taxOption: "",
     residencyType: "",
@@ -59,7 +59,6 @@ const SecondComponent = ({ onSave }) => {
     ],
   });
 
-  // const role = "agent"
   const role = localStorage.getItem("role")
 
 
@@ -73,9 +72,7 @@ const SecondComponent = ({ onSave }) => {
     console.log(secondFormData.addressURL, "Address URL before saving");
 
 
-    // const email = "abigeomap@gmail.com"
     const email = localStorage.getItem("email")
-    // const teleNumber =  "1469627446"
     const teleNumber = localStorage.getItem("teleNumber");
     if (!secondFormData.addressURL) {
       alert("Address URL cannot be empty.");
@@ -179,11 +176,123 @@ const SecondComponent = ({ onSave }) => {
 
 
 
+  useEffect(() => {
+    if (secondFormData.address) {
+      const googleMapsURL = secondFormData.address;
+      setSecondFormData((prev) => ({
+        ...prev,
+        addressURL: googleMapsURL,
+      }));
+    }
+  }, [secondFormData.address]);
+
+
+
   return (
     <div className="min-h-screen bg-gray-100 p-4 mb-5">
       {isConfettiActive && <Confetti width={window.innerWidth} height={window.innerHeight} />}
       {message && <p className="text-green-600 text-center mt-4">{message}</p>}
       <div className="bg-white p-6 rounded-lg shadow-lg space-y-6 mb-6">
+
+        <div>
+          <select
+            value={secondFormData.type} // Bind to the 'type' field in state
+            onChange={(e) =>
+              setSecondFormData({ ...secondFormData, type: e.target.value })
+            } // Update 'type' when selection changes
+            className="w-full p-2 px-1 border ml-2 border-gray-300 rounded-md"
+          >
+            <option value="" disabled>
+              {t("selectType")}
+            </option>
+            <option value="Rent">{t("rent")}</option>
+            <option value="Sale">{t("sale")}</option>
+            <option value="Lease">{t("lease")}</option>
+            <option value="DailyRent">{t("dailyRent")}</option>
+          </select>
+        </div>
+
+        <div>
+          <select
+            value={secondFormData.city} // Bind to the 'city' field in state
+            onChange={(e) =>
+              setSecondFormData({ ...secondFormData, city: e.target.value })
+            } // Update 'city' when selection changes
+            className="w-full p-2 px-1 border ml-2 border-gray-300 rounded-md"
+          >
+            <option value="" disabled>
+              {t("selectCity")}
+            </option>
+            <option value="Tbilisi">{t("tbilisi")}</option>
+            <option value="Batumi">{t("batumi")}</option>
+            <option value="Kutaisi">{t("kutaisi")}</option>
+            <option value="Rustavi">{t("rustavi")}</option>
+          </select>
+        </div>
+
+
+        <div>
+          <select
+            value={secondFormData.propertyType} // Bind to the 'propertyType' field in state
+            onChange={(e) =>
+              setSecondFormData({
+                ...secondFormData,
+                propertyType: e.target.value,
+              })
+            } // Update 'propertyType' when selection changes
+            className="w-full p-2 px-1 border ml-2 border-gray-300 rounded-md"
+          >
+            <option value="" disabled>
+              {t("selectProperty")}
+            </option>
+            <option value="Office">{t("office")}</option>
+            <option value="Cottage">{t("cottage")}</option>
+            <option value="Commercial">{t("commercial")}</option>
+            <option value="Apartment">{t("apartment")}</option>
+            <option value="Land">{t("land")}</option>
+            <option value="House">{t("house")}</option>
+            <option value="Hotel">{t("hotel")}</option>
+          </select>
+        </div>
+
+
+        {secondFormData.propertyType === "Commercial" && (
+          <div className="w-full   ml-2 border-gray-300 rounded-md">
+            <label className="block text-sm font-medium"></label>
+            <select
+              value={secondFormData.taxOption}
+              onChange={(e) =>
+                setSecondFormData({ ...secondFormData, taxOption: e.target.value })
+              }
+              className="w-full p-2 border border-gray-300 rounded-md"
+            >
+              <option value="" disabled>{t("select")}</option>
+              <option value="Including Tax">{t("includingTax")}</option>
+              <option value="Excluding Tax">{t("excludingTax")}</option>
+            </select>
+          </div>
+        )}
+
+        <div>
+          <select
+            value={secondFormData.residencyType} // Bind to the 'residencyType' field in state
+            onChange={(e) =>
+              setSecondFormData({
+                ...secondFormData,
+                residencyType: e.target.value,
+              })
+            } // Update 'residencyType' when selection changes
+            className="w-full p-2 px-1 border ml-2 border-gray-300 rounded-md"
+          >
+            <option value="" disabled>
+              {t("selectResidency")}
+            </option>
+            <option value="New">{t("new")}</option>
+            <option value="Old">{t("old")}</option>
+            <option value="Mixed">{t("mixed")}</option>
+            <option value="historical">{t("historical")}</option>
+          </select>
+        </div>
 
 
         <div>
@@ -195,9 +304,10 @@ const SecondComponent = ({ onSave }) => {
               setSecondFormData({ ...secondFormData, address: e.target.value })
             }
             className="w-full p-2 border border-gray-300 rounded-md"
-            placeholder = {t("enter")}
+            placeholder={t("enter")}
           />
         </div>
+
         <div>
           <label className="block text-sm font-medium">{t("addressUrl")}</label>
           <input
@@ -255,7 +365,7 @@ const SecondComponent = ({ onSave }) => {
                   rooms: Number(e.target.value),
                 })
               }
-              className="w-full p-2 px-1 border border-gray-300 rounded-md"
+              className="w-full p-2 px-1 border border-gray-300 rounded-md "
             >
               <option value="" disabled>
                 {t("select")}
@@ -271,6 +381,7 @@ const SecondComponent = ({ onSave }) => {
             <label className="block text-sm font-medium">{t("size")} ({t("sq.m")})</label>
             <input
               type="number"
+              step="50"
               value={secondFormData.area}
               onChange={(e) =>
                 setSecondFormData({
@@ -285,6 +396,7 @@ const SecondComponent = ({ onSave }) => {
           <div>
             <label className="block text-sm font-medium">{t("floor")}</label>
             <input
+
               type="number"
               value={secondFormData.floor ?? ""} // Display an empty string if floor is null
               onChange={(e) => {
@@ -370,8 +482,8 @@ const SecondComponent = ({ onSave }) => {
           <label className="block text-sm font-medium mb-2">{t("metroOptions")}</label>
           <div className="grid grid-cols-2 gap-4">
             {[
-              "300 Aragveli",
-              "Akhmeteli Theatre",
+              "300Aragveli",
+              "AkhmeteliTheatre",
               "Avlabari",
               "Delisi",
               "Didube",
@@ -379,19 +491,19 @@ const SecondComponent = ({ onSave }) => {
               "Grmagele",
               "Guramishvili",
               "Isani",
-              "Liberty Square",
+              "LibertySquare",
               "Marjanishvili",
               "Medical University",
               "Nadzaladevi",
               "Rustaveli",
               "Samgori",
               "Sarajishvili",
-              "State University",
-              "Station Square",
-              "Technical University",
+              "StateUniversity",
+              "StationSquare",
+              "TechnicalUniversity",
               "Tsereteli",
               "Varketili",
-              "Vazha-Pshavela",
+              "VazhaPshavela",
             ].map((option, index) => (
               <div key={index} className="flex items-center gap-2">
                 <input
@@ -466,56 +578,78 @@ const SecondComponent = ({ onSave }) => {
             {[
               "Abanotubani",
               "Afrika",
+              "AirportVillage",
               "Avchala",
               "Avlabari",
               "Bagebi",
               "Chugureti",
-              "DidiDighomi",
+              "Dampalo Village",
+              "DidiDigomi",
               "Didgori",
               "Didube",
               "Didube-Chughureti",
+
+              "Digomi 1-9",
+              "Digomi Village",
               "Dighmi 1-9",
               "Dighmis Chala",
               "Dighmis Massive",
-              "Digomi 1-9",
-              "Digomi Massive",
               "Elia",
               "Gldani",
+              "Gldani Village",
               "Gldani-Nadzaladevi",
+              "Gldanula",
               "Iveri Settlement",
+              "Ivertubani",
               "Isani",
-              "Krtsanisi",
+              "Koniaki Village",
               "Koshigora",
+              "Krtsanisi",
+              "Kukia",
               "KusTba",
+              "Lilo",
               "Lisi",
               "Lisi Adjacent Area",
               "Lisi Lake",
+              "Lotkini",
               "Marjanishvili",
+              "Mesame Masivi",
               "Mtatsminda",
+              "Mukhiani",
               "Mukhatgverdi",
               "Mukhattskaro",
+              "Nadzaladevi",
+              "Navtlugi",
               "Nutsubidze Plateau",
               "Nutsubidze Plato",
               "Okrokana",
               "Old Tbilisi",
+              "Orkhevi",
               "Ortachala",
+              "Ponichala",
               "Saburtalo",
               "Samgori",
+              "Sanzona",
               "Sof. Digomi",
               "Sololaki",
               "State University",
               "Svaneti Quarter",
-              "Tsavkisi Valley",
+              "Tbilisi Sea",
               "Temqa",
               "Tkhinvali",
               "Tskhneti",
+              "Turtle Lake",
               "Vake",
               "Vake-Saburtalo",
+              "Vashlijvari",
               "Vasizubani",
               "Varketili",
-              "Vashlijvari",
+              "Vazha-Pshavela Districts",
+              "Vazisubani",
               "Vera",
+              "Vedzisi",
               "Vezisi",
+              "Zahesi"
             ]
               .sort() // Sort the options alphabetically
               .map((option, index) => (
@@ -622,122 +756,23 @@ const SecondComponent = ({ onSave }) => {
 
 
 
-        {/* Address */}
-        <div>
-          <select
-            value={secondFormData.city} // Bind to the 'city' field in state
-            onChange={(e) =>
-              setSecondFormData({ ...secondFormData, city: e.target.value })
-            } // Update 'city' when selection changes
-            className="w-full p-2 px-1 border ml-2 border-gray-300 rounded-md"
-          >
-            <option value="" disabled>
-              {t("selectCity")}
-            </option>
-            <option value="Tbilisi">{t("tbilisi")}</option>
-            <option value="Batumi">{t("batumi")}</option>
-            <option value="Kutaisi">{t("kutaisi")}</option>
-            <option value="Rustavi">{t("rustavi")}</option>
-          </select>
-        </div>
 
-
-
-        <div>
-          <select
-            value={secondFormData.propertyType} // Bind to the 'propertyType' field in state
-            onChange={(e) =>
-              setSecondFormData({
-                ...secondFormData,
-                propertyType: e.target.value,
-              })
-            } // Update 'propertyType' when selection changes
-            className="w-full p-2 px-1 border ml-2 border-gray-300 rounded-md"
-          >
-            <option value="" disabled>
-              {t("selectProperty")}
-            </option>
-            <option value="Office">{t("office")}</option>
-            <option value="Cottage">{t("cottage")}</option>
-            <option value="Commercial">{t("commercial")}</option>
-            <option value="Apartment">{t("apartment")}</option>
-            <option value="Land">{t("land")}</option>
-          </select>
-        </div>
-          {secondFormData.propertyType === "Commercial" && (
-          <div className="w-full   ml-2 border-gray-300 rounded-md">
-            <label className="block text-sm font-medium"></label>
-            <select
-              value={secondFormData.taxOption}
-              onChange={(e) =>
-                setSecondFormData({ ...secondFormData, taxOption: e.target.value })
-              }
-              className="w-full p-2 border border-gray-300 rounded-md"
-            >
-              <option value="" disabled>{t("select")}</option>
-              <option value="Including Tax">{t("includingTax")}</option>
-              <option value="Excluding Tax">{t("excludingTax")}</option>
-            </select>
-          </div>
-        )}
-
-
-
-
-        <div>
-          <select
-            value={secondFormData.residencyType} // Bind to the 'residencyType' field in state
-            onChange={(e) =>
-              setSecondFormData({
-                ...secondFormData,
-                residencyType: e.target.value,
-              })
-            } // Update 'residencyType' when selection changes
-            className="w-full p-2 px-1 border ml-2 border-gray-300 rounded-md"
-          >
-            <option value="" disabled>
-              {t("selectResidency")}
-            </option>
-            <option value="New">{t("new")}</option>
-            <option value="Old">{t("old")}</option>
-            <option value="Mixed">{t("mixed")}</option>
-            <option value="historical">{t("historical")}</option>
-          </select>
-        </div>
-
-
-
-
-        <div>
-          <select
-            value={secondFormData.type} // Bind to the 'type' field in state
-            onChange={(e) =>
-              setSecondFormData({ ...secondFormData, type: e.target.value })
-            } // Update 'type' when selection changes
-            className="w-full p-2 px-1 border ml-2 border-gray-300 rounded-md"
-          >
-            <option value="" disabled>
-              {t("selectType")}
-            </option>
-            <option value="Rent">{t("rent")}</option>
-            <option value="Sale">{t("sale")}</option>
-            <option value="Lease">{t("lease")}</option>
-            <option value="DailyRent">{t("dailyRent")}</option>
-          </select>
-        </div>
 
         <div>
           <label className="block text-sm font-medium mb-2">{t("designStyle")}</label>
           <div className="grid grid-cols-2 gap-4">
             {[
-              "White",
-              "Yellow",
-              "Grey",
-              "New Apartment",
-              "Mixed",
+              "New",
               "Old",
-              "Under Repair",
+              "Mixed",
               "Retro",
+              "Current Renovation",
+              "Under Repair",
+              "White",
+              "Black",
+              "Green",
+              "Grey",
+              "Yellow",
             ].map((option, index) => (
               <div key={index} className="flex items-center gap-2">
                 <input
@@ -809,60 +844,79 @@ const SecondComponent = ({ onSave }) => {
 
 
         {/* Term */}
-        <div>
-          <h3 className="text-lg font-semibold">{t("term")}</h3>
-          <div className="flex gap-4 mt-2">
-            {["Long-term", "Daily"].map((term) => (
-              <button
-                key={term}
-                onClick={() => setSecondFormData({ ...secondFormData, term })}
-                className={`px-4 py-2 rounded-md ${secondFormData.term === term
+
+        {secondFormData.type !== "Sale" && (
+          <>
+            <h3 className="text-lg font-semibold">{t("term")}</h3>
+            <div className="flex gap-4 mt-2">
+              {["Long-term", "Daily"].map((term) => (
+                <button
+                  key={term}
+                  onClick={() => setSecondFormData({ ...secondFormData, term })}
+                  className={`px-4 py-2 rounded-md ${secondFormData.term === term
                     ? "bg-blue-600 text-white"
                     : "bg-gray-200 text-gray-600"
-                  }`}
-              >
-                {t(term.toLowerCase().replace(/-/g, ""))}
-              </button>
-            ))}
-          </div>
+                    }`}
+                >
+                  {t(term.toLowerCase().replace(/-/g, ""))}
+                </button>
+              ))}
+            </div>
+          </>
+
+        )}
+
+        <div>
+
+
+
+
+
 
           {/* Conditional UI based on selected term */}
           {secondFormData.term === "Long-term" ? (
+
             <div className="space-y-5 mt-4">
               {/* Long-term specific fields */}
-              <div className="flex flex-wrap gap-4">
-                {[
-                  "1 day",
-                  "1 week",
-                  "1 month",
-                  "2 months",
-                  "3 months",
-                  "4 months",
-                  "5 months",
-                  "6 months",
-                  "12 months",
-                ].map((duration) => (
-                  <button
-                    key={duration}
-                    className={`px-4 py-2 rounded-md ${secondFormData.termDuration.includes(duration)
+
+              {secondFormData.type !== "Sale" && (
+
+                <div className="flex flex-wrap gap-4">
+                  {[
+                    "1 day",
+                    "1 week",
+                    "1 month",
+                    "2 months",
+                    "3 months",
+                    "4 months",
+                    "5 months",
+                    "6 months",
+                    "12 months",
+                  ].map((duration) => (
+                    <button
+                      key={duration}
+                      className={`px-4 py-2 rounded-md ${secondFormData.termDuration.includes(duration)
                         ? "bg-blue-600 text-white"
                         : "bg-gray-200 text-gray-600"
-                      }`}
-                    onClick={() =>
-                      setSecondFormData({
-                        ...secondFormData,
-                        termDuration: secondFormData.termDuration.includes(duration)
-                          ? secondFormData.termDuration.filter(
-                            (item) => item !== duration
-                          ) // Remove if already selected
-                          : [...secondFormData.termDuration, duration], // Add if not selected
-                      })
-                    }
-                  >
-                    {t(duration.replace(/\s+/g, ""))}
-                  </button>
-                ))}
-              </div>
+                        }`}
+                      onClick={() =>
+                        setSecondFormData({
+                          ...secondFormData,
+                          termDuration: secondFormData.termDuration.includes(duration)
+                            ? secondFormData.termDuration.filter(
+                              (item) => item !== duration
+                            ) // Remove if already selected
+                            : [...secondFormData.termDuration, duration], // Add if not selected
+                        })
+                      }
+                    >
+                      {t(duration.replace(/\s+/g, ""))}
+                    </button>
+                  ))}
+                </div>
+
+              )}
+
 
 
 
@@ -938,6 +992,7 @@ const SecondComponent = ({ onSave }) => {
                 <label className="block text-sm font-medium">{t("price")}</label>
                 <div className="flex gap-2">
                   <input
+                    step="50"
                     type="number"
                     value={secondFormData.price}
                     onChange={(e) =>
@@ -965,20 +1020,25 @@ const SecondComponent = ({ onSave }) => {
               </div>
 
               {/* Deposit */}
-              <div>
-                <label className="block text-sm font-medium">{t("deposit")}</label>
-                <input
-                  type="number"
-                  value={secondFormData.deposit}
-                  onChange={(e) =>
-                    setSecondFormData({
-                      ...secondFormData,
-                      deposit: e.target.value,
-                    })
-                  }
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-              </div>
+              {secondFormData.type !== "Sale" && (
+
+                <div>
+                  <label className="block text-sm font-medium">{t("deposit")}</label>
+                  <input
+                    type="number"
+                    value={secondFormData.deposit}
+                    onChange={(e) =>
+                      setSecondFormData({
+                        ...secondFormData,
+                        deposit: e.target.value,
+                      })
+                    }
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+              )}
+
+
 
               {/* Payment Method */}
               <div>
@@ -1039,6 +1099,7 @@ const SecondComponent = ({ onSave }) => {
           <label className="block text-sm font-medium">{t("discounted")}</label>
           <div className="flex gap-2">
             <input
+              step="50"
               type="number"
               value={secondFormData.discount}
               onChange={(e) =>
@@ -1086,8 +1147,8 @@ const SecondComponent = ({ onSave }) => {
                   }))
                 }
                 className={`px-4 py-2 rounded-md ${secondFormData.heating.includes(option)
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-600"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-gray-600"
                   }`}
               >
                 {t(option.toLowerCase().replace(/\s+/g, ""))}
@@ -1099,150 +1160,151 @@ const SecondComponent = ({ onSave }) => {
         <div className="">
 
 
- 
-     
-
-
-{/* Amenities Section */}
-<h3 className="text-lg font-semibold">{t("amenities")}</h3>
-<div className="grid grid-cols-1 gap-4">
- {[
-   "Oven",
-   "Microwave",
-   "VacuumCleaner",
-   "AirConditioner",
-   "Balcony",
-   "Stove",
-   "Dishwasher",
-   "SmartTV",
-   "WiFi",
-   "ParkingPlace",
-   "PlayStation",
-   "Projector",
-   "Elevator",
-   "Heating",
- ].map((option) => (
-   <div
-     key={option}
-     className="flex items-center justify-between p-3 border border-gray-300 rounded-lg shadow-sm bg-white"
-   >
-     <div className="text-gray-800 font-medium text-sm">{t(option.toLowerCase())}</div>
-     <label className="relative inline-flex items-center cursor-pointer">
-       <input
-         type="checkbox"
-         checked={secondFormData.amenities.includes(option)}
-         onChange={() =>
-           setSecondFormData((prev) => ({
-             ...prev,
-             amenities: prev.amenities.includes(option)
-               ? prev.amenities.filter((item) => item !== option)
-               : [...prev.amenities, option],
-           }))
-         }
-         className="sr-only peer"
-       />
-       <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer-checked:bg-blue-600 peer-checked:before:translate-x-4 before:content-[''] before:absolute before:top-0.5 before:left-0.5 before:bg-white before:border before:rounded-full before:h-4 before:w-4 before:transition-all peer-checked:before:border-white"></div>
-     </label>
-   </div>
- ))}
-</div>
-
-{/* Business Type Section (Only for Commercial) */}
-{secondFormData.propertyType === "Commercial" && (
- <>
-   <h3 className="text-lg font-semibold mt-6">{t("businessType")}</h3>
-   <div className="grid grid-cols-1 gap-4">
-     {[
-       "Showroom",
-       "Office",
-       "Retail",
-       "Restaurant",
-       "Hotel",
-       "CreativeSpace",
-       "Cafe",
-       "Coworking",
-       "BeautySalon",
-     ].map((option) => (
-       <div
-         key={option}
-         className="flex items-center justify-between p-3 border border-gray-300 rounded-lg shadow-sm bg-white"
-       >
-         <div className="text-gray-800 font-medium text-sm">{t(option.toLowerCase())}</div>
-         <label className="relative inline-flex items-center cursor-pointer">
-           <input
-             type="checkbox"
-             checked={secondFormData.business?.includes(option)}
-             onChange={() =>
-               setSecondFormData((prev) => ({
-                 ...prev,
-                 business: prev.business?.includes(option)
-                   ? prev.business.filter((item) => item !== option)
-                   : [...(prev.business || []), option],
-               }))
-             }
-             className="sr-only peer"
-           />
-           <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer-checked:bg-blue-600 peer-checked:before:translate-x-4 before:content-[''] before:absolute before:top-0.5 before:left-0.5 before:bg-white before:border before:rounded-full before:h-4 before:w-4 before:transition-all peer-checked:before:border-white"></div>
-         </label>
-       </div>
-     ))}
-   </div>
- </>
-)}
 
 
 
 
-
-
-
-
-
-       </div>
-
-
-
-
-        <div>
+          {/* Amenities Section */}
+          <h3 className="text-lg font-semibold">{t("amenities")}</h3>
           <div className="grid grid-cols-1 gap-4">
-            {secondFormData.additional.map((item, index) => (
+            {[
+              "Oven",
+              "Microwave",
+              "VacuumCleaner",
+              "AirConditioner",
+              "Balcony",
+              "Stove",
+              "Dishwasher",
+              "SmartTV",
+              "WiFi",
+              "ParkingPlace",
+              "PlayStation",
+              "Projector",
+              "Elevator",
+            ].map((option) => (
               <div
-                key={index}
-                className="flex items-center justify-between p-2 border border-gray-300 rounded-md"
+                key={option}
+                className="flex items-center justify-between p-3 border border-gray-300 rounded-lg shadow-sm bg-white"
               >
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-sm font-medium text-gray-800">
-                    {t(item.toLowerCase())}
-                  </span>
-                </div>
-
+                <div className="text-gray-800 font-medium text-sm">{t(option.toLowerCase())}</div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"
-                    checked={
-                      secondFormData.selectedAdditional?.includes(item) || false
+                    checked={secondFormData.amenities.includes(option)}
+                    onChange={() =>
+                      setSecondFormData((prev) => ({
+                        ...prev,
+                        amenities: prev.amenities.includes(option)
+                          ? prev.amenities.filter((item) => item !== option)
+                          : [...prev.amenities, option],
+                      }))
                     }
-                    onChange={() => {
-                      setSecondFormData((prev) => {
-                        const isSelected =
-                          prev.selectedAdditional?.includes(item);
-                        const updatedSelected = isSelected
-                          ? prev.selectedAdditional.filter(
-                            (feature) => feature !== item
-                          )
-                          : [...(prev.selectedAdditional || []), item];
-                        return {
-                          ...prev,
-                          selectedAdditional: updatedSelected,
-                        };
-                      });
-                    }}
                     className="sr-only peer"
                   />
                   <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer-checked:bg-blue-600 peer-checked:before:translate-x-4 before:content-[''] before:absolute before:top-0.5 before:left-0.5 before:bg-white before:border before:rounded-full before:h-4 before:w-4 before:transition-all peer-checked:before:border-white"></div>
                 </label>
               </div>
             ))}
+          </div>
+
+          {/* Business Type Section (Only for Commercial) */}
+          {secondFormData.propertyType === "Commercial" && (
+            <>
+              <h3 className="text-lg font-semibold mt-6">{t("businessType")}</h3>
+              <div className="grid grid-cols-1 gap-4">
+                {[
+                  "Showroom",
+                  "Office",
+                  "Retail",
+                  "Restaurant",
+                  "Hotel",
+                  "CreativeSpace",
+                  "Cafe",
+                  "Coworking",
+                  "BeautySalon",
+                ].map((option) => (
+                  <div
+                    key={option}
+                    className="flex items-center justify-between p-3 border border-gray-300 rounded-lg shadow-sm bg-white"
+                  >
+                    <div className="text-gray-800 font-medium text-sm">{t(option.toLowerCase())}</div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={secondFormData.business?.includes(option)}
+                        onChange={() =>
+                          setSecondFormData((prev) => ({
+                            ...prev,
+                            business: prev.business?.includes(option)
+                              ? prev.business.filter((item) => item !== option)
+                              : [...(prev.business || []), option],
+                          }))
+                        }
+                        className="sr-only peer"
+                      />
+                      <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer-checked:bg-blue-600 peer-checked:before:translate-x-4 before:content-[''] before:absolute before:top-0.5 before:left-0.5 before:bg-white before:border before:rounded-full before:h-4 before:w-4 before:transition-all peer-checked:before:border-white"></div>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+        <div>
+          <div className="grid grid-cols-1 gap-4">
+            {secondFormData.type !== "Sale" && (
+              secondFormData.additional.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between p-2 border border-gray-300 rounded-md"
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-sm font-medium text-gray-800">
+                      {t(item.toLowerCase())}
+                    </span>
+                  </div>
+
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={
+                        secondFormData.selectedAdditional?.includes(item) || false
+                      }
+                      onChange={() => {
+                        setSecondFormData((prev) => {
+                          const isSelected = prev.selectedAdditional?.includes(item);
+                          const updatedSelected = isSelected
+                            ? prev.selectedAdditional.filter(
+                              (feature) => feature !== item
+                            )
+                            : [...(prev.selectedAdditional || []), item];
+                          return {
+                            ...prev,
+                            selectedAdditional: updatedSelected,
+                          };
+                        });
+                      }}
+                      className="sr-only peer"
+                    />
+                    <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer-checked:bg-blue-600 peer-checked:before:translate-x-4 before:content-[''] before:absolute before:top-0.5 before:left-0.5 before:bg-white before:border before:rounded-full before:h-4 before:w-4 before:transition-all peer-checked:before:border-white"></div>
+                  </label>
+                </div>
+              ))
+            )}
+
           </div>
 
           {role === "user" && (
@@ -1275,12 +1337,7 @@ const SecondComponent = ({ onSave }) => {
             </div>
           )}
         </div>
-
-
-
-
-
-      </div>
+ </div>
 
       {/* Publish Button */}
       <div className="text-center">
@@ -1290,11 +1347,10 @@ const SecondComponent = ({ onSave }) => {
         >
           {t("pub")}
         </button>
-
       </div>
     </div>
   );
-};
+}
 
 SecondComponent.propTypes = {
   localFormData: PropTypes.object.isRequired,
